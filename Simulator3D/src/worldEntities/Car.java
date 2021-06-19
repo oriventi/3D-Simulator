@@ -269,7 +269,7 @@ public class Car{
 	}
 	
 	//if car reaches the next marker
-	private float roundabout = 0.1f;
+	private float roundabout = 0.4f;
 	private boolean reachedNextMarker() {
 		if(pos.x >= nextMarker.getWorldPositionX() - roundabout && pos.x <= nextMarker.getWorldPositionX() + roundabout) {
 			if(pos.z >= nextMarker.getWorldPositionY() - roundabout && pos.z <= nextMarker.getWorldPositionY() + roundabout) {
