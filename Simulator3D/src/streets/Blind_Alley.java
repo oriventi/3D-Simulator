@@ -1,5 +1,6 @@
 package streets;
 
+import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import traffic.PathMarker;
 
@@ -8,6 +9,11 @@ public class Blind_Alley extends Street{
 	public Blind_Alley(int xtile, int ytile) {
 		super(xtile, ytile);
 		
+	}
+	
+	@Override
+	protected void setMesh() {
+		mesh = MeshContainer.blind_alley;
 	}
 
 	@Override
@@ -31,11 +37,6 @@ public class Blind_Alley extends Street{
 		}else {
 			rotation = 0;
 		}
-	}
-
-	@Override
-	protected void makeEntity() {
-		
 	}
 
 	@Override
