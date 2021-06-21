@@ -521,33 +521,6 @@ public class Car{
 		}
 	}
 	
-	private void interpolateSpeedTo(float toSpeed) {
-		if(toSpeed == 0) {
-			toSpeed = 0.01f;
-		}
-		if(toSpeed > speed) {
-			while(speed <= toSpeed) {
-				interpolate(0.0001f, true);
-			}
-			speed = toSpeed;
-		}else {
-			while(speed >= toSpeed) {
-				interpolate(0.0001f, false);
-			}
-			speed = toSpeed;
-		}
-		
-		
-	}
-	
-	private void interpolate(float delta, boolean up) {
-		if(up) {
-			speed += delta;
-		}else {
-			speed -= delta;
-		}
-	}
-	
 	
 	public float getWorldPositionX() {
 		return pos.x;
