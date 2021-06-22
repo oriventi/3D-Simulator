@@ -1,3 +1,4 @@
+
 package World;
 
 import entities.Entity;
@@ -21,10 +22,6 @@ public class Tile {
 		return true;
 	}
 	
-	public boolean hasStreet() {
-		return hasStreet;
-	}
-	
 	public void rotateEntity() {
 		if(!hasStreet && content != null) {
 			content.increaseRotation(0, 90, 0);
@@ -46,6 +43,14 @@ public class Tile {
 	
 	public int getSize() {
 		return size;
+	}
+	
+	public void setStreet(boolean street) {
+		this.hasStreet = street;
+	}
+	
+	public boolean hasStreet() {
+		return hasStreet;
 	}
 
 }

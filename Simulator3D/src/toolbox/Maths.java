@@ -6,6 +6,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import World.TileManager;
 import entities.Camera;
 
 public class Maths {
@@ -58,6 +59,57 @@ public class Maths {
 	public static Vector2f getOrthogonalVector(Vector2f vec) {
 		return new Vector2f(vec.y, -vec.x);
 	}
+	
+	public static float getPositionFromTile(int tile, float delta) {
+		return (tile + delta) * TileManager.tsize - TileManager.wsize / 2;
+	}
+	
+	//returns tile from mousePosition
+	public static Vector2f getTileFromMousePosition(MousePicker picker, Camera cam) {
+		int x = (int) picker.getPosition(cam).x;
+		int z = (int) picker.getPosition(cam).z;
+		int tilex = (int)((x + TileManager.wsize / 2) / TileManager.tsize);
+		int tiley = (int)((z + TileManager.wsize / 2) / TileManager.tsize);
+		
+		if(tilex < 0) {
+			tilex = 0;
+		}
+		if(tiley < 0) {
+			tiley = 0;
+		}
+		if(tilex > TileManager.size - 1) {
+			tilex = TileManager.size - 1;
+		}
+		if(tiley > TileManager.size - 1) {
+			tiley = TileManager.size -1 ;
+		}
+				
+		return new Vector2f(tilex, tiley);
+		
+	}
+	
+	//returns tile out of xpos and zpos
+	public static Vector2f getTileFromPosition(float x, float z) {
+		int tilex = (int)((x + TileManager.wsize / 2) / TileManager.tsize);
+		int tiley = (int)((z + TileManager.wsize / 2) / TileManager.tsize);
+		
+		if(tilex < 0) {
+			tilex = 0;
+		}
+		if(tiley < 0) {
+			tiley = 0;
+		}
+		if(tilex > TileManager.size - 1) {
+			tilex = TileManager.size - 1;
+		}
+		if(tiley > TileManager.size - 1) {
+			tiley = TileManager.size -1 ;
+		}
+		
+		return new Vector2f(tilex, tiley);
+		
+	}
+	
 	
 	
 

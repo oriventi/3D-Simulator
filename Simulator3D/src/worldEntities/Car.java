@@ -1,6 +1,7 @@
 package worldEntities;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -9,7 +10,7 @@ import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import traffic.PathMarker;
-import traffic.Street;
+import streets.Street;
 import traffic.StreetManager;
 import World.TileManager;
 import entities.Entity;
@@ -21,7 +22,6 @@ import toolbox.Maths;
 
 public class Car{
 	
-	private StreetManager streetManager;
 	private Street currentStreet;
 	private PathMarker currentMarker;
 	private PathMarker nextMarker;
@@ -36,17 +36,16 @@ public class Car{
 	private Vector3f pos = new Vector3f();
 	private Vector2f dir = new Vector2f();
 	
-	public Car(PathMarker startMarker, StreetManager streetManager) {
+	public Car(PathMarker startMarker) {
 		
 		initspeed = speed;
-		this.streetManager = streetManager;
 		currentMarker = startMarker;
 		pos.x = startMarker.getWorldPositionX();
 		pos.y = 0.2f;
 		pos.z = startMarker.getWorldPositionY();
 		xtile = getTileX();
 		ytile = getTileY();
-		currentStreet = streetManager.getStreetSystem()[xtile][ytile];
+		currentStreet = StreetManager.getStreetSystem()[xtile][ytile];
 		currentStreet.addCar(this);
 		updateMarker(true);
 		entity = new Entity(getRandomCar(), pos, 0, 0, 0, 0.5f);
@@ -111,7 +110,7 @@ public class Car{
 			currentStreet.addCar(this);
 		}else {
 			//get marker in currentstreet
-			nextMarker = streetManager.getStreetSystem()[getTileX()][getTileY()].getPathMarkers().get(action);
+			nextMarker = StreetManager.getStreetSystem()[getTileX()][getTileY()].getPathMarkers().get(action);
 		}
 		
 		updateMode(action);
@@ -301,23 +300,15 @@ public class Car{
 		int streetnum = -1; //0 == top -- 1== right -- 2 == bottom -- 3 == left
 		Vector2f vec = new Vector2f();
 		Street[] street = new Street[4];
-		if(streetManager.hasTop(getTileX(), getTileY())) {
-			street[0] = streetManager.getTopStreet(getTileX(), getTileY());
-		}
-		if(streetManager.hasRight(getTileX(), getTileY())) {
-			street[1] = streetManager.getRightStreet(getTileX(), getTileY());
-		}
-		if(streetManager.hasBottom(getTileX(), getTileY())) {
-			street[2] = streetManager.getBottomStreet(getTileX(), getTileY());
-		}
-		if(streetManager.hasLeft(getTileX(), getTileY())) {
-			street[3] = streetManager.getLeftStreet(getTileX(), getTileY());
-		}
+		street[0] = StreetManager.getTopStreet(getTileX(), getTileY());
+		street[1] = StreetManager.getRightStreet(getTileX(), getTileY());
+		street[2] = StreetManager.getBottomStreet(getTileX(), getTileY());
+		street[3] = StreetManager.getLeftStreet(getTileX(), getTileY());
 		
 		for(int i = 0; i < 4; i++) {
 			if(street[i] != null) {
-				vec.x = street[i].getWorldPositionX() - pos.x;
-				vec.y = street[i].getWorldPositionY() - pos.z;
+				vec.x = street[i].getPosX() - pos.x;
+				vec.y = street[i].getPosY() - pos.z;
 				if(vec.length() < length) {
 					length = vec.length();
 					streetnum = i;
@@ -472,26 +463,22 @@ public class Car{
 	private Vector2f otherdir = new Vector2f();
 	private List<Float> lengthlist = new ArrayList<>();
 	private List<Car> cars = new ArrayList<>();
-	private float shortestlength;
-	private int shortestindex;
 	private float dirangle = 0;
 	private float getLengthToFrontCar() {
 		lengthlist.clear();
 		cars.clear();
-		shortestindex = -1;
-		shortestlength = 100;
 		cars.addAll(currentStreet.getCars());
-		if(streetManager.hasTop(getTileX(), getTileY())) {
-			cars.addAll(streetManager.getTopStreet(getTileX(), getTileY()).getCars());
+		if(StreetManager.hasTop(getTileX(), getTileY())) {
+			cars.addAll(StreetManager.getTopStreet(getTileX(), getTileY()).getCars());
 		}
-		if(streetManager.hasRight(getTileX(), getTileY())) {
-			cars.addAll(streetManager.getRightStreet(getTileX(), getTileY()).getCars());
+		if(StreetManager.hasRight(getTileX(), getTileY())) {
+			cars.addAll(StreetManager.getRightStreet(getTileX(), getTileY()).getCars());
 		}
-		if(streetManager.hasBottom(getTileX(), getTileY())) {
-			cars.addAll(streetManager.getBottomStreet(getTileX(), getTileY()).getCars());
+		if(StreetManager.hasBottom(getTileX(), getTileY())) {
+			cars.addAll(StreetManager.getBottomStreet(getTileX(), getTileY()).getCars());
 		}
-		if(streetManager.hasLeft(getTileX(), getTileY())) {
-			cars.addAll(streetManager.getLeftStreet(getTileX(), getTileY()).getCars());
+		if(StreetManager.hasLeft(getTileX(), getTileY())) {
+			cars.addAll(StreetManager.getLeftStreet(getTileX(), getTileY()).getCars());
 		}
 		
 		//make vector to all cars
@@ -529,7 +516,6 @@ public class Car{
 	public float getWorldPositionY() {
 		return pos.z;
 	}
-	
 	
 	//returns current xtile of cars position
 	private int getTileX() {

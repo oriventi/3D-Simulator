@@ -1,21 +1,26 @@
 package traffic;
 
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector3f
+;
 
 import World.TileManager;
 import entities.Entity;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
+import streets.Street;
+import toolbox.Maths;
 
 public class TrafficLight {
 	
 	private Entity entity;
 	private boolean red;
-	private int pathMarker; //index of pathmarker in street array
+	private int pathMarker; //index of pathMarker in street array
 	
-	public TrafficLight(int xtile, int ytile, float dx, float dy, int rot, int pathMarker, Street street) {
-		entity = new Entity(MeshContainer.traffic_light, new Vector3f((xtile + dx) * TileManager.tsize - TileManager.wsize / 2, 0, (ytile + dy) * TileManager.tsize - TileManager.wsize / 2), 0, rot, 0, 1);
+	public TrafficLight(Street street, float dx, float dy, int rot, int pathMarker) {
+		entity = new Entity(MeshContainer.traffic_light, 
+				new Vector3f(Maths.getPositionFromTile(street.getTileX(), dx), 0, Maths.getPositionFromTile(street.getTileY(), dy)), 0, rot, 0, 1);
 		this.pathMarker = pathMarker;
+		System.out.println(pathMarker);
 		if(pathMarker == 0 || pathMarker == 4) {
 			setGreen(street);
 		}else {

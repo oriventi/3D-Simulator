@@ -40,7 +40,7 @@ public class World {
 		this.cam = cam;
 		tileManager = new TileManager(50, size, loader);
 		worldEntity = generateMesh(loader);
-		trafficManager = new TrafficManager(tileManager.getStreetManager());
+		trafficManager = new TrafficManager();
 		
 	}
 	

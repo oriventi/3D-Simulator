@@ -1,123 +1,126 @@
 package traffic;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
-import entities.Entity;
-import models.Mesh;
-import renderEngine.DisplayManager;
-import renderEngine.Loader;
+import World.TileManager;
 import renderEngine.MasterRenderer;
+import streets.Street;
+import streets.T_Junction;
+import streets.Blind_Alley;
+import streets.Curve;
+import streets.Intersection;
+import streets.No_Connection;
+import streets.Straight;
 
 public class StreetManager {
 
-	private Street[][] streetsystem;
+	private static Street[][] streetsystem;
 	private List<Integer> streetlist; // contains information about where in the matrix is a street
-	private Loader loader;
-	private int size;
-	private int wsize;
-	
-	private float trafficLightTimer = 0;
-	
-	public StreetManager(int size, int wsize,  Loader loader) {
-		streetsystem = new Street[size][size];
-		this.loader = loader;
-		this.size = size;
-		this.wsize = wsize;
+			
+	public StreetManager() {
+		streetsystem = new Street[TileManager.size][TileManager.size];
 		streetlist = new ArrayList<>();
 	}
 	
-	public void renderPathMarkers(MasterRenderer renderer) {
-		for(int i = 0; i < streetsystem.length; i++) {
-			for(int j = 0; j < streetsystem.length; j++) {
-				if(streetsystem[i][j] != null) {
-					streetsystem[i][j].renderPathMarkers(renderer);
-				}
+	public void render(MasterRenderer renderer) {
+		for(int i = 0; i < TileManager.size; i++) {
+			for(int j = 0; j < TileManager.size; j++) {
+				if(streetsystem[i][j] != null)
+					streetsystem[i][j].render(renderer);
 			}
 		}
 	}
 	
-	public void renderTrafficLights(MasterRenderer renderer) {
-		for(int i = 0; i < streetsystem.length; i++) {
-			for(int j = 0; j < streetsystem.length; j++) {
-				if(streetsystem[i][j] != null) {
-					streetsystem[i][j].renderTrafficLights(renderer);
-				}
-			}
+	public void addStreet(int xtile, int ytile) {
+		addStreet(xtile, ytile, true);
+	}
+	
+	public void removeStreet(int xtile, int ytile) {
+		removeStreet(xtile, ytile, true);
+	}
+	
+	private void addStreet(int xtile, int ytile, boolean update) {
+		if(streetsystem[xtile][ytile] == null) {
+			placeCorrectStreet(xtile, ytile);
+			streetlist.add(xtile);
+			streetlist.add(ytile);
+			if(update) //if other streets shall be updated only set true at new streets
+				updateStreetsAround(xtile, ytile);
 		}
 	}
 	
-	public void updateTrafficLightTimer() {
-		trafficLightTimer += DisplayManager.getFrameTimeSeconds();
-		if(trafficLightTimer >= 10) {
-			trafficLightTimer = 0;
-			for(int i = 0; i < streetsystem.length; i++) {
-				for(int j = 0; j < streetsystem.length; j++) {
-					if(streetsystem[i][j] != null) {
-						streetsystem[i][j].changeTrafficLights();
-					}
-				}
-			}
+	private void removeStreet(int xtile, int ytile, boolean update) {
+		System.out.println("HI");
+		if(streetsystem[xtile][ytile] != null) {
+			streetsystem[xtile][ytile] = null;
+			streetlist.remove(streetlist.indexOf(xtile));
+			streetlist.remove(streetlist.indexOf(ytile));
+			if(update)
+				updateStreetsAround(xtile, ytile);
 		}
 	}
 	
 	private void updateStreetsAround(int xtile, int ytile) {
-		//update top street
 		if(hasTop(xtile, ytile)) {
-			streetsystem[xtile][ytile - 1].update(false, false, true, false);
+			removeStreet(xtile, ytile - 1, false);
+			addStreet(xtile, ytile - 1, false);
 		}
-		//update right street
 		if(hasRight(xtile, ytile)) {
-			streetsystem[xtile + 1][ytile].update(false, false, false, true);
+			removeStreet(xtile + 1, ytile, false);
+			addStreet(xtile + 1, ytile, false);
 		}
-		//update bottom street
 		if(hasBottom(xtile, ytile)) {
-			streetsystem[xtile][ytile + 1].update(true, false, false, false);
+			removeStreet(xtile, ytile + 1, false);
+			addStreet(xtile, ytile + 1, false);
 		}
-		//update left street
 		if(hasLeft(xtile, ytile)) {
-			streetsystem[xtile - 1][ytile].update(false, true, false, false);
-		}	
+			removeStreet(xtile - 1, ytile, false);
+			addStreet(xtile - 1, ytile, false);
+		}
+	}
+	
+	private void placeCorrectStreet(int xtile, int ytile) {
+		streetsystem[xtile][ytile] = null;
+		int neighbors = getNeighbors(xtile, ytile);
+		if(neighbors == 0) {
+			streetsystem[xtile][ytile] = new No_Connection(xtile, ytile);
+		}else if(neighbors == 1) {
+			streetsystem[xtile][ytile] = new Blind_Alley(xtile, ytile);
+		}else if(neighbors == 2) {
+			if(hasLeft(xtile, ytile) && hasRight(xtile, ytile) || hasTop(xtile, ytile) && hasBottom(xtile, ytile)) {
+				streetsystem[xtile][ytile] = new Straight(xtile, ytile);
+			}else {
+				streetsystem[xtile][ytile] = new Curve(xtile, ytile);
+			}
+		}else if(neighbors == 3) {
+			streetsystem[xtile][ytile] = new T_Junction(xtile, ytile);
+		}else {
+			streetsystem[xtile][ytile] = new Intersection(xtile, ytile);
+		}
 		
 	}
 	
-	public Entity getStreetEntity(int xtile, int ytile) {
-		return streetsystem[xtile][ytile].generateEntity();
-	}
-	
-	public void addStreet(int xtile, int ytile) {
-		if(xtile < 50 && ytile < 50) {
-			if(streetsystem[xtile][ytile] == null) {
-				boolean top = hasTop(xtile, ytile);
-				boolean right = hasRight(xtile, ytile);
-				boolean bottom = hasBottom(xtile, ytile);
-				boolean left = hasLeft(xtile, ytile);
-				streetsystem[xtile][ytile] = new Street(xtile, ytile, top, right, bottom, left, loader, size, wsize);
-				updateStreetsAround(xtile, ytile);
-				streetlist.add(xtile);
-				streetlist.add(ytile);
-			}
+	private int getNeighbors(int xtile, int ytile) {
+		int neighbors = 0;
+		if(hasTop(xtile, ytile)) {
+			neighbors += 1;
 		}
-	}
-	
-	public void removeStreet(int xtile, int ytile) {
-		if(xtile < 50 && ytile < 50) {
-			if(!streetlist.isEmpty() && streetsystem[xtile][ytile] != null) {
-				streetlist.remove(streetlist.indexOf(xtile));
-				streetlist.remove(streetlist.indexOf(ytile));
-			}
-			if(streetsystem[xtile][ytile] != null) {
-				streetsystem[xtile][ytile] = null;
-				updateStreetsAround(xtile, ytile);
-			}
+		if(hasRight(xtile, ytile)) {
+			neighbors += 1;
 		}
+		if(hasLeft(xtile, ytile)) {
+			neighbors += 1;
+		}
+		if(hasBottom(xtile, ytile)) {
+			neighbors += 1;
+		}
+		return neighbors;
 	}
 	
-	public Street[][] getStreetSystem() {
-		return streetsystem;
-	}
 	
-	public boolean hasTop(int xtile, int ytile) {
+	public static boolean hasTop(int xtile, int ytile) {
 		if(ytile - 1 >= 0) {
 			if(streetsystem[xtile][ytile - 1] != null) {
 				return true;
@@ -126,8 +129,8 @@ public class StreetManager {
 		return false;
 	}
 	
-	public boolean hasRight(int xtile, int ytile) {
-		if(xtile + 1 < size) {
+	public static boolean hasRight(int xtile, int ytile) {
+		if(xtile + 1 < TileManager.size) {
 			if(streetsystem[xtile + 1][ytile] != null) {
 				return true;
 			}
@@ -135,8 +138,8 @@ public class StreetManager {
 		return false;
 	}
 	
-	public boolean hasBottom(int xtile, int ytile) {
-		if(ytile + 1 < size) {
+	public static boolean hasBottom(int xtile, int ytile) {
+		if(ytile + 1 < TileManager.size) {
 			if(streetsystem[xtile][ytile + 1] != null) {
 				return true;
 			}
@@ -144,7 +147,7 @@ public class StreetManager {
 		return false;
 	}
 	
-	public boolean hasLeft(int xtile, int ytile) {
+	public static boolean hasLeft(int xtile, int ytile) {
 		if(xtile - 1 >= 0) {
 			if(streetsystem[xtile - 1][ytile] != null) {
 				return true;
@@ -153,49 +156,36 @@ public class StreetManager {
 		return false;
 	}
 	
-	
-	public Entity getTopEntity(int xtile, int ytile) {
-		if(hasTop(xtile, ytile)) {
-			return streetsystem[xtile][ytile - 1].generateEntity();
-		}
-		return null;
+	public static Street getTopStreet(int xtile, int ytile) {
+		if(hasTop(xtile, ytile))
+			return streetsystem[xtile][ytile - 1];
+		else
+			return null;
 	}
 	
-	public Entity getRightEntity(int xtile, int ytile) {
-		if(hasRight(xtile, ytile)) {
-			return streetsystem[xtile + 1][ytile].generateEntity();
-		}
-		return null;
+	public static Street getRightStreet(int xtile, int ytile) {
+		if(hasRight(xtile, ytile))
+			return streetsystem[xtile + 1][ytile];
+		else
+			return null;
 	}
 	
-	public Entity getBottomEntity(int xtile, int ytile) {
-		if(hasBottom(xtile, ytile)) {
-			return streetsystem[xtile][ytile + 1].generateEntity();
-		}
-		return null;
+	public static Street getBottomStreet(int xtile, int ytile) {
+		if(hasBottom(xtile, ytile))
+			return streetsystem[xtile][ytile + 1];
+		else
+			return null;
 	}
 	
-	public Entity getLeftEntity(int xtile, int ytile) {
-		if(hasLeft(xtile, ytile)) {
-			return streetsystem[xtile - 1][ytile].generateEntity();
-		}
-		return null;
+	public static Street getLeftStreet(int xtile, int ytile) {
+		if(hasLeft(xtile, ytile))
+			return streetsystem[xtile - 1][ytile];
+		else
+			return null;
 	}
 	
-	public Street getTopStreet(int xtile, int ytile) {
-		return streetsystem[xtile][ytile - 1];
-	}
-	
-	public Street getRightStreet(int xtile, int ytile) {
-		return streetsystem[xtile + 1][ytile];
-	}
-	
-	public Street getBottomStreet(int xtile, int ytile) {
-		return streetsystem[xtile][ytile + 1];
-	}
-	
-	public Street getLeftStreet(int xtile, int ytile) {
-		return streetsystem[xtile - 1][ytile];
+	public static Street[][] getStreetSystem() {
+		return streetsystem;
 	}
 	
 }

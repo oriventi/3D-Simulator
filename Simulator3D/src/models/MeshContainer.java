@@ -1,9 +1,12 @@
+
 package models;
 
 import java.util.Random;
 
+import World.TileManager;
 import renderEngine.Loader;
 import renderEngine.OBJLoader;
+import textures.Color;
 import textures.ModelTexture;
 
 public class MeshContainer {
@@ -13,6 +16,7 @@ public class MeshContainer {
 	public static Mesh cube_red;
 	public static Mesh traffic_light;
 	public static Mesh street_lamp;
+	public static Mesh selector;
 	
 	//buildings
 	public static Mesh factory_1;
@@ -37,7 +41,7 @@ public class MeshContainer {
 	//Streets
 	public static Mesh no_connection;
 	public static Mesh blind_alley;
-	public static Mesh forward;
+	public static Mesh straight;
 	public static Mesh curve;
 	public static Mesh t_junction;
 	public static Mesh intersection;
@@ -76,11 +80,48 @@ public class MeshContainer {
 		//Streets
 		no_connection = new Mesh("streets/no_connection", loader);
 		blind_alley = new Mesh("streets/blind_alley", loader);
-		forward = new Mesh("streets/forward", loader);
+		straight = new Mesh("streets/straight", loader);
 		curve = new Mesh("streets/curve", loader);
 		t_junction = new Mesh("streets/t_junction", loader);
 		intersection = new Mesh("streets/intersection", loader);
 				
+		
+		
+		selector = generateSelectorMesh();
+	}
+	
+	//generates Selector
+	private Mesh generateSelectorMesh() {
+
+		float[] vertices = {
+			0, 0, 0,
+			TileManager.tsize, 0, 0,
+			0, 0, TileManager.tsize,
+			TileManager.tsize, 0, TileManager.tsize
+		};
+		
+		float colx = (float) 2.5f / 8.f;
+		float coly = (float) 3.5f / 8.f;
+		
+		float[] textureCoords = {
+			colx, coly,
+			colx, coly,
+			colx, coly, 
+			colx, coly
+		};
+		
+		int[] indices = {
+				0, 2, 1, 1, 2, 3
+		};
+		
+		float[] normals = {
+			0, 1, 0,
+			0, 1, 0
+		};
+		
+		RawModel model = loader.loadToVAO(vertices, textureCoords, normals, indices);
+		return new Mesh(model, new Color(255, 96, 70));
+		
 		
 	}
 }

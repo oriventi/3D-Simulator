@@ -17,10 +17,8 @@ import worldEntities.Car;
 public class TrafficManager {
 
 	private List<Car> cars = new ArrayList<>();
-	private StreetManager streetManager;
 	
-	public TrafficManager(StreetManager streetManager) {
-		this.streetManager = streetManager;
+	public TrafficManager() {
 	}
 	
 	
@@ -30,9 +28,9 @@ public class TrafficManager {
 		tslc += DisplayManager.getFrameTimeSeconds();
 		xtile = (int) getTile(picker, cam).x;
 		ytile = (int) getTile(picker, cam).y;
-		if(streetManager.getStreetSystem()[xtile][ytile] != null && tslc >= 0.5f  ) {
+		if(StreetManager.getStreetSystem()[xtile][ytile] != null && tslc >= 0.5f  ) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				cars.add(new Car(getNearestPathMarker(xtile, ytile, picker, cam), streetManager));
+				cars.add(new Car(getNearestPathMarker(xtile, ytile, picker, cam)));
 				tslc = 0;
 			}
 		}
@@ -79,16 +77,16 @@ public class TrafficManager {
 		Vector2f vec = new Vector2f();
 		float shortestLength = 100;
 		int shortestindex = -1;
-		for(int i = 0; i < streetManager.getStreetSystem()[xtile][ytile].getPathMarkers().size(); i++) {
-			vec.x = picker.getPosition(cam).x - streetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionX();
-			vec.y = picker.getPosition(cam).z - streetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionY();
+		for(int i = 0; i < StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().size(); i++) {
+			vec.x = picker.getPosition(cam).x - StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionX();
+			vec.y = picker.getPosition(cam).z - StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionY();
 			if(vec.length() < shortestLength) {
 				shortestLength = vec.length();
 				shortestindex = i;
 			}
 		}
 		
-		return streetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(shortestindex);
+		return StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(shortestindex);
 	}
 	
 }

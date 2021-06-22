@@ -1,6 +1,7 @@
 package traffic;
 
 import renderEngine.MasterRenderer;
+import streets.Street;
 
 public class TrafficLightManager {
 	
@@ -9,49 +10,54 @@ public class TrafficLightManager {
 	
 	public TrafficLightManager(Street street) {
 		traffic_lights = new TrafficLight[4];
-		update(street);
-	}
-	
-	public void update(Street street) {
-		this.street = null;
 		this.street = street;
+		
 		initArray();
 	}
 	
 	private void initArray() {
-		clearArray();
 		if(street.getNeighbors() == 4) {
-			traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
-			traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 0, street);
-			traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
-			traffic_lights[3] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.9f, 180, 6, street);
+			traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
+			traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 0);
+			traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 4);
+			traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 6);
 		}else if(street.getNeighbors() == 3) {
 			
 			if(street.getRotation() == 0) {
-				traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
-				traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 0, street);
+				traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
+				traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 0);
 				traffic_lights[2] = null;
-				traffic_lights[3] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.9f, 180, 4, street);
+				traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 4);
 				
 			}else if(street.getRotation() == 90) {
-				traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
+				traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
 				traffic_lights[1] = null;
-				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 0, street);
-				traffic_lights[3] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.9f, 180, 4, street);
+				traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 0);
+				traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 4);
 				
 			}else if(street.getRotation() == 180) {
 				traffic_lights[0] = null;
-				traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 2, street);
-				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 0, street);
-				traffic_lights[3] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.9f, 180, 4, street);
+				traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 2);
+				traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 0);
+				traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 4);
 				
 			}else if(street.getRotation() == -90) {
-				traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
-				traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 0, street);
-				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
+				traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
+				traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 0);
+				traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 4);
 				traffic_lights[3] = null;
 			}
 		}
+	/*	if(street.getNeighbors() >= 3) {
+			if(street.top) 
+				traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
+			if(street.right) 
+				traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 0, street);
+			if(street.bottom) 
+				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
+			if(street.left)
+				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
+		}*/
 	}
 	
 	public void changeTrafficLights() {
@@ -59,12 +65,6 @@ public class TrafficLightManager {
 			if(traffic_lights[i] != null) {
 				traffic_lights[i].changeLights(street);
 			}
-		}
-	}
-	
-	private void clearArray() {
-		for(int i = 0; i < 4; i++) {
-			traffic_lights[i] = null;
 		}
 	}
 	

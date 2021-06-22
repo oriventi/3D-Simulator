@@ -2,6 +2,7 @@ package streets;
 
 import java.util.List;
 
+
 import org.lwjgl.util.vector.Vector3f;
 
 import World.TileManager;
@@ -9,6 +10,7 @@ import World.TileManager;
 import java.util.ArrayList;
 
 import traffic.PathMarker;
+import traffic.StreetManager;
 import worldEntities.Car;
 import entities.Entity;
 import models.Mesh;
@@ -19,12 +21,13 @@ public abstract class Street {
 	protected int xtile, ytile;
 	protected float xpos, ypos;
 	protected int rotation;
+	public boolean top, right, bottom, left;
 	
-	protected Mesh mesh;
-	protected Entity entity;
+	private Mesh mesh;
+	private Entity entity;
 	
 	protected List<PathMarker> pathMarkers;
-	public List<Car> cars;
+	private List<Car> cars;
 	
 	public Street(int xtile, int ytile) {
 		
@@ -36,15 +39,23 @@ public abstract class Street {
 		xpos = (xtile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		ypos = (ytile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		
-		setRotation();
+		init();
+	}
+	
+	public void init() {
+		top = StreetManager.hasTop(xtile, ytile);
+		right = StreetManager.hasRight(xtile, ytile);
+		bottom = StreetManager.hasBottom(xtile, ytile);
+		left = StreetManager.hasLeft(xtile, ytile);
+				
+		mesh = setMesh();
+		rotation = setRotation();
 		placePathMarkers();
 		applyPathMarkersToPosition();
 		makeEntity();
 	}
-	
-	protected abstract void setMesh();
-	
-	protected abstract void setRotation();
+		
+	protected abstract Mesh setMesh();
 	
 	protected abstract void placePathMarkers();
 	
@@ -54,19 +65,72 @@ public abstract class Street {
 		}
 	}
 
+	protected abstract int setRotation();
+	
+	protected abstract void renderContent(MasterRenderer renderer);
+
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
 	}
 	
-	protected abstract void update();
-	
-	public abstract void render(MasterRenderer renderer);
-	
+	public void render(MasterRenderer renderer) {
+		renderer.processEntity(entity);
+		for(int i = 0; i < pathMarkers.size(); i++) {
+			pathMarkers.get(i).render(renderer);
+		}
+		renderContent(renderer);
+	}
+		
 	public void addCar(Car car) {
 		cars.add(car);
 	}
 	
 	public void removeCar(Car car) {
 		cars.remove(car);
+	}
+	
+	public int getNeighbors() {
+		int neighbors = 0;
+		if(top)
+			neighbors += 1;
+		if(right)
+			neighbors += 1;
+		if(bottom)
+			neighbors += 1;
+		if(left)
+			neighbors += 1;
+		return neighbors;
+	}
+	
+	public Entity getEntity() {
+		return entity;
+	}
+	
+	public int getTileX() {
+		return xtile;
+	}
+	
+	public int getTileY() {
+		return ytile;
+	}
+	
+	public float getPosX() {
+		return xpos;
+	}
+	
+	public float getPosY() {
+		return ypos;
+	}
+	
+	public int getRotation() {
+		return rotation;
+	}
+	
+	public List<Car> getCars(){
+		return cars;
+	}
+	
+	public List<PathMarker> getPathMarkers(){
+		return pathMarkers;
 	}
 }

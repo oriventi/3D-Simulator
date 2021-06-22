@@ -1,5 +1,6 @@
 package streets;
 
+import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import traffic.PathMarker;
@@ -12,8 +13,8 @@ public class Blind_Alley extends Street{
 	}
 	
 	@Override
-	protected void setMesh() {
-		mesh = MeshContainer.blind_alley;
+	protected Mesh setMesh() {
+		return MeshContainer.blind_alley;
 	}
 
 	@Override
@@ -26,26 +27,20 @@ public class Blind_Alley extends Street{
 	}
 
 	@Override
-	protected void setRotation() {
-		//TODO CHANGE
+	protected int setRotation() {
 		if(top) {
-			rotation = 180;
+			return 180;
 		}else if(left) {
-			rotation = -90;
+			return -90;
 		}else if(right) {
-			rotation = 90;
+			return 90;
 		}else {
-			rotation = 0;
+			return 0;
 		}
 	}
 
 	@Override
-	protected void update() {
-		
-	}
-
-	@Override
-	public void render(MasterRenderer renderer) {
+	public void renderContent(MasterRenderer renderer) {
 		
 	}
 
