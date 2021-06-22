@@ -45,16 +45,20 @@ public class DisplayManager {
 		Display.update();
 		long currentFrameTime = getCurrentTime();
 		delta = (currentFrameTime - lastFrameTime) / 1000.f;
-		getFPS();
+		setFPSToTitle();
 		lastFrameTime = currentFrameTime;
 	}
 	
-	public static void getFPS() {
+	private static void setFPSToTitle() {
 		timer += delta;
 		if(timer >= 1) {
 			timer = 0;
 			Display.setTitle("FPS: " + (int)(1.f/ delta));
 		}
+	}
+	
+	public static float getFPS() {
+		return (1.f / delta);
 	}
 	
 	public static float getFrameTimeSeconds() {

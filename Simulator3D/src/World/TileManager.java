@@ -30,7 +30,7 @@ public class TileManager {
 	private boolean street_mode;
 	private Vector2f mouseTile = new Vector2f();
 	
-	private Tile[][] tiles;
+	private static Tile[][] tiles;
 	private StreetManager streetManager;
 	
 	private Entity selector;
@@ -44,7 +44,7 @@ public class TileManager {
 		
 		streetManager = new StreetManager();
 		
-		selector = new Entity(generateSelectorMesh(), new Vector3f(0, 0, 0), 0, 0, 0, 1);
+		selector = new Entity(MeshContainer.generateSelectorMesh(), new Vector3f(0, 0, 0), 0, 0, 0, 1);
 		
 		street_mode = true;
 		current_id = 0;
@@ -57,28 +57,6 @@ public class TileManager {
 			for(int j = 0; j < size; j++) {
 				tiles[i][j] = new Tile(tsize);
 			}
-		}
-	}
-	
-	private Mesh getMeshById() {
-		switch(current_id) {
-			case 0:
-				return null;
-			case 1:	
-				return MeshContainer.house_1;
-			case 2:
-				return MeshContainer.house_2;
-			case 3:
-				return MeshContainer.house_3;
-			case 4:
-				return MeshContainer.factory_1;
-			case 5:
-				return MeshContainer.office_1;
-			case 6:
-				return MeshContainer.supermarket_1;
-			default:
-				return null;
-				
 		}
 	}
 	
@@ -124,36 +102,6 @@ public class TileManager {
 
 	}
 	
-	//MouseX and MouseY
-	public void setTileContent(float xpos, float ypos) {
-		Vector2f current_tile = Maths.getTileFromPosition(xpos, ypos);
-		if(street_mode) {
-			streetManager.addStreet((int)current_tile.x, (int)current_tile.y);
-			tiles[(int)current_tile.x][(int)current_tile.y].setStreet(true);
-		}else {
-			
-			tiles[(int)current_tile.x][(int)current_tile.y].setContent(new Entity(getMeshById(), 
-					new Vector3f(current_tile.x * tsize - wsize / 2 + tsize / 2, 0, current_tile.y * tsize - wsize / 2 + tsize / 2),
-					0, 0, 0, 1), false);
-			
-		}
-		
-	}
-	
-	//MouseX and MouseY
-	public void removeTileContent(float xpos, float ypos) {
-		Vector2f current_tile = Maths.getTileFromPosition(xpos, ypos);
-		
-		if(tiles[(int) current_tile.x][(int) current_tile.y].hasStreet()) {
-			//is Street
-			streetManager.removeStreet((int)current_tile.x, (int)current_tile.y);
-			tiles[(int)current_tile.x][(int)current_tile.y].setStreet(false);
-			
-		}else {
-			//is not Street
-			tiles[(int) current_tile.x][(int) current_tile.y].removeContent();
-		}
-	}
 	
 	//draws the content of all tiles
 	private void drawTileContent(MasterRenderer renderer) {
@@ -165,45 +113,92 @@ public class TileManager {
 			}
 		}
 	}
-	//generates Selector
-	private Mesh generateSelectorMesh() {
 
-		float[] vertices = {
-			0, 0, 0,
-			TileManager.tsize, 0, 0,
-			0, 0, TileManager.tsize,
-			TileManager.tsize, 0, TileManager.tsize
-		};
-		
-		float colx = (float) 2.5f / 8.f;
-		float coly = (float) 3.5f / 8.f;
-		
-		float[] textureCoords = {
-			colx, coly,
-			colx, coly,
-			colx, coly, 
-			colx, coly
-		};
-		
-		int[] indices = {
-				0, 2, 1, 1, 2, 3
-		};
-		
-		float[] normals = {
-			0, 1, 0,
-			0, 1, 0
-		};
-		
-		RawModel model = MainGameLoop.loader.loadToVAO(vertices, textureCoords, normals, indices);
-		return new Mesh(model, new Color(255, 96, 70));
-		
-		
-	}
 	//Draws selector on grid, vec contains x and y of the tile
 	private void drawSelector(MasterRenderer renderer, MousePicker picker, Camera cam) {
-		mouseTile = Maths.getTileFromMousePosition(picker, cam);
+		mouseTile = getTileFromMousePosition(picker, cam);
 		selector.setPosition(mouseTile.x * tsize -wsize / 2, 0.5f, mouseTile.y * tsize - wsize / 2);
 		renderer.processEntity(selector);
+	}
+	
+	//MouseX and MouseY
+	public void setTileContent(float xpos, float ypos) {
+		Vector2f tile = getTileFromPosition(xpos, ypos);
+		if(street_mode) {
+			
+			streetManager.addStreet((int)tile.x, (int)tile.y);
+			
+		}else {
+		
+			tiles[(int)tile.x][(int)tile.y].setContent(new Entity(MeshContainer.getMeshById(current_id), 
+					new Vector3f(tile.x * tsize - wsize / 2 + tsize / 2, 0, tile.y * tsize - wsize / 2 + tsize / 2),
+					0, 0, 0, 1), false);
+			
+		}
+		
+	}
+	
+	//MouseX and MouseY
+	public void removeTileContent(float xpos, float ypos) {
+		Vector2f tile = getTileFromPosition(xpos, ypos);
+		
+		if(tiles[(int) tile.x][(int) tile.y].hasStreet()) {
+			//is Street
+			streetManager.removeStreet((int)tile.x, (int)tile.y);			
+		}else {
+			//is not Street
+			tiles[(int) tile.x][(int) tile.y].removeContent();
+		}
+	}
+	
+	//returns tile from mousePosition
+	public static Vector2f getTileFromMousePosition(MousePicker picker, Camera cam) {
+		int x = (int) picker.getPosition(cam).x;
+		int z = (int) picker.getPosition(cam).z;
+		int tilex = (int)((x + TileManager.wsize / 2) / TileManager.tsize);
+		int tiley = (int)((z + TileManager.wsize / 2) / TileManager.tsize);
+		
+		if(tilex < 0) {
+			tilex = 0;
+		}
+		if(tiley < 0) {
+			tiley = 0;
+		}
+		if(tilex > TileManager.size - 1) {
+			tilex = TileManager.size - 1;
+		}
+		if(tiley > TileManager.size - 1) {
+			tiley = TileManager.size -1 ;
+		}
+				
+		return new Vector2f(tilex, tiley);
+		
+	}
+	
+	//returns tile out of xpos and zpos
+	public static Vector2f getTileFromPosition(float x, float z) {
+		int tilex = (int)((x + TileManager.wsize / 2) / TileManager.tsize);
+		int tiley = (int)((z + TileManager.wsize / 2) / TileManager.tsize);
+		
+		if(tilex < 0) {
+			tilex = 0;
+		}
+		if(tiley < 0) {
+			tiley = 0;
+		}
+		if(tilex > TileManager.size - 1) {
+			tilex = TileManager.size - 1;
+		}
+		if(tiley > TileManager.size - 1) {
+			tiley = TileManager.size -1 ;
+		}
+		
+		return new Vector2f(tilex, tiley);
+		
+	}
+	
+	public static Tile[][] getTileSystem(){
+		return tiles;
 	}
 	
 }

@@ -47,5 +47,9 @@ public class T_Junction extends Street{
 	protected void renderContent(MasterRenderer renderer) {
 		trafficLightManager.render(renderer);
 	}
+	
+	public void changeTrafficLights() {
+		trafficLightManager.changeTrafficLights();
+	}
 
 }

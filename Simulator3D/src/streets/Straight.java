@@ -1,5 +1,6 @@
 package streets;
 
+import entities.Entity;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
@@ -9,7 +10,6 @@ public class Straight extends Street{
 
 	public Straight(int xtile, int ytile) {
 		super(xtile, ytile);
-
 	}
 
 	@Override

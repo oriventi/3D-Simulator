@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import World.TileManager;
+import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import streets.Street;
 import streets.T_Junction;
@@ -18,19 +19,46 @@ public class StreetManager {
 
 	private static Street[][] streetsystem;
 	private List<Integer> streetlist; // contains information about where in the matrix is a street
+	private float trafficLightTimer = 0;
 			
 	public StreetManager() {
 		streetsystem = new Street[TileManager.size][TileManager.size];
 		streetlist = new ArrayList<>();
+		
+
 	}
 	
 	public void render(MasterRenderer renderer) {
+		trafficLightTimer += DisplayManager.getFrameTimeSeconds();
 		for(int i = 0; i < TileManager.size; i++) {
 			for(int j = 0; j < TileManager.size; j++) {
-				if(streetsystem[i][j] != null)
+				if(streetsystem[i][j] != null) {
 					streetsystem[i][j].render(renderer);
+					if(updateTimer()) {
+						changeTrafficLights(i, j);
+					}
+				}
 			}
 		}
+		if(updateTimer()) {
+			trafficLightTimer = 0;
+		}
+	}
+	
+	private void changeTrafficLights(int xtile, int ytile) {
+		if(streetsystem[xtile][ytile] instanceof Intersection) {
+			((Intersection)streetsystem[xtile][ytile]).changeTrafficLights();
+		}else if(streetsystem[xtile][ytile] instanceof T_Junction) {
+			((T_Junction)streetsystem[xtile][ytile]).changeTrafficLights();
+		}
+	}
+	
+	//Timer which counts to 5 and then resets to handle the traffic lights
+	private boolean updateTimer() {
+		if(trafficLightTimer >= 8.f) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void addStreet(int xtile, int ytile) {
@@ -44,21 +72,24 @@ public class StreetManager {
 	private void addStreet(int xtile, int ytile, boolean update) {
 		if(streetsystem[xtile][ytile] == null) {
 			placeCorrectStreet(xtile, ytile);
-			streetlist.add(xtile);
-			streetlist.add(ytile);
-			if(update) //if other streets shall be updated only set true at new streets
+			TileManager.getTileSystem()[xtile][ytile].setStreet(true);
+			if(update) { //if surrounding streets shall be updated. only set true at new streets
+				streetlist.add(xtile);
+				streetlist.add(ytile);
 				updateStreetsAround(xtile, ytile);
+			}
 		}
 	}
 	
 	private void removeStreet(int xtile, int ytile, boolean update) {
-		System.out.println("HI");
 		if(streetsystem[xtile][ytile] != null) {
 			streetsystem[xtile][ytile] = null;
-			streetlist.remove(streetlist.indexOf(xtile));
-			streetlist.remove(streetlist.indexOf(ytile));
-			if(update)
+			TileManager.getTileSystem()[xtile][ytile].setStreet(false);
+			if(update) { //if surrounding streets shall be updated. only set true at new streets
 				updateStreetsAround(xtile, ytile);
+				streetlist.remove(streetlist.indexOf(xtile));
+				streetlist.remove(streetlist.indexOf(ytile));
+			}
 		}
 	}
 	

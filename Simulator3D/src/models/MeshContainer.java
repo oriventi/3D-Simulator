@@ -4,6 +4,7 @@ package models;
 import java.util.Random;
 
 import World.TileManager;
+import mainPackage.MainGameLoop;
 import renderEngine.Loader;
 import renderEngine.OBJLoader;
 import textures.Color;
@@ -16,7 +17,6 @@ public class MeshContainer {
 	public static Mesh cube_red;
 	public static Mesh traffic_light;
 	public static Mesh street_lamp;
-	public static Mesh selector;
 	
 	//buildings
 	public static Mesh factory_1;
@@ -84,14 +84,34 @@ public class MeshContainer {
 		curve = new Mesh("streets/curve", loader);
 		t_junction = new Mesh("streets/t_junction", loader);
 		intersection = new Mesh("streets/intersection", loader);
+	}
+	
+	
+	
+	public static Mesh getMeshById(int current_ID) {
+		switch(current_ID) {
+			case 0:
+				return null;
+			case 1:	
+				return MeshContainer.house_1;
+			case 2:
+				return MeshContainer.house_2;
+			case 3:
+				return MeshContainer.house_3;
+			case 4:
+				return MeshContainer.factory_1;
+			case 5:
+				return MeshContainer.office_1;
+			case 6:
+				return MeshContainer.supermarket_1;
+			default:
+				return null;
 				
-		
-		
-		selector = generateSelectorMesh();
+		}
 	}
 	
 	//generates Selector
-	private Mesh generateSelectorMesh() {
+	public static Mesh generateSelectorMesh() {
 
 		float[] vertices = {
 			0, 0, 0,
@@ -119,7 +139,7 @@ public class MeshContainer {
 			0, 1, 0
 		};
 		
-		RawModel model = loader.loadToVAO(vertices, textureCoords, normals, indices);
+		RawModel model = MainGameLoop.loader.loadToVAO(vertices, textureCoords, normals, indices);
 		return new Mesh(model, new Color(255, 96, 70));
 		
 		

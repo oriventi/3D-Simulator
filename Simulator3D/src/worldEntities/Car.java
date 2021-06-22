@@ -231,6 +231,10 @@ public class Car{
 		}
 	}
 	
+	private void driveLeft(int size) {
+		//TODO fill method
+	}
+	
 	//driveSmallLeft MODE
 	private void driveSmallLeft() {
 		dir.x = (float) Math.sin(0.5 * Math.PI / 2.36 * s);
@@ -268,8 +272,15 @@ public class Car{
 	}
 	
 	//if car reaches the next marker
-	private float roundabout = 0.4f;
+	private float roundabout;
 	private boolean reachedNextMarker() {
+		if(DisplayManager.getFPS() < 100) {
+			roundabout = 0.35f;
+		}else if(DisplayManager.getFPS() < 150) {
+			roundabout = 0.2f;
+		}else if(DisplayManager.getFPS() >= 150) {
+			roundabout = 0.1f;
+		}
 		if(pos.x >= nextMarker.getWorldPositionX() - roundabout && pos.x <= nextMarker.getWorldPositionX() + roundabout) {
 			if(pos.z >= nextMarker.getWorldPositionY() - roundabout && pos.z <= nextMarker.getWorldPositionY() + roundabout) {
 				return true;

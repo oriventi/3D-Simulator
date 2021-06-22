@@ -20,7 +20,6 @@ public class TrafficLight {
 		entity = new Entity(MeshContainer.traffic_light, 
 				new Vector3f(Maths.getPositionFromTile(street.getTileX(), dx), 0, Maths.getPositionFromTile(street.getTileY(), dy)), 0, rot, 0, 1);
 		this.pathMarker = pathMarker;
-		System.out.println(pathMarker);
 		if(pathMarker == 0 || pathMarker == 4) {
 			setGreen(street);
 		}else {
