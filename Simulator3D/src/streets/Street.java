@@ -68,6 +68,8 @@ public abstract class Street {
 	protected abstract int setRotation();
 	
 	protected abstract void renderContent(MasterRenderer renderer);
+	
+	public abstract void destroy();
 
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
@@ -75,9 +77,9 @@ public abstract class Street {
 	
 	public void render(MasterRenderer renderer) {
 		renderer.processEntity(entity);
-		for(int i = 0; i < pathMarkers.size(); i++) {
-			pathMarkers.get(i).render(renderer);
-		}
+//		for(int i = 0; i < pathMarkers.size(); i++) {
+//			pathMarkers.get(i).render(renderer);
+//		}
 		renderContent(renderer);
 	}
 		

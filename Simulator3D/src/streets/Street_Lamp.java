@@ -19,6 +19,7 @@ public class Street_Lamp {
 	private float dx, dy;
 	private int xtile, ytile;
 	private boolean light_on;
+	private int rotation;
 	
 	private Entity entity;
 	private Light light;
@@ -30,6 +31,7 @@ public class Street_Lamp {
 		this.ytile = ytile;
 		this.dx = dx;
 		this.dy = dy;
+		this.rotation = rotation;
 		this.light_on = true;
 		
 		entity = new Entity(MeshContainer.street_lamp, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
@@ -60,24 +62,15 @@ public class Street_Lamp {
 		//sets currentStreetRot to 0
 		//TODO make efficient
 		switch(streetRot) {
-			case 90:
+			case 0:
+			case 180:
 				Vector2f toRotateVector1 = makeCenterVec();
 				toRotateVector1 = Maths.rotateVectorBy90Degrees(toRotateVector1, 1);
 				dx = getRelativePosByVector(toRotateVector1).x;
 				dy = getRelativePosByVector(toRotateVector1).y;
+				rotation +=90;
+				entity.setRotY(rotation);
 				break;
-			case 180:
-				Vector2f toRotateVector2 = makeCenterVec();
-				toRotateVector2 = Maths.rotateVectorBy90Degrees(toRotateVector2, 2);
-				dx = getRelativePosByVector(toRotateVector2).x;
-				dy = getRelativePosByVector(toRotateVector2).y;
-				break;
-			case -90:
-				Vector2f toRotateVector3 = makeCenterVec();
-				toRotateVector3 = Maths.rotateVectorBy90Degrees(toRotateVector3, 3);
-				dx = getRelativePosByVector(toRotateVector3).x;
-				dy = getRelativePosByVector(toRotateVector3).y;
-				break;		
 		}
 		updateWorldPosition();
 	}
@@ -85,7 +78,8 @@ public class Street_Lamp {
 	private void updateWorldPosition() {
 		this.xpos = Maths.getPositionFromTile(xtile, dx);
 		this.ypos = Maths.getPositionFromTile(ytile, dy);
-		light.setPosition(xpos, 0.8f, ypos);
+		light.setPosition(xpos, 1.5f, ypos);
+		entity.setPosition(xpos, 0, ypos);
 	}
 	
 	public void turnOffLight() {

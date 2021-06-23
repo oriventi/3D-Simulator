@@ -83,7 +83,7 @@ public class StreetManager {
 	
 	private void removeStreet(int xtile, int ytile, boolean update) {
 		if(streetsystem[xtile][ytile] != null) {
-			turnOffLightsBeforeRemove(xtile, ytile);
+			streetsystem[xtile][ytile].destroy();
 			streetsystem[xtile][ytile] = null;
 			TileManager.getTileSystem()[xtile][ytile].setStreet(false);
 			if(update) { //if surrounding streets shall be updated. only set true at new streets
@@ -91,12 +91,6 @@ public class StreetManager {
 				streetlist.remove(streetlist.indexOf(xtile));
 				streetlist.remove(streetlist.indexOf(ytile));
 			}
-		}
-	}
-	
-	private void turnOffLightsBeforeRemove(int xtile, int ytile) {
-		if(streetsystem[xtile][ytile] instanceof Blind_Alley) {
-			((Blind_Alley)streetsystem[xtile][ytile]).turnOffLights();
 		}
 	}
 	

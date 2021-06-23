@@ -42,6 +42,12 @@ public class Intersection extends Street{
 		trafficLightManager.render(renderer);
 	}
 	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void changeTrafficLights() {
 		trafficLightManager.changeTrafficLights();
 	}

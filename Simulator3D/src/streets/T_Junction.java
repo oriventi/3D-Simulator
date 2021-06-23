@@ -47,6 +47,12 @@ public class T_Junction extends Street{
 		trafficLightManager.render(renderer);
 	}
 	
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public void changeTrafficLights() {
 		trafficLightManager.changeTrafficLights();
 	}

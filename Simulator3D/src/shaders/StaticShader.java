@@ -11,8 +11,6 @@ import toolbox.Maths;
 
 public class StaticShader extends ShaderProgram{
 	
-	//https://www.ebay.de/itm/Gaming-Monitor-Erazer-x52471-Medion-144-kHz-1mS-Curved-Lautsprecher/265061846457?hash=item3db6eacdb9:g:bw0AAOSwcy1gMh3m
-
 	private static final int MAX_LIGHTS = 4;
 	
 	private static final String VERTEX_FILE = "src/shaders/vertexShader.txt";

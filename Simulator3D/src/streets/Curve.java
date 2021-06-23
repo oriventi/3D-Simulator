@@ -46,4 +46,10 @@ public class Curve extends Street{
 		
 	}
 
+	@Override
+	public void destroy() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

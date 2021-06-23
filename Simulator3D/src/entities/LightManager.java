@@ -24,7 +24,6 @@ public class LightManager {
 	
 	public void render(MasterRenderer renderer, Camera cam) {
 		renderer.render(lights, cam);
-		System.out.println(lights.size());
 	}
 	
 	public Light getLight(int index) {
