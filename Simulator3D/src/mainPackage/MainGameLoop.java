@@ -12,6 +12,7 @@ import World.World;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.LightManager;
 import entities.Player;
 import models.RawModel;
 import models.Mesh;
@@ -41,12 +42,9 @@ public class MainGameLoop {
 		Player player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
 		Camera camera = new Camera(player);
 		MasterRenderer renderer = new MasterRenderer(camera, loader);
-		List<Light> lights = new ArrayList<Light>();
-		lights.add(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));
+		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		
-		
-		
-		World world = new World(loader, lights.get(0), 500, camera);
+		World world = new World(loader, lightManager.getSun(), 500, camera);
 		
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
@@ -60,7 +58,7 @@ public class MainGameLoop {
 			
 			//render
 			world.render(renderer, picker);
-			renderer.render(lights, camera);
+			lightManager.render(renderer, camera);
 			
 			//update
 			DisplayManager.updateDisplay();

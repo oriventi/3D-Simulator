@@ -4,7 +4,6 @@ import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import traffic.PathMarker;
-import traffic.TrafficLightManager;
 
 public class T_Junction extends Street{
 

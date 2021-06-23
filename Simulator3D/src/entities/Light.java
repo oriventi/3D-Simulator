@@ -32,6 +32,12 @@ public class Light {
 	public void setPosition(Vector3f position) {
 		this.position = position;
 	}
+	
+	public void setPosition(float x, float y, float z) {
+		position.x = x;
+		position.y = y;
+		position.z = z;
+	}
 
 	public Color getColor() {
 		return color;

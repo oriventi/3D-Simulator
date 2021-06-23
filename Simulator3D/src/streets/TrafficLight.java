@@ -1,4 +1,4 @@
-package traffic;
+package streets;
 
 import org.lwjgl.util.vector.Vector3f
 ;
@@ -7,7 +7,6 @@ import World.TileManager;
 import entities.Entity;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
-import streets.Street;
 import toolbox.Maths;
 
 public class TrafficLight {

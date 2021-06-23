@@ -1,7 +1,6 @@
-package traffic;
+package streets;
 
 import renderEngine.MasterRenderer;
-import streets.Street;
 
 public class TrafficLightManager {
 	
