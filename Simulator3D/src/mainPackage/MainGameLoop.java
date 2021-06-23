@@ -49,7 +49,6 @@ public class MainGameLoop {
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
 		
-		
 		while(!Display.isCloseRequested()) {
 			//game logic
 			camera.move();
@@ -59,7 +58,7 @@ public class MainGameLoop {
 			//render
 			world.render(renderer, picker);
 			lightManager.render(renderer, camera);
-			
+
 			//update
 			DisplayManager.updateDisplay();
 		}

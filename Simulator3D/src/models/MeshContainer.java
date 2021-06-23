@@ -45,7 +45,7 @@ public class MeshContainer {
 	public static Mesh curve;
 	public static Mesh t_junction;
 	public static Mesh intersection;
-	
+		
 	private Loader loader = new Loader();
 
 	
@@ -84,6 +84,7 @@ public class MeshContainer {
 		curve = new Mesh("streets/curve", loader);
 		t_junction = new Mesh("streets/t_junction", loader);
 		intersection = new Mesh("streets/intersection", loader);
+
 	}
 	
 	

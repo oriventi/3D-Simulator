@@ -61,7 +61,7 @@ public class Renderer {
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
-		GL20.glEnableVertexAttribArray(2);		
+		GL20.glEnableVertexAttribArray(2);	
 	}
 	
 	private void unbindMesh() {
