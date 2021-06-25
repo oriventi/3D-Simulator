@@ -18,8 +18,8 @@ import textures.Color;
 import textures.ModelTexture;
 import toolbox.Maths;
 import toolbox.MousePicker;
-import worldEntities.Car;
 import traffic.StreetManager;
+import vehicles.Car;
 
 public class TileManager {
 

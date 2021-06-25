@@ -6,15 +6,9 @@ import renderEngine.MasterRenderer;
 import traffic.PathMarker;
 
 public class Blind_Alley extends Street{
-
-	private Street_Lamp[] street_lamps;
 	
 	public Blind_Alley(int xtile, int ytile) {
 		super(xtile, ytile);
-		street_lamps = new Street_Lamp[2];
-		street_lamps[0] = new Street_Lamp(xtile, ytile, 0.5f, 0.1f, 0);
-		street_lamps[1] = new Street_Lamp(xtile, ytile, 0.5f, 0.9f, 180);
-		rotateStreetLamps(rotation);
 	}
 	
 	@Override
@@ -46,21 +40,12 @@ public class Blind_Alley extends Street{
 
 	@Override
 	public void renderContent(MasterRenderer renderer) {
-		for(int i = 0; i < street_lamps.length; i++) {
-			street_lamps[i].render(renderer);
-		}
-	}
-	private void rotateStreetLamps(int streetRot) {
-		for(int i = 0; i < street_lamps.length; i++) {
-			street_lamps[i].setPositionToStreetRotation(streetRot);
-		}
+		
 	}
 
 	@Override
 	public void destroy() {
-		for(int i = 0; i < street_lamps.length; i++) {
-			street_lamps[i].turnOffLight();
-		}
+		
 	}
 
 

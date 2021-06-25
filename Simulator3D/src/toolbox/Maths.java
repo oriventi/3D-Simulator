@@ -64,7 +64,14 @@ public class Maths {
 		return (tile + delta) * TileManager.tsize - TileManager.wsize / 2;
 	}
 	
-	
+	public static boolean roundabout(Vector3f pos, Vector2f des, float roundabout) {
+		if(pos.x >= des.x - roundabout && pos.x <= des.x + roundabout) {
+			if(pos.z >= des.y - roundabout && pos.z <= des.y + roundabout) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 
 }

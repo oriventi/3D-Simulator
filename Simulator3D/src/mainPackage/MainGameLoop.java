@@ -26,7 +26,7 @@ import shaders.StaticShader;
 import textures.Color;
 import textures.ModelTexture;
 import toolbox.MousePicker;
-import worldEntities.Car;
+import vehicles.Car;
 
 public class MainGameLoop {
 
@@ -47,7 +47,6 @@ public class MainGameLoop {
 		World world = new World(loader, lightManager.getSun(), 500, camera);
 		
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
-		
 		
 		while(!Display.isCloseRequested()) {
 			//game logic

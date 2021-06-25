@@ -15,6 +15,7 @@ import entities.Entity;
 import models.RawModel;
 import models.Mesh;
 import shaders.StaticShader;
+import textures.ModelTexture;
 import toolbox.Maths;
 
 public class Renderer {
@@ -33,8 +34,8 @@ public class Renderer {
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 		
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, loader.loadTexture("palette"));
+	//	GL13.glActiveTexture(GL13.GL_TEXTURE0);
+	//	GL11.glBindTexture(GL11.GL_TEXTURE_2D, loader.loadTexture("palette"));
 	}
 	
 	public void prepare() {
@@ -62,6 +63,11 @@ public class Renderer {
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
 		GL20.glEnableVertexAttribArray(2);	
+		ModelTexture texture = model.getTexture();
+		if(model.getTexture() != null) {
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
+		}
 	}
 	
 	private void unbindMesh() {

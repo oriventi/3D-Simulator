@@ -32,12 +32,11 @@ public class Street_Lamp {
 		this.dx = dx;
 		this.dy = dy;
 		this.rotation = rotation;
-		this.light_on = true;
+		this.light_on = false;
 		
 		entity = new Entity(MeshContainer.street_lamp, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
 		
 		light = new Light(new Vector3f(xpos, 3, ypos), new Color(1f, 1f, 1f), new Vector3f(0.3f, 0.2f, 0.1f));
-		LightManager.addLight(light);
 	}
 	
 	public void render(MasterRenderer renderer) {

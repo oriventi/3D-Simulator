@@ -12,11 +12,13 @@ import entities.Camera;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import toolbox.MousePicker;
-import worldEntities.Car;
+import vehicles.Car;
+import vehicles.Truck;
+import vehicles.Vehicle;
 
 public class TrafficManager {
 
-	private List<Car> cars = new ArrayList<>();
+	private List<Vehicle> cars = new ArrayList<>();
 	
 	public TrafficManager() {
 	}
@@ -30,7 +32,7 @@ public class TrafficManager {
 		ytile = (int) getTile(picker, cam).y;
 		if(StreetManager.getStreetSystem()[xtile][ytile] != null && tslc >= 0.5f  ) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				cars.add(new Car(getNearestPathMarker(xtile, ytile, picker, cam)));
+				cars.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
 				tslc = 0;
 			}
 		}
@@ -71,22 +73,6 @@ public class TrafficManager {
 		
 		return new Vector2f(tilex, tiley);
 		
-	}
-	
-	private PathMarker getNearestPathMarker(int xtile, int ytile, MousePicker picker, Camera cam) {
-		Vector2f vec = new Vector2f();
-		float shortestLength = 100;
-		int shortestindex = -1;
-		for(int i = 0; i < StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().size(); i++) {
-			vec.x = picker.getPosition(cam).x - StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionX();
-			vec.y = picker.getPosition(cam).z - StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(i).getWorldPositionY();
-			if(vec.length() < shortestLength) {
-				shortestLength = vec.length();
-				shortestindex = i;
-			}
-		}
-		
-		return StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(shortestindex);
 	}
 	
 }

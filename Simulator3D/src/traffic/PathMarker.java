@@ -1,5 +1,8 @@
 package traffic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -9,6 +12,7 @@ import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.Maths;
+import toolbox.EnumHolder.DrivingMode;
 
 public class PathMarker{
 
@@ -16,14 +20,18 @@ public class PathMarker{
 	private int xtile, ytile; //which tile
 	private float xpos, ypos; //actual position in world grid
 	private int[] actions; //straight, left, right , small_left, big_left --- -1 is no and other number gives index of markers list in street
+	private List<DrivingAction> possibleActions;
 	private boolean stop;
 	
+	private Vector2f position = new Vector2f();
 	private Vector2f originalRelativePos = new Vector2f();
 	private Vector2f relativePos = new Vector2f(); //which position in tile like 0.5 is in the middle
 	
 	private Entity cube; //in order to render the cube
 	
 	public PathMarker(int xtile, int ytile, float relativeX, float relativeY, int[] actions) {
+		possibleActions = new ArrayList<DrivingAction>();
+		
 		this.relativePos.x = relativeX;
 		this.relativePos.y = relativeY;
 		this.originalRelativePos = relativePos;
@@ -32,12 +40,40 @@ public class PathMarker{
 		this.ytile = ytile;
 		this.xpos = Maths.getPositionFromTile(xtile, relativeX);
 		this.ypos = Maths.getPositionFromTile(ytile, relativeY);
+		position.x = xpos;
+		position.y = ypos;
 		
 		if(actions != null) {
 			this.actions = actions;
 		}else {
 			this.actions = new int[] {-1, -1, -1, -1, -1};
 		}
+		
+		for(int i = 0; i < this.actions.length; i++) {
+			if(this.actions[i] >= 0) {
+				switch(i) {
+				case 0:
+					possibleActions.add(new DrivingAction(actions[i], DrivingMode.STRAIGHT));
+					break;
+				case 1:
+					possibleActions.add(new DrivingAction(actions[i], DrivingMode.LEFT));
+					break;
+				case 2:
+					possibleActions.add(new DrivingAction(actions[i], DrivingMode.RIGHT));
+					break;
+				case 3:
+					possibleActions.add(new DrivingAction(actions[i], DrivingMode.SMALL_LEFT));
+					break;
+				case 4:
+					possibleActions.add(new DrivingAction(actions[i], DrivingMode.BIG_LEFT));
+					break;
+				}
+			}
+		}
+		if(possibleActions.size() == 0) {
+			possibleActions.add(new DrivingAction(-1, DrivingMode.INVALID));
+		}
+		
 		
 		cube = new Entity(MeshContainer.cube, new Vector3f(xpos, 0.8f, ypos), 0, 0, 0, 0.5f);
 	}
@@ -108,8 +144,20 @@ public class PathMarker{
 		return ypos;
 	}
 	
+	public Vector3f getPosition3f() {
+		return new Vector3f(xpos, 0.2f, ypos);
+	}
+	
+	public Vector2f getPosition2f() {
+		return new Vector2f(xpos, ypos);
+	}
+	
 	public int[] getActions() {
 		return actions;
+	}
+	
+	public List<DrivingAction> getPossibleActions() {
+		return possibleActions;
 	}
 	
 	public void setStop(boolean stop) {

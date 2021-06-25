@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 import traffic.PathMarker;
 import traffic.StreetManager;
-import worldEntities.Car;
+import vehicles.Car;
+import vehicles.Vehicle;
 import entities.Entity;
 import models.Mesh;
 import renderEngine.MasterRenderer;
@@ -27,12 +28,12 @@ public abstract class Street {
 	private Entity entity;
 	
 	protected List<PathMarker> pathMarkers;
-	private List<Car> cars;
+	private List<Vehicle> cars;
 	
 	public Street(int xtile, int ytile) {
 		
 		pathMarkers = new ArrayList<PathMarker>();
-		cars = new ArrayList<Car>();
+		cars = new ArrayList<Vehicle>();
 		
 		this.xtile = xtile;
 		this.ytile = ytile;
@@ -83,11 +84,11 @@ public abstract class Street {
 		renderContent(renderer);
 	}
 		
-	public void addCar(Car car) {
+	public void addCar(Vehicle car) {
 		cars.add(car);
 	}
 	
-	public void removeCar(Car car) {
+	public void removeCar(Vehicle car) {
 		cars.remove(car);
 	}
 	
@@ -128,7 +129,7 @@ public abstract class Street {
 		return rotation;
 	}
 	
-	public List<Car> getCars(){
+	public List<Vehicle> getCars(){
 		return cars;
 	}
 	

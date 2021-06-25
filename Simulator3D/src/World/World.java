@@ -17,8 +17,8 @@ import renderEngine.OBJLoader;
 import textures.Color;
 import textures.ModelTexture;
 import toolbox.MousePicker;
-import worldEntities.Car;
 import traffic.TrafficManager;
+import vehicles.Car;
 
 public class World {
 	
