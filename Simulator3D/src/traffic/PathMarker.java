@@ -1,26 +1,21 @@
 package traffic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.lwjgl.util.vector.Vector2f;
+
 import org.lwjgl.util.vector.Vector3f;
 
 import World.TileManager;
 import entities.Entity;
-import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.Maths;
-import toolbox.EnumHolder.DrivingMode;
 
 public class PathMarker{
 
 	private float anim_rot; //animation, rotation of the cube
 	private int xtile, ytile; //which tile
 	private float xpos, ypos; //actual position in world grid
-	private int[] actions; //straight, left, right , small_left, big_left --- -1 is no and other number gives index of markers list in street
-	private List<DrivingAction> possibleActions;
+	private DrivingAction[] possibleActions;
 	private boolean stop;
 	
 	private Vector2f position = new Vector2f();
@@ -29,8 +24,7 @@ public class PathMarker{
 	
 	private Entity cube; //in order to render the cube
 	
-	public PathMarker(int xtile, int ytile, float relativeX, float relativeY, int[] actions) {
-		possibleActions = new ArrayList<DrivingAction>();
+	public PathMarker(int xtile, int ytile, float relativeX, float relativeY, DrivingAction[] possibleActions) {
 		
 		this.relativePos.x = relativeX;
 		this.relativePos.y = relativeY;
@@ -43,37 +37,7 @@ public class PathMarker{
 		position.x = xpos;
 		position.y = ypos;
 		
-		if(actions != null) {
-			this.actions = actions;
-		}else {
-			this.actions = new int[] {-1, -1, -1, -1, -1};
-		}
-		
-		for(int i = 0; i < this.actions.length; i++) {
-			if(this.actions[i] >= 0) {
-				switch(i) {
-				case 0:
-					possibleActions.add(new DrivingAction(actions[i], DrivingMode.STRAIGHT));
-					break;
-				case 1:
-					possibleActions.add(new DrivingAction(actions[i], DrivingMode.LEFT));
-					break;
-				case 2:
-					possibleActions.add(new DrivingAction(actions[i], DrivingMode.RIGHT));
-					break;
-				case 3:
-					possibleActions.add(new DrivingAction(actions[i], DrivingMode.SMALL_LEFT));
-					break;
-				case 4:
-					possibleActions.add(new DrivingAction(actions[i], DrivingMode.BIG_LEFT));
-					break;
-				}
-			}
-		}
-		if(possibleActions.size() == 0) {
-			possibleActions.add(new DrivingAction(-1, DrivingMode.INVALID));
-		}
-		
+		this.possibleActions = possibleActions;
 		
 		cube = new Entity(MeshContainer.cube, new Vector3f(xpos, 0.8f, ypos), 0, 0, 0, 0.5f);
 	}
@@ -93,24 +57,16 @@ public class PathMarker{
 	}
 	
 	public void setPositionToStreetRotation(int streetRot) {
-		//sets currentStreetRot to 0
-		relativePos = originalRelativePos;
-		switch(streetRot) {
-			case 90:
-				Vector2f toRotateVector1 = makeCenterVec();
-				toRotateVector1 = Maths.rotateVectorBy90Degrees(toRotateVector1, 1);
-				relativePos = getRelativePosByVector(toRotateVector1);
-				break;
-			case 180:
-				Vector2f toRotateVector2 = makeCenterVec();
-				toRotateVector2 = Maths.rotateVectorBy90Degrees(toRotateVector2, 2);
-				relativePos = getRelativePosByVector(toRotateVector2);
-				break;
-			case -90:
-				Vector2f toRotateVector3 = makeCenterVec();
-				toRotateVector3 = Maths.rotateVectorBy90Degrees(toRotateVector3, 3);
-				relativePos = getRelativePosByVector(toRotateVector3);
-				break;		
+		if(streetRot > 0) {
+			relativePos = originalRelativePos;
+			Vector2f toRotateVector = makeCenterVec();
+			toRotateVector = Maths.rotateVectorBy90Degrees(toRotateVector, streetRot / 90);
+			relativePos = getRelativePosByVector(toRotateVector);
+			
+			for(int i = 0; i < possibleActions.length; i++) {
+				possibleActions[i].updateDirectionByStreetRotation(0, 4- (streetRot/90));
+			}
+			
 		}
 		updateWorldPosition();
 	}
@@ -120,6 +76,7 @@ public class PathMarker{
 		this.ypos = Maths.getPositionFromTile(ytile, relativePos.y);
 		cube.setPosition(xpos, 0.8f, ypos);
 	}
+	
 	
 	//Cube mesh rotates all the time
 	private void updateRotation() {
@@ -152,11 +109,7 @@ public class PathMarker{
 		return new Vector2f(xpos, ypos);
 	}
 	
-	public int[] getActions() {
-		return actions;
-	}
-	
-	public List<DrivingAction> getPossibleActions() {
+	public DrivingAction[] getPossibleActions() {
 		return possibleActions;
 	}
 	
@@ -171,6 +124,5 @@ public class PathMarker{
 	
 	public boolean isStop() {
 		return stop;
-	}
-	
+	}	
 }

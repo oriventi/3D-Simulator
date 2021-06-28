@@ -33,9 +33,6 @@ public class Renderer {
 		this.shader = shader;
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
-		
-	//	GL13.glActiveTexture(GL13.GL_TEXTURE0);
-	//	GL11.glBindTexture(GL11.GL_TEXTURE_2D, loader.loadTexture("palette"));
 	}
 	
 	public void prepare() {

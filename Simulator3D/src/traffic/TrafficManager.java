@@ -1,7 +1,6 @@
 package traffic;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -12,13 +11,12 @@ import entities.Camera;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import toolbox.MousePicker;
-import vehicles.Car;
 import vehicles.Truck;
 import vehicles.Vehicle;
 
 public class TrafficManager {
 
-	private List<Vehicle> cars = new ArrayList<>();
+	private List<Vehicle> vehicles = new ArrayList<>();
 	
 	public TrafficManager() {
 	}
@@ -32,19 +30,19 @@ public class TrafficManager {
 		ytile = (int) getTile(picker, cam).y;
 		if(StreetManager.getStreetSystem()[xtile][ytile] != null && tslc >= 0.5f  ) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				cars.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
+				vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
 				tslc = 0;
 			}
 		}
 	//	System.out.println(cars.size());
-		for(int i = 0; i < cars.size(); i++) {
-			cars.get(i).update();
+		for(int i = 0; i < vehicles.size(); i++) {
+			vehicles.get(i).update();
 		}
 	}
 	
 	public void render(MasterRenderer renderer) {
-		for(int i = 0; i < cars.size(); i++) {
-			cars.get(i).render(renderer);
+		for(int i = 0; i < vehicles.size(); i++) {
+			vehicles.get(i).render(renderer);
 		}
 	}
 	

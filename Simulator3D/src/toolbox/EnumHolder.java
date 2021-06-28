@@ -10,4 +10,8 @@ public class EnumHolder {
 		UP, DOWN, RIGHT, LEFT, INVALID
 	}
 	
+	public enum ID{
+		TRUCK, CAR, INVALID
+	}
+	
 }

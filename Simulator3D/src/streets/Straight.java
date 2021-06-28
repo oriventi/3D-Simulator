@@ -1,9 +1,11 @@
 package streets;
 
-import entities.Entity;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
+import toolbox.EnumHolder.Direction;
+import toolbox.EnumHolder.DrivingMode;
+import traffic.DrivingAction;
 import traffic.PathMarker;
 
 public class Straight extends Street{
@@ -20,10 +22,23 @@ public class Straight extends Street{
 
 	@Override
 	protected void placePathMarkers() {
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new int[] {1, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new int[] {3, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, null));		
+		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new DrivingAction[] {
+				new DrivingAction(1, DrivingMode.STRAIGHT, Direction.UP)
+		}));
+				//, new int[] {1, -1, -1, -1, -1}));
+		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f
+				, new DrivingAction[] {
+						new DrivingAction(-1, DrivingMode.INVALID, Direction.UP)
+				}));
+				//, null));
+		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new DrivingAction[] {
+				new DrivingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
+		}));
+				//, new int[] {3, -1, -1, -1, -1}));
+		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, new DrivingAction[] {
+				new DrivingAction(-1, DrivingMode.INVALID, Direction.DOWN)
+		}));
+				//, null));		
 	}
 
 	@Override
