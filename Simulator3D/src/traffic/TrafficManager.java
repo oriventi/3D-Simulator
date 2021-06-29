@@ -10,7 +10,9 @@ import World.TileManager;
 import entities.Camera;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
+import toolbox.Maths;
 import toolbox.MousePicker;
+import vehicles.Car;
 import vehicles.Truck;
 import vehicles.Vehicle;
 
@@ -30,11 +32,11 @@ public class TrafficManager {
 		ytile = (int) getTile(picker, cam).y;
 		if(StreetManager.getStreetSystem()[xtile][ytile] != null && tslc >= 0.5f  ) {
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
-				vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
+				spawnNormalVehicle(xtile, ytile);
 				tslc = 0;
 			}
 		}
-	//	System.out.println(cars.size());
+
 		for(int i = 0; i < vehicles.size(); i++) {
 			vehicles.get(i).update();
 		}
@@ -43,6 +45,15 @@ public class TrafficManager {
 	public void render(MasterRenderer renderer) {
 		for(int i = 0; i < vehicles.size(); i++) {
 			vehicles.get(i).render(renderer);
+		}
+	}
+	
+	private void spawnNormalVehicle(int xtile, int ytile) {
+		int randNum = Maths.getRandomBetween(0, 10);
+		if(randNum <= 7) {
+			vehicles.add(new Car(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
+		}else {
+			vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
 		}
 	}
 	

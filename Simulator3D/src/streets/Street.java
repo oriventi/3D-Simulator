@@ -78,9 +78,9 @@ public abstract class Street {
 	
 	public void render(MasterRenderer renderer) {
 		renderer.processEntity(entity);
-//		for(int i = 0; i < pathMarkers.size(); i++) {
-//			pathMarkers.get(i).render(renderer);
-//		}
+		for(int i = 0; i < pathMarkers.size(); i++) {
+			pathMarkers.get(i).render(renderer);
+		}
 		renderContent(renderer);
 	}
 		

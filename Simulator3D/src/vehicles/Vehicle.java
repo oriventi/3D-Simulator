@@ -73,9 +73,10 @@ public abstract class Vehicle {
 	
 	public void update() {
 		driveByMode();
-		adjustSpeedToFrontCar();
+		if(!nextMarker.isStop()) {
+			adjustSpeedToFrontCar();			
+		}
 		applyPositionAndRotation();
-		System.out.println(currentDirection);
 	}
 	
 	private void driveByMode() {
@@ -89,18 +90,13 @@ public abstract class Vehicle {
 			}
 			s = 0;
 			antiBugTimer = 0;
-			original_dir.set(dir);
-			original_dir.normalise();
-			if(original_dir.x == 0) {
-				original_dir.x = 0.01f;
-			}
 		}else {
 			switch(currentMode) {
 				case STRAIGHT:
 					driveStraight();
 					break;
 				case RIGHT:
-					driveRight();
+					driveRight(2.5f);
 					break;
 				case LEFT:
 					driveLeft(2.5f);
@@ -153,8 +149,10 @@ public abstract class Vehicle {
 	
 	private boolean reachedNextMarker() {
 		float roundabout = 0.1f;
-		if(DisplayManager.getFPS() < 100) {
+		if(DisplayManager.getFPS() < 80) {
 			roundabout = 0.35f;
+		}else if(DisplayManager.getFPS() < 100) {
+			roundabout = 0.25f;
 		}else if(DisplayManager.getFPS() < 150) {
 			roundabout = 0.2f;
 		}else if(DisplayManager.getFPS() >= 150) {
@@ -196,7 +194,7 @@ public abstract class Vehicle {
 		return shortestIndex;
 	}
 	
-	private int antiBugTimer = 0;
+	private float antiBugTimer = 0;
 	private void driveStraight() {
 		if(antiBugTimer == 0) {
 			dir.x = nextMarker.getWorldPositionX() - currentMarker.getWorldPositionX();
@@ -207,21 +205,35 @@ public abstract class Vehicle {
 		
 		if(currentSpeed > 0) {
 			antiBugTimer += DisplayManager.getFrameTimeSeconds() * (currentSpeed / MAX_SPEED);
-		}
-		
-		if(antiBugTimer > TileManager.tsize / currentSpeed + 1.f) {
-			position.x = currentMarker.getWorldPositionX();
-			position.z = currentMarker.getWorldPositionY();
+		}		
+		if(antiBugTimer > (TileManager.tsize / currentSpeed + 1.f)) {
+			position = currentMarker.getPosition3f();
 			antiBugTimer = 0;
 		}
 	}
 	
 	private float s = 0;
-	private void driveRight() {
-		dir.x *= (float) -Math.sin( s/2.5);
-		dir.y *= (float) Math.cos( s/2.5);
-		dir.normalise();
-		dir.scale(currentSpeed);
+	private void driveRight(float r) {
+		switch(currentDirection) {
+		case UP:
+			dir.x = -(float) Math.cos( s/r);
+			dir.y = -(float) Math.sin( s/r);
+			break;
+		case RIGHT:
+			dir.x = (float) Math.sin( s/r);
+			dir.y = -(float) Math.cos( s/r);
+			break;
+		case DOWN:
+			dir.x = (float) Math.cos( s/r);
+			dir.y = (float) Math.sin( s/r);
+			break;
+		case LEFT:
+			dir.x = -(float) Math.sin( s/r);
+			dir.y = (float) Math.cos( s/r);
+			break;
+		default:
+			break;
+		}
 		s+= currentSpeed * DisplayManager.getFrameTimeSeconds();
 		
 		if(s > 4.3f) {
@@ -231,15 +243,30 @@ public abstract class Vehicle {
 	}
 	
 	private void driveLeft(float r) {
-		dir.set(original_dir);
-		System.out.println(Math.sin(s / r) + " " + Math.cos(s / r));
-		dir.x = (float) Math.sin( s/r);
-		dir.y = (float) Math.cos( s/r);
-		System.out.println(dir);
+		switch(currentDirection) {
+		case UP:
+			dir.x = (float) Math.cos( s/r);
+			dir.y = -(float) Math.sin( s/r);
+			break;
+		case RIGHT:
+			dir.x = (float) Math.sin( s/r);
+			dir.y = (float) Math.cos( s/r);
+			break;
+		case LEFT:
+			dir.x = -(float) Math.sin( s/r);
+			dir.y = -(float) Math.cos( s/r);
+			break;
+		case DOWN:
+			dir.x = -(float) Math.cos( s/r);
+			dir.y = (float) Math.sin( s/r);
+			break;
+		default:
+			break;
+		}
 		s += currentSpeed * DisplayManager.getFrameTimeSeconds();
 		
 		if(s > (0.5f * Math.PI * r + 0.4f)) {
-			s =0;
+			s = 0;
 			position = currentMarker.getPosition3f();
 		}
 	}
@@ -250,23 +277,24 @@ public abstract class Vehicle {
 		timer += DisplayManager.getFrameTimeSeconds();
 		if(timer >= 0.15f) {
 			timer = 0;
-		length = getLengthToFrontCar();
-		if(length >= 0) {
-			if(length < 4.0f) {
-				currentSpeed = 0.01f;
-			}else if(length < 4.5f) {
-				currentSpeed = 2;
-			}else if(length < 5.5f) {
-				currentSpeed = MAX_SPEED * (length / 5.5f);
+			length = getLengthToFrontCar();
+			if(length > 0 && length < 5) {
+				if(length < 4.0f) {
+					currentSpeed = 0.01f;
+				}else if(length < 4.5f) {
+					currentSpeed = 2;
+				}else if(length < 5.5f) {
+					currentSpeed = MAX_SPEED * (length / 5.5f);
+				}
+			}else {	
+				currentSpeed = MAX_SPEED;
 			}
-		}else {
-			currentSpeed = MAX_SPEED;
-		}
 		}
 	}
 	
 	private float getLengthToFrontCar() {
 		List<Vehicle> vehicles = new ArrayList<>();
+		vehicles.clear();
 		Vector2f vec = new Vector2f();
 		float shortestLength = 100;
 		vehicles.addAll(currentStreet.getCars());
@@ -280,8 +308,10 @@ public abstract class Vehicle {
 			float length = vec.length();
 			float angle = (float) Math.toDegrees(Math.acos((dir.x * vec.x + dir.y * vec.y)/(dir.length() * length)));
 			
-			if(angle < 40 && length < shortestLength && currentDirection == vehicles.get(i).getDirection()) {
-				shortestLength = length;
+			if(angle < 45 && length < shortestLength && currentDirection == vehicles.get(i).getDirection()) {
+				if(currentMode != DrivingMode.BIG_LEFT) {
+					shortestLength = length;
+				}
 			}	
 		}
 		return shortestLength;
@@ -307,6 +337,10 @@ public abstract class Vehicle {
 	
 	public Direction getDirection() {
 		return currentDirection;
+	}
+	
+	public DrivingMode getMode() {
+		return currentMode;
 	}
 	
 	public ID getId() {

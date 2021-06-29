@@ -8,6 +8,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import World.TileManager;
 import entities.Camera;
+import toolbox.EnumHolder.Direction;
 
 public class Maths {
 	
@@ -72,6 +73,4 @@ public class Maths {
 		}
 		return false;
 	}
-	
-
 }

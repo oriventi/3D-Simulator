@@ -40,23 +40,13 @@ public class TrafficLightManager {
 				traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 0);
 				traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 4);
 				
-			}else if(street.getRotation() == -90) {
+			}else if(street.getRotation() == 270) {
 				traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
 				traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 0);
 				traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 4);
 				traffic_lights[3] = null;
 			}
 		}
-	/*	if(street.getNeighbors() >= 3) {
-			if(street.top) 
-				traffic_lights[0] = new TrafficLight(street.getTileX(), street.getTileY(), 0.1f, 0.1f, 90, 2, street);
-			if(street.right) 
-				traffic_lights[1] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.1f, 0, 0, street);
-			if(street.bottom) 
-				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
-			if(street.left)
-				traffic_lights[2] = new TrafficLight(street.getTileX(), street.getTileY(), 0.9f, 0.9f, 270, 4, street);
-		}*/
 	}
 	
 	public void changeTrafficLights() {

@@ -19,7 +19,7 @@ public class Truck extends Vehicle{
 
 	@Override
 	protected float setMaxSpeed() {
-		return 6;
+		return 5;
 	}
 
 	@Override
