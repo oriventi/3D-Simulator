@@ -2,6 +2,7 @@
 package World;
 
 import entities.Entity;
+import entities.EntityManager;
 import models.Mesh;
 
 public class Tile {
@@ -30,10 +31,16 @@ public class Tile {
 	
 	public void setContent(Entity entity, boolean isStreet) {
 		this.content = entity;
+		if(hasContent() && !isStreet) {
+			EntityManager.addEntity(content);
+		}
 		hasStreet = isStreet;
 	}
 	
 	public void removeContent() {
+		if(hasContent()) {
+			EntityManager.removeEntity(content);
+		}
 		content = null;
 	}
 	

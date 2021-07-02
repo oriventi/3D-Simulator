@@ -72,8 +72,8 @@ public class T_Junction extends Street{
 	}
 	
 	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
+	public void destroyContent() {
+		trafficLightManager.destroy();
 		
 	}
 	

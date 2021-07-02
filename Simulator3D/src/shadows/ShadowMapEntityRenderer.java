@@ -1,11 +1,9 @@
 package shadows;
 
 import java.util.List;
-
 import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
@@ -34,7 +32,7 @@ public class ShadowMapEntityRenderer {
 	}
 
 	/**
-	 * Renders entieis to the shadow map. Each model is first bound and then all
+	 * Renders entities to the shadow map. Each model is first bound and then all
 	 * of the entities using that model are rendered to the shadow map.
 	 * 
 	 * @param entities
@@ -44,17 +42,13 @@ public class ShadowMapEntityRenderer {
 		for (Mesh model : entities.keySet()) {
 			RawModel rawModel = model.getRawModel();
 			bindModel(rawModel);
-			GL13.glActiveTexture(GL13.GL_TEXTURE0);
-			GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 			for (Entity entity : entities.get(model)) {
 				prepareInstance(entity);
 				GL11.glDrawElements(GL11.GL_TRIANGLES, rawModel.getVertexCount(),
 						GL11.GL_UNSIGNED_INT, 0);
 			}
 		}
-		
 		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
 		GL30.glBindVertexArray(0);
 	}
 
@@ -69,7 +63,6 @@ public class ShadowMapEntityRenderer {
 	private void bindModel(RawModel rawModel) {
 		GL30.glBindVertexArray(rawModel.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
 	}
 
 	/**

@@ -14,6 +14,7 @@ import traffic.StreetManager;
 import vehicles.Car;
 import vehicles.Vehicle;
 import entities.Entity;
+import entities.EntityManager;
 import models.Mesh;
 import renderEngine.MasterRenderer;
 
@@ -70,17 +71,23 @@ public abstract class Street {
 	
 	protected abstract void renderContent(MasterRenderer renderer);
 	
-	public abstract void destroy();
+	public void destroy() {
+		destroyContent();
+		EntityManager.removeEntity(entity);
+	}
+	
+	protected abstract void destroyContent();
 
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
+		EntityManager.addEntity(entity);
 	}
 	
 	public void render(MasterRenderer renderer) {
 		renderer.processEntity(entity);
-		for(int i = 0; i < pathMarkers.size(); i++) {
-			pathMarkers.get(i).render(renderer);
-		}
+//		for(int i = 0; i < pathMarkers.size(); i++) {
+//			pathMarkers.get(i).render(renderer);
+//		}
 		renderContent(renderer);
 	}
 		

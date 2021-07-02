@@ -24,6 +24,8 @@ public class StaticShader extends ShaderProgram{
 	private int location_lightPosition[];
 	private int location_lightColor[];
 	private int location_attenuation[];
+	private int location_toShadowMapSpace;
+	private int location_shadowMap;
 	
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
@@ -43,6 +45,9 @@ public class StaticShader extends ShaderProgram{
 		location_transformationMatrix = super.getUniformLocation("transformationMatrix");
 		location_projectionMatrix = super.getUniformLocation("projectionMatrix");
 		location_viewMatrix = super.getUniformLocation("viewMatrix");
+		location_toShadowMapSpace = super.getUniformLocation("toShadowMapSpace");
+		location_shadowMap = super.getUniformLocation("shadowMap");
+		
 		location_lightPosition = new int[MAX_LIGHTS];
 		location_lightColor = new int[MAX_LIGHTS];
 		location_attenuation = new int[MAX_LIGHTS];
@@ -53,6 +58,10 @@ public class StaticShader extends ShaderProgram{
 		}
 	}
 	
+	public void connectTextures() {
+		super.loadInt(location_shadowMap, 1);
+	}
+	
 	public void loadViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = Maths.createViewMatrix(camera);
 		super.loadMatrix(location_viewMatrix, viewMatrix);
@@ -60,6 +69,10 @@ public class StaticShader extends ShaderProgram{
 	
 	public void loadTransformationMatrix(Matrix4f mat) {
 		super.loadMatrix(location_transformationMatrix, mat);
+	}
+	
+	public void loadToShadowMapSpaceMatrix(Matrix4f matrix) {
+		super.loadMatrix(location_toShadowMapSpace, matrix);
 	}
 	
 	public void loadLights(List<Light> lights) {

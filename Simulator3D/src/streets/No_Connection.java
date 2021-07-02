@@ -32,7 +32,7 @@ public class No_Connection extends Street{
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyContent() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -102,7 +102,7 @@ public class PathMarker{
 	}
 	
 	public Vector3f getPosition3f() {
-		return new Vector3f(xpos, 0.2f, ypos);
+		return new Vector3f(xpos, 0.15f, ypos);
 	}
 	
 	public Vector2f getPosition2f() {

@@ -129,7 +129,7 @@ public class TileManager {
 			streetManager.addStreet((int)tile.x, (int)tile.y);
 			
 		}else {
-		
+			tiles[(int)tile.x][(int)tile.y].removeContent();
 			tiles[(int)tile.x][(int)tile.y].setContent(new Entity(MeshContainer.getMeshById(current_id), 
 					new Vector3f(tile.x * tsize - wsize / 2 + tsize / 2, 0, tile.y * tsize - wsize / 2 + tsize / 2),
 					0, 0, 0, 1), false);

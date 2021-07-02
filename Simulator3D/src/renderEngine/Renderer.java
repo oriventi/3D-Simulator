@@ -20,9 +20,6 @@ import toolbox.Maths;
 
 public class Renderer {
 	
-	private Vector3f skyColor = new Vector3f(0, 0.5f, 1);
-	
-
 	private static final float FOV = 70;
 	private static final float NEAR_PLANE = 0.1f;
 	private static final float FAR_PLANE = 1000;
@@ -35,14 +32,9 @@ public class Renderer {
 		GL11.glCullFace(GL11.GL_BACK);
 	}
 	
-	public void prepare() {
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);
-		GL11.glClearColor(skyColor.x, skyColor.y, skyColor.z, 1);
-		
-	}
-	
-	public void render(Map<Mesh, List<Entity>> entities) {
+	public void render(Map<Mesh, List<Entity>> entities, Matrix4f toShadowSpace) {
+		shader.connectTextures();
+		shader.loadToShadowMapSpaceMatrix(toShadowSpace);
 		for(Mesh model:entities.keySet()) {
 			prepareMesh(model);
 			List<Entity>batch = entities.get(model);

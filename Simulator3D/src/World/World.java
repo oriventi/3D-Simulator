@@ -9,6 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
+import entities.EntityManager;
 import entities.Light;
 import models.Mesh;
 import renderEngine.Loader;
@@ -40,6 +41,7 @@ public class World {
 		this.cam = cam;
 		tileManager = new TileManager(50, size, loader);
 		worldEntity = generateMesh(loader);
+	//	EntityManager.addEntity(worldEntity);
 		trafficManager = new TrafficManager();
 		
 	}

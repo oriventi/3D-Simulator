@@ -30,7 +30,7 @@ public class LightManager {
 		return lights.get(index);
 	}
 	
-	public Light getSun() {
+	public static Light getSun() {
 		return lights.get(0);
 	}
 }

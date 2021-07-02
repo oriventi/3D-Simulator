@@ -1,8 +1,5 @@
 package entities;
 
-import java.awt.RenderingHints.Key;
-
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -17,7 +14,6 @@ public class Camera {
 	private float pitch = 20;
 	private float yaw;
 	private float roll;
-	private float speed = 0.2f;
 
 	public Player player;
 	
@@ -71,8 +67,8 @@ public class Camera {
 	private void calculateZoom() {
 		float zoomLevel = Mouse.getDWheel() * 0.1f;
 		distanceFromPlayer -= zoomLevel;
-		if(distanceFromPlayer < 14) {
-			distanceFromPlayer = 14;
+		if(distanceFromPlayer < 35) {
+			distanceFromPlayer = 35;
 		}else if(distanceFromPlayer > 98) {
 			distanceFromPlayer = 98;
 		}
@@ -82,8 +78,8 @@ public class Camera {
 		if(Mouse.isButtonDown(2)) {
 			float pitchChange = Mouse.getDY() * 0.1f;
 			pitch -= pitchChange;
-			if(pitch < 10) {
-				pitch = 10;
+			if(pitch < 20) {
+				pitch = 20;
 			}else if(pitch > 70) {
 				pitch = 70;
 			}

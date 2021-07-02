@@ -115,8 +115,10 @@ public abstract class Vehicle {
 	
 	private void applyPositionAndRotation() {
 		entity.setRotY((float) -(Math.atan2(dir.y, dir.x) * 180 / Math.PI) + 90);
-		dir.normalise();
-		dir.scale(currentSpeed * DisplayManager.getFrameTimeSeconds());
+		if(dir.length() > 0) {
+			dir.normalise();
+			dir.scale(currentSpeed * DisplayManager.getFrameTimeSeconds());
+		}
 		position.x += dir.x;
 		position.z += dir.y;
 		entity.setPosition(position);
@@ -333,6 +335,10 @@ public abstract class Vehicle {
 	
 	public float getWorldPositionY() {
 		return position.z;
+	}
+	
+	public Entity getEntity() {
+		return entity;
 	}
 	
 	public Direction getDirection() {

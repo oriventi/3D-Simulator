@@ -62,7 +62,7 @@ public class Blind_Alley extends Street{
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyContent() {
 		
 	}
 

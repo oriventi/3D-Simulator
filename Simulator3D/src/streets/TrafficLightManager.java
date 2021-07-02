@@ -64,5 +64,13 @@ public class TrafficLightManager {
 			}
 		}
 	}
+	
+	public void destroy() {
+		for(int i = 0; i < 4; i++) {
+			if(traffic_lights[i] != null) {
+				traffic_lights[i].destroy();
+			}
+		}
+	}
 
 }
