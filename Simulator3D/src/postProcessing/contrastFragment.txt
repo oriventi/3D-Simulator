@@ -1,0 +1,28 @@
+#version 140
+
+in vec2 textureCoords;
+
+out vec4 out_Colour;
+
+uniform sampler2D colourTexture;
+
+const float brightness = 1.0;
+const float contrast = 0.0;
+const float saturation = 1.0;
+
+void main(void){
+
+	out_Colour = texture(colourTexture, textureCoords);
+	
+	//calculate Saturation
+	vec3 luminanceWeights = vec3(0.299, 0.587, 0.114);
+	float luminance = dot(out_Colour.rgb, luminanceWeights);
+	out_Colour = mix(vec4(luminance), out_Colour, saturation);
+	
+	//calculate Contrast
+	out_Colour.rgb = (out_Colour.rgb - 0.5) * (1.0 + contrast) + 0.5;
+
+	//calculate Brightness
+	out_Colour.rgb *= brightness;
+
+}

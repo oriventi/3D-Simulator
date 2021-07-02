@@ -18,6 +18,8 @@ import entities.Player;
 import hud.HUDManager;
 import hud.HUDTexture;
 import models.RawModel;
+import postProcessing.Fbo;
+import postProcessing.PostProcessing;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.DisplayManager;
@@ -50,12 +52,14 @@ public class MainGameLoop {
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
 		hudManager = new HUDManager();
-	//	hudManager.addHUD(new HUDTexture(loader.loadTexture("grass_1"), new Vector2f(0.5f , 0.5f), new Vector2f(0.25f, 0.25f)));
-	//	hudManager.addHUD(new HUDTexture(renderer.getShadowMapTexture(), new Vector2f(0.5f , 0.5f), new Vector2f(0.5f, 0.55f)));
+
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
+		Fbo multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
+		Fbo outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
+		PostProcessing.init(loader);
+		
 		while(!Display.isCloseRequested()) {
-			System.out.println(EntityManager.entities.size());
 			//shadowMap
 			renderer.renderShadowMap(EntityManager.entities);
 			
@@ -65,14 +69,22 @@ public class MainGameLoop {
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);
 			
 			//render
+			multisampleFbo.bindFrameBuffer();
 			world.render(renderer, picker);
 			lightManager.render(renderer, camera);
+			multisampleFbo.unbindFrameBuffer();
+			multisampleFbo.resolveToFbo(outputFbo);
+			PostProcessing.doPostProcessing(outputFbo.getColourTexture());
+			
 			hudManager.render();
 
 			//update
 			DisplayManager.updateDisplay();
 		}
 		
+		PostProcessing.cleanUp();
+		multisampleFbo.cleanUp();
+		outputFbo.cleanUp();
 		hudManager.cleanUp();
 		renderer.cleanUp();
 		loader.cleanUP();
