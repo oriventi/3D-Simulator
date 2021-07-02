@@ -73,21 +73,18 @@ public abstract class Street {
 	
 	public void destroy() {
 		destroyContent();
-		EntityManager.removeEntity(entity);
+		//EntityManager.removeEntity(entity);
 	}
 	
 	protected abstract void destroyContent();
 
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
-		EntityManager.addEntity(entity);
+		//EntityManager.addEntity(entity);
 	}
 	
 	public void render(MasterRenderer renderer) {
 		renderer.processEntity(entity);
-//		for(int i = 0; i < pathMarkers.size(); i++) {
-//			pathMarkers.get(i).render(renderer);
-//		}
 		renderContent(renderer);
 	}
 		
