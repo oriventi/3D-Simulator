@@ -1,6 +1,7 @@
 package postProcessing;
 
 import org.lwjgl.opengl.Display;
+
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -27,9 +28,9 @@ public class PostProcessing {
 	
 	public static void doPostProcessing(int colourTexture){
 		start();
-		hBlur.render(colourTexture);
-		vBlur.render(hBlur.getOutputTexture());
-		contrastChanger.render(vBlur.getOutputTexture());
+		//	hBlur.render(colourTexture);
+		//	vBlur.render(hBlur.getOutputTexture());
+		contrastChanger.render(colourTexture);
 		end();
 	}
 	

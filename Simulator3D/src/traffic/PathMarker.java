@@ -39,7 +39,7 @@ public class PathMarker{
 		
 		this.possibleActions = possibleActions;
 		
-		cube = new Entity(MeshContainer.cube, new Vector3f(xpos, 0.8f, ypos), 0, 0, 0, 0.5f);
+		cube = new Entity(MeshContainer.cube, new Vector3f(xpos, 0.9f, ypos), 0, 0, 0, 0.5f);
 	}
 	
 	//creates Vector from the center of the tile towards the PathMarker

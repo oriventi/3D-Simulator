@@ -17,6 +17,7 @@ public class MeshContainer {
 	public static Mesh cube_red;
 	public static Mesh traffic_light;
 	public static Mesh street_lamp;
+	public static Mesh foundation;
 	
 	//buildings
 	public static Mesh factory_1;
@@ -56,6 +57,7 @@ public class MeshContainer {
 		cube_red = new Mesh("assets/cube_red", loader);
 		traffic_light = new Mesh("assets/traffic_light", loader);
 		street_lamp = new Mesh("assets/street_lamp", loader);
+		foundation = new Mesh("assets/foundation", loader);
 		
 		//buildings
 		factory_1 = new Mesh("houses/factory_1", loader);
@@ -80,7 +82,7 @@ public class MeshContainer {
 		//Streets
 		no_connection = new Mesh("streets/no_connection", loader);
 		blind_alley = new Mesh("streets/blind_alley", loader);
-		straight = new Mesh("streets/straight", loader);
+		straight = new Mesh("streets/forward", loader);
 		curve = new Mesh("streets/curve", loader);
 		t_junction = new Mesh("streets/t_junction", loader);
 		intersection = new Mesh("streets/intersection", loader);
@@ -90,6 +92,7 @@ public class MeshContainer {
 	
 	
 	public static Mesh getMeshById(int current_ID) {
+		//return foundation;
 		switch(current_ID) {
 			case 0:
 				return null;
