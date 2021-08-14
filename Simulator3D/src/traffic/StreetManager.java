@@ -13,7 +13,7 @@ import streets.Blind_Alley;
 import streets.Curve;
 import streets.Intersection;
 import streets.No_Connection;
-import streets.Straight;
+import streets.Forward;
 
 public class StreetManager {
 
@@ -122,7 +122,7 @@ public class StreetManager {
 			streetsystem[xtile][ytile] = new Blind_Alley(xtile, ytile);
 		}else if(neighbors == 2) {
 			if(hasLeft(xtile, ytile) && hasRight(xtile, ytile) || hasTop(xtile, ytile) && hasBottom(xtile, ytile)) {
-				streetsystem[xtile][ytile] = new Straight(xtile, ytile);
+				streetsystem[xtile][ytile] = new Forward(xtile, ytile);
 			}else {
 				streetsystem[xtile][ytile] = new Curve(xtile, ytile);
 			}

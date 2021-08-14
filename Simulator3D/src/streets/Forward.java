@@ -8,10 +8,10 @@ import toolbox.EnumHolder.DrivingMode;
 import traffic.DrivingAction;
 import traffic.PathMarker;
 
-public class Straight extends Street{
+public class Forward extends Street{
 
 	
-	public Straight(int xtile, int ytile) {
+	public Forward(int xtile, int ytile) {
 		super(xtile, ytile);
 	}
 

@@ -22,7 +22,7 @@ const float totalTexels = (pcfCount * 2.0 + 1.0) * (pcfCount * 2.0 + 1.0);
 
 void main(void){
 
-	float mapSize = 8192.0;
+	float mapSize = 4096.0;
 	float texelSize = 1.0 / mapSize;
 	float total = 0.0;
 	
