@@ -13,11 +13,14 @@ import textures.ModelTexture;
 public class MeshContainer {
 
 	//assets
+	public static Mesh bench;
 	public static Mesh cube;
 	public static Mesh cube_red;
 	public static Mesh traffic_light;
 	public static Mesh street_lamp;
 	public static Mesh foundation;
+	public static Mesh hydrant;
+	public static Mesh trash_can;
 	
 	//buildings
 	public static Mesh factory_1;
@@ -39,6 +42,11 @@ public class MeshContainer {
 	public static Mesh car_2_red;
 	public static Mesh truck_1_white;
 	
+	//People
+	public static Mesh man_1;
+	public static Mesh man_2;
+	public static Mesh man_3;
+	
 	//Streets
 	public static Mesh no_connection;
 	public static Mesh blind_alley;
@@ -53,11 +61,14 @@ public class MeshContainer {
 	public MeshContainer(Loader loader) {
 		
 		//assets
+		bench = new Mesh("assets/bench", loader);
 		cube = new Mesh("assets/cube", loader);
 		cube_red = new Mesh("assets/cube_red", loader);
 		traffic_light = new Mesh("assets/traffic_light", loader);
 		street_lamp = new Mesh("assets/street_lamp", loader);
 		foundation = new Mesh("assets/foundation", loader);
+		hydrant = new Mesh("assets/hydrant", loader);
+		trash_can = new Mesh("assets/trash_can", loader);
 		
 		//buildings
 		factory_1 = new Mesh("houses/factory_1", loader);
@@ -78,6 +89,11 @@ public class MeshContainer {
 		car_2_pink = new Mesh("cars/car_2_pink", loader);
 		car_2_red = new Mesh("cars/car_2_red", loader);
 		truck_1_white = new Mesh("cars/truck_1_white", loader);
+		
+		//People
+		man_1 = new Mesh("people/man_1", loader);
+		man_2 = new Mesh("people/man_2", loader);
+		man_3 = new Mesh("people/man_3", loader);
 		
 		//Streets
 		no_connection = new Mesh("streets/no_connection", loader);
