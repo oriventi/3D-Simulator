@@ -11,7 +11,7 @@ import org.lwjgl.util.vector.Vector3f;
 import World.World;
 import entities.Camera;
 import entities.Entity;
-import entities.EntityManager;
+import entities.EntityShadowList;
 import entities.Light;
 import entities.LightManager;
 import entities.Player;
@@ -44,7 +44,7 @@ public class MainGameLoop {
 		
 		loader = new Loader();
 		MeshContainer container = new MeshContainer(loader);
-		EntityManager entityManager = new EntityManager();
+		EntityShadowList entityManager = new EntityShadowList();
 		Player player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
 		Camera camera = new Camera(player);
 		MasterRenderer renderer = new MasterRenderer(camera, loader);
@@ -61,7 +61,7 @@ public class MainGameLoop {
 		
 		while(!Display.isCloseRequested()) {
 			//shadowMap
-			renderer.renderShadowMap(EntityManager.entities);
+			renderer.renderShadowMap(EntityShadowList.entities);
 			
 			//game logic
 			camera.move();

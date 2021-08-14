@@ -1,14 +1,12 @@
 
 package World;
 
-import entities.Entity;
-import entities.EntityManager;
-import models.Mesh;
+import renderEngine.MasterRenderer;
 
 public class Tile {
 	
 	private int size;
-	private Entity content;
+	private TileContent content;
 	private boolean hasStreet;
 	
 	public Tile(int size) {
@@ -23,30 +21,25 @@ public class Tile {
 		return true;
 	}
 	
-	public void rotateEntity() {
-		if(!hasStreet && content != null) {
-			content.increaseRotation(0, 90, 0);
-		}
+	
+	public void setContent(TileContent content, boolean isStreet) {
+		this.content = content;
+		hasStreet = isStreet;
 	}
 	
-	public void setContent(Entity entity, boolean isStreet) {
-		this.content = entity;
-		if(hasContent() && !isStreet) {
-			EntityManager.addEntity(content);
+	public void render(MasterRenderer renderer) {
+		if(hasContent()) {
+			content.render(renderer);
 		}
-		hasStreet = isStreet;
 	}
 	
 	public void removeContent() {
 		if(hasContent()) {
-			EntityManager.removeEntity(content);
+			content.destroy();
 		}
 		content = null;
 	}
-	
-	public Entity getContent() {
-		return content;
-	}
+
 	
 	public int getSize() {
 		return size;

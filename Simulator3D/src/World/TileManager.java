@@ -6,6 +6,12 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import buildings.FactoryOne;
+import buildings.HouseOne;
+import buildings.HouseThree;
+import buildings.HouseTwo;
+import buildings.OfficeOne;
+import buildings.SupermarketOne;
 import entities.Camera;
 import entities.Entity;
 import mainPackage.MainGameLoop;
@@ -96,7 +102,7 @@ public class TileManager {
 	}
 	
 	public void render(MasterRenderer renderer, MousePicker picker, Camera cam) {
-		drawTileContent(renderer);
+		renderTileContent(renderer);
 		drawSelector(renderer, picker, cam);
 		streetManager.render(renderer);
 
@@ -104,19 +110,17 @@ public class TileManager {
 	
 	
 	//draws the content of all tiles
-	private void drawTileContent(MasterRenderer renderer) {
+	private void renderTileContent(MasterRenderer renderer) {
 		for(int i = 0; i < size; i++) {
 			for(int j = 0; j < size; j++) {
-				if(tiles[i][j].getContent() != null && !tiles[i][j].hasStreet()) {
-					renderer.processEntity(tiles[i][j].getContent());
-				}
+				tiles[i][j].render(renderer);
 			}
 		}
 	}
 
 	//Draws selector on grid, vec contains x and y of the tile
 	private void drawSelector(MasterRenderer renderer, MousePicker picker, Camera cam) {
-		mouseTile = getTileFromMousePosition(picker, cam);
+		mouseTile = getTileFromPosition(picker.getPosition(cam).x, picker.getPosition(cam).z);
 		selector.setPosition(mouseTile.x * tsize -wsize / 2, 0.5f, mouseTile.y * tsize - wsize / 2);
 		renderer.processEntity(selector);
 	}
@@ -130,9 +134,7 @@ public class TileManager {
 			
 		}else {
 			tiles[(int)tile.x][(int)tile.y].removeContent();
-			tiles[(int)tile.x][(int)tile.y].setContent(new Entity(MeshContainer.getMeshById(current_id), 
-					new Vector3f(tile.x * tsize - wsize / 2 + tsize / 2, 0, tile.y * tsize - wsize / 2 + tsize / 2),
-					0, 0, 0, 1), false);
+			tiles[(int)tile.x][(int)tile.y].setContent(getTileContentById(current_id, (int)tile.x, (int)tile.y), false);
 			
 		}
 		
@@ -151,28 +153,26 @@ public class TileManager {
 		}
 	}
 	
-	//returns tile from mousePosition
-	public static Vector2f getTileFromMousePosition(MousePicker picker, Camera cam) {
-		int x = (int) picker.getPosition(cam).x;
-		int z = (int) picker.getPosition(cam).z;
-		int tilex = (int)((x + TileManager.wsize / 2) / TileManager.tsize);
-		int tiley = (int)((z + TileManager.wsize / 2) / TileManager.tsize);
-		
-		if(tilex < 0) {
-			tilex = 0;
-		}
-		if(tiley < 0) {
-			tiley = 0;
-		}
-		if(tilex > TileManager.size - 1) {
-			tilex = TileManager.size - 1;
-		}
-		if(tiley > TileManager.size - 1) {
-			tiley = TileManager.size -1 ;
-		}
+	public static TileContent getTileContentById(int current_ID, int xtile, int ytile) {
+		switch(current_ID) {
+			case 0:
+				return null;
+			case 1:	
+				return new HouseOne(xtile, ytile);
+			case 2:
+				return new HouseTwo(xtile, ytile);
+			case 3:
+				return new HouseThree(xtile, ytile);
+			case 4:
+				return new FactoryOne(xtile, ytile);
+			case 5:
+				return new OfficeOne(xtile, ytile);
+			case 6:
+				return new SupermarketOne(xtile, ytile);
+			default:
+				return null;
 				
-		return new Vector2f(tilex, tiley);
-		
+		}
 	}
 	
 	//returns tile out of xpos and zpos

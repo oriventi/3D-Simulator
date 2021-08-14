@@ -42,7 +42,7 @@ public class MeshContainer {
 	//Streets
 	public static Mesh no_connection;
 	public static Mesh blind_alley;
-	public static Mesh straight;
+	public static Mesh forward;
 	public static Mesh curve;
 	public static Mesh t_junction;
 	public static Mesh intersection;
@@ -82,36 +82,11 @@ public class MeshContainer {
 		//Streets
 		no_connection = new Mesh("streets/no_connection", loader);
 		blind_alley = new Mesh("streets/blind_alley", loader);
-		straight = new Mesh("streets/forward", loader);
+		forward = new Mesh("streets/forward", loader);
 		curve = new Mesh("streets/curve", loader);
 		t_junction = new Mesh("streets/t_junction", loader);
 		intersection = new Mesh("streets/intersection", loader);
 
-	}
-	
-	
-	
-	public static Mesh getMeshById(int current_ID) {
-		//return foundation;
-		switch(current_ID) {
-			case 0:
-				return null;
-			case 1:	
-				return MeshContainer.house_1;
-			case 2:
-				return MeshContainer.house_2;
-			case 3:
-				return MeshContainer.house_3;
-			case 4:
-				return MeshContainer.factory_1;
-			case 5:
-				return MeshContainer.office_1;
-			case 6:
-				return MeshContainer.supermarket_1;
-			default:
-				return null;
-				
-		}
 	}
 	
 	//generates Selector

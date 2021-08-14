@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f
 
 import World.TileManager;
 import entities.Entity;
-import entities.EntityManager;
+import entities.EntityShadowList;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.Maths;
@@ -25,7 +25,7 @@ public class TrafficLight {
 		}else {
 			setRed(street);
 		}
-		EntityManager.addEntity(entity);
+		EntityShadowList.addEntity(entity);
 	}
 	
 	public void render(MasterRenderer renderer) {
@@ -48,7 +48,7 @@ public class TrafficLight {
 	}
 	
 	public void destroy() {
-		EntityManager.removeEntity(entity);
+		EntityShadowList.removeEntity(entity);
 	}
 
 }

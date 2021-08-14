@@ -8,7 +8,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import World.TileManager;
 import entities.Camera;
-import entities.EntityManager;
+import entities.EntityShadowList;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import toolbox.Maths;
@@ -56,7 +56,7 @@ public class TrafficManager {
 		}else {
 			vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
 		}
-		EntityManager.addEntity(vehicles.get(vehicles.size() - 1).getEntity());
+		EntityShadowList.addEntity(vehicles.get(vehicles.size() - 1).getEntity());
 	}
 	
 	//returns tile from mousePosition

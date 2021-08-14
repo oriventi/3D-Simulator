@@ -9,7 +9,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 import entities.Camera;
 import entities.Entity;
-import entities.EntityManager;
+import entities.EntityShadowList;
 import entities.Light;
 import models.Mesh;
 import renderEngine.Loader;

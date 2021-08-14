@@ -14,7 +14,7 @@ import traffic.StreetManager;
 import vehicles.Car;
 import vehicles.Vehicle;
 import entities.Entity;
-import entities.EntityManager;
+import entities.EntityShadowList;
 import models.Mesh;
 import renderEngine.MasterRenderer;
 

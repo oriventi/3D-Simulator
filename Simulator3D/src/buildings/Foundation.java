@@ -19,6 +19,8 @@ public class Foundation {
 		this.xpos = (xtile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		this.ypos = (ytile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		
+		makeEntity();
+		
 	}
 	
 	private void makeEntity() {

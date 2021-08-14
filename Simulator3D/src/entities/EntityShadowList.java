@@ -3,11 +3,11 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EntityManager {
+public class EntityShadowList {
 
 	public static List<Entity> entities;
 	
-	public EntityManager() {
+	public EntityShadowList() {
 		entities = new ArrayList<Entity>();
 	}
 	

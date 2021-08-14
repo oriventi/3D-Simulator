@@ -17,7 +17,7 @@ public class Forward extends Street{
 
 	@Override
 	protected Mesh setMesh() {
-		return MeshContainer.straight;
+		return MeshContainer.forward;
 	}
 
 	@Override
