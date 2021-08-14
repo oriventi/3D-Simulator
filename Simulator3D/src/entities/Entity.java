@@ -8,7 +8,7 @@ public class Entity {
 
 	private Mesh model;
 	private Vector3f position;
-	private float rotX, rotY, rotZ, scale;
+	private float rotX, rotY, rotZ, scaleX, scaleY;
 	
 	public Entity(Mesh model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
 		super();
@@ -17,11 +17,8 @@ public class Entity {
 		this.rotX = rotX;
 		this.rotY = rotY;
 		this.rotZ = rotZ;
-		this.scale = scale;
-	}
-	
-	public void moveTo(float xpos, float ypos, float zpos, float speed) {
-		//TODO make method
+		this.scaleX = scale;
+		this.scaleY = scale;
 	}
 	
 	public void increasePosition(float dx, float dy, float dz) {
@@ -83,11 +80,17 @@ public class Entity {
 	}
 
 	public float getScale() {
-		return scale;
+		return scaleX;
 	}
 
 	public void setScale(float scale) {
-		this.scale = scale;
+		this.scaleX = scale;
+		this.scaleY = scale;
+	}
+	
+	public void setScale(float scaleX, float scaleY) {
+		this.scaleX = scaleX;
+		this.scaleY = scaleY;
 	}
 	
 	

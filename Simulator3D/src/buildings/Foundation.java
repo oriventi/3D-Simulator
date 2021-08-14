@@ -11,7 +11,8 @@ public class Foundation {
 	
 	private int xtile, ytile;
 	private float xpos, ypos;
-	private Entity entity;
+	private Entity foundationEntity;
+	private Entity[] content;
 
 	public Foundation(int xtile, int ytile) {
 		this.xtile = xtile;
@@ -24,10 +25,22 @@ public class Foundation {
 	}
 	
 	private void makeEntity() {
-		entity = new Entity(MeshContainer.foundation, new Vector3f(xpos, 0.f, ypos), 0, 0, 0, 1);
+		foundationEntity = new Entity(MeshContainer.foundation, new Vector3f(xpos, 0.f, ypos), 0, 0, 0, 1);
 	}
 	
 	public void render(MasterRenderer renderer) {
-		renderer.processEntity(entity);
+		renderer.processEntity(foundationEntity);
+	}
+	
+	public void generateContent() {
+		
+	}
+	
+	public float getXPos() {
+		return xpos;
+	}
+	
+	public float getYPos() {
+		return ypos;
 	}
 }

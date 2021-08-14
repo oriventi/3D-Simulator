@@ -20,4 +20,16 @@ public class SupermarketOne extends Building{
 		return 0;
 	}
 
+	@Override
+	protected int setXFoundationSize() {
+		// TODO Auto-generated method stub
+		return 2;
+	}
+
+	@Override
+	protected int setYFoundationSize() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
 }

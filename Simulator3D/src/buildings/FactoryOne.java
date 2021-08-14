@@ -20,4 +20,16 @@ public class FactoryOne extends Building{
 		return 0;
 	}
 
+	@Override
+	protected int setXFoundationSize() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
+	@Override
+	protected int setYFoundationSize() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+
 }
