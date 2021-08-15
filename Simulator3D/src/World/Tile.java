@@ -52,5 +52,9 @@ public class Tile {
 	public boolean hasStreet() {
 		return hasStreet;
 	}
+	
+	public TileContent getContent() {
+		return content;
+	}
 
 }

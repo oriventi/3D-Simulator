@@ -51,7 +51,7 @@ public abstract class Vehicle {
 		
 		currentStreet = StreetManager.getStreetSystem()[xtile][ytile];
 		currentStreet.addCar(this);
-		entity = new Entity(setMesh(), position, 0, 0, 0, 0.5f);
+		entity = new Entity(setMesh(), position, 0, 0, 0, 0.7f);
 		
 		id = setID();
 		

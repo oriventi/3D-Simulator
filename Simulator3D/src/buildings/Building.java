@@ -69,6 +69,12 @@ public abstract class Building extends TileContent{
 	}
 	
 	@Override
+	public void increaseRotation() {
+		rotation += 90;
+		entity.setRotY(rotation);
+	}
+	
+	@Override
 	public void render(MasterRenderer renderer) {
 		renderer.processEntity(entity);
 		for(int i = 0; i < foundations.length; i++) {

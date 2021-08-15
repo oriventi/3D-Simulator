@@ -20,6 +20,7 @@ public class MeshContainer {
 	public static Mesh street_lamp;
 	public static Mesh foundation;
 	public static Mesh hydrant;
+	public static Mesh natureFoundation;
 	public static Mesh trash_can;
 	
 	//buildings
@@ -42,6 +43,13 @@ public class MeshContainer {
 	public static Mesh car_2_red;
 	public static Mesh truck_1_white;
 	
+	//Nature
+	public static Mesh great_tree_green;
+	public static Mesh great_tree_brown;
+	public static Mesh stone_1;
+	public static Mesh tree_brown_2;
+	public static Mesh tree_green_2;
+	
 	//People
 	public static Mesh man_1;
 	public static Mesh man_2;
@@ -60,7 +68,7 @@ public class MeshContainer {
 	
 	public MeshContainer(Loader loader) {
 		
-		//assets
+		//Assets
 		bench = new Mesh("assets/bench", loader);
 		cube = new Mesh("assets/cube", loader);
 		cube_red = new Mesh("assets/cube_red", loader);
@@ -68,9 +76,10 @@ public class MeshContainer {
 		street_lamp = new Mesh("assets/street_lamp", loader);
 		foundation = new Mesh("assets/foundation", loader);
 		hydrant = new Mesh("assets/hydrant", loader);
+		natureFoundation = new Mesh("assets/natureFoundation", loader);
 		trash_can = new Mesh("assets/trash_can", loader);
 		
-		//buildings
+		//Buildings
 		factory_1 = new Mesh("houses/factory_1", loader);
 		house_1 = new Mesh("houses/house_1", loader);
 		house_2 = new Mesh("houses/house_2", loader);
@@ -78,7 +87,7 @@ public class MeshContainer {
 		office_1 = new Mesh("houses/office_1", loader);
 		supermarket_1 = new Mesh("houses/supermarket_1", loader);
 		
-		//cars
+		//Cars
 		car_1_black = new Mesh("cars/standard_car_black", loader);
 		car_1_gray = new Mesh("cars/standard_car_gray", loader);
 		car_1_green = new Mesh("cars/standard_car_green", loader);
@@ -89,6 +98,13 @@ public class MeshContainer {
 		car_2_pink = new Mesh("cars/car_2_pink", loader);
 		car_2_red = new Mesh("cars/car_2_red", loader);
 		truck_1_white = new Mesh("cars/truck_1_white", loader);
+		
+		//Nature
+		great_tree_brown = new Mesh("nature/great_tree_brown", loader);
+		great_tree_green = new Mesh("nature/great_tree_green", loader);
+		stone_1 = new Mesh("nature/stone_1", loader);
+		tree_brown_2 = new Mesh("nature/tree_brown_2", loader);
+		tree_green_2 = new Mesh("nature/tree_green_2", loader);
 		
 		//People
 		man_1 = new Mesh("people/man_1", loader);

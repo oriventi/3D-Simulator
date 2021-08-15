@@ -13,4 +13,6 @@ public abstract class TileContent {
 	public abstract void destroy();
 	
 	public abstract void render(MasterRenderer renderer);
+	
+	public abstract void increaseRotation();
 }

@@ -19,6 +19,7 @@ import mainPackage.MainGameLoop;
 import models.Mesh;
 import models.MeshContainer;
 import models.RawModel;
+import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import textures.Color;
@@ -36,6 +37,7 @@ public class TileManager {
 	int current_id;
 	private boolean street_mode;
 	private Vector2f mouseTile = new Vector2f();
+	private float tslr = 0;
 	
 	private static Tile[][] tiles;
 	private StreetManager streetManager;
@@ -69,6 +71,7 @@ public class TileManager {
 	
 	public void update(float tslf, float mousex, float mousey) {
 		checkInput(mousex, mousey);
+		tslr+=DisplayManager.getFrameTimeSeconds();
 	}
 	
 	private void checkInput(float mousex, float mousey) {
@@ -93,12 +96,24 @@ public class TileManager {
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_6)) {
 			current_id = 6;
 			street_mode = false;
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_7)) {
+			current_id = 7;
+			street_mode = false;
 		}
 		
 		 if(Mouse.isButtonDown(0)) {
+			 tslr = 0;
 			 setTileContent(mousex, mousey);			 
 		 }else if(Mouse.isButtonDown(1)) {
 			 removeTileContent(mousex, mousey);		 
+		 }
+		 
+		 if(Keyboard.isKeyDown(Keyboard.KEY_R) && tslr >= 0.3f) {
+			 tslr = 0;
+			 Vector2f tile = getTileFromPosition(mousex, mousey);
+			 if(tiles[(int) tile.x][(int) tile.y].hasContent()) {
+				 tiles[(int) tile.x][(int) tile.y].getContent().increaseRotation();
+			 }
 		 }
 	}
 	
@@ -170,6 +185,8 @@ public class TileManager {
 				return new OfficeOne(xtile, ytile);
 			case 6:
 				return new SupermarketOne(xtile, ytile);
+			case 7:
+				return new NatureFoundation(xtile, ytile, 3);
 			default:
 				return null;
 				
