@@ -6,6 +6,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import buildings.Bank;
 import buildings.Building;
 import buildings.FactoryOne;
 import buildings.HouseOne;
@@ -99,6 +100,9 @@ public class TileManager {
 		}else if(Keyboard.isKeyDown(Keyboard.KEY_7)) {
 			current_id = 7;
 			street_mode = false;
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_8)) {
+			current_id = 8;
+			street_mode = false;
 		}
 		
 		 if(Mouse.isButtonDown(0)) {
@@ -186,6 +190,8 @@ public class TileManager {
 			case 6:
 				return new SupermarketOne(xtile, ytile);
 			case 7:
+				return new Bank(xtile, ytile);
+			case 8:
 				return new NatureFoundation(xtile, ytile, 3);
 			default:
 				return null;

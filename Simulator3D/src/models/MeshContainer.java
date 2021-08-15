@@ -24,6 +24,7 @@ public class MeshContainer {
 	public static Mesh trash_can;
 	
 	//buildings
+	public static Mesh bank;
 	public static Mesh factory_1;
 	public static Mesh house_1;
 	public static Mesh house_2;
@@ -80,6 +81,7 @@ public class MeshContainer {
 		trash_can = new Mesh("assets/trash_can", loader);
 		
 		//Buildings
+		bank = new Mesh("houses/bank", loader);
 		factory_1 = new Mesh("houses/factory_1", loader);
 		house_1 = new Mesh("houses/house_1", loader);
 		house_2 = new Mesh("houses/house_2", loader);
