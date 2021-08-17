@@ -281,11 +281,11 @@ public abstract class Vehicle {
 			timer = 0;
 			length = getLengthToFrontCar();
 			if(length > 0 && length < 5) {
-				if(length < 4.0f) {
+				if(length < 5.0f) {
 					currentSpeed = 0.01f;
-				}else if(length < 4.5f) {
-					currentSpeed = 2;
 				}else if(length < 5.5f) {
+					currentSpeed = 2;
+				}else if(length < 6.5f) {
 					currentSpeed = MAX_SPEED * (length / 5.5f);
 				}
 			}else {	
