@@ -3,13 +3,13 @@ package traffic;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
 
-public class DrivingAction {
+public class MovingAction {
 	
 	private int destination;
 	private DrivingMode mode;
 	private Direction direction;
 	
-	public DrivingAction(int destination, DrivingMode mode, Direction direction) {
+	public MovingAction(int destination, DrivingMode mode, Direction direction) {
 		this.destination = destination;
 		this.mode = mode;
 		this.direction = direction;
