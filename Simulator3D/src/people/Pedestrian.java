@@ -5,6 +5,7 @@ import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.ID;
+import toolbox.Maths;
 import traffic.PathMarker;
 import vehicles.MovingEntity;
 
@@ -26,7 +27,17 @@ public class Pedestrian extends MovingEntity{
 
 	@Override
 	protected Mesh setMesh() {
-		return MeshContainer.man_1;
+		int randNum = Maths.getRandomBetween(0, 2);
+		switch(randNum) {
+			case 0:
+				return MeshContainer.man_1;
+			case 1:
+				return MeshContainer.man_2;
+			case 2:
+				return MeshContainer.man_3;
+			default:
+				return MeshContainer.man_1;
+		}
 	}
 
 	@Override
