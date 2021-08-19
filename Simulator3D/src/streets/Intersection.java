@@ -5,7 +5,7 @@ import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
-import traffic.DrivingAction;
+import traffic.MovingAction;
 import traffic.PathMarker;
 
 public class Intersection extends Street{
@@ -21,49 +21,69 @@ public class Intersection extends Street{
 	protected Mesh setMesh() {
 		return MeshContainer.intersection;
 	}
+	
+	@Override
+	protected void placeVehiclePathMarkers() {
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.LEFT),
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP),
+				new MovingAction(5, DrivingMode.LEFT, Direction.DOWN)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new MovingAction[] {
+				new MovingAction(5, DrivingMode.STRAIGHT, Direction.DOWN),
+				new MovingAction(3, DrivingMode.RIGHT, Direction.LEFT),
+				new MovingAction(7, DrivingMode.LEFT, Direction.RIGHT)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.35f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.LEFT)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.65f, new MovingAction[] {
+				new MovingAction(7, DrivingMode.STRAIGHT, Direction.RIGHT),
+				new MovingAction(5, DrivingMode.RIGHT, Direction.DOWN),
+				new MovingAction(1, DrivingMode.LEFT, Direction.UP)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.DOWN)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.STRAIGHT, Direction.UP),
+				new MovingAction(7, DrivingMode.RIGHT, Direction.RIGHT),
+				new MovingAction(3, DrivingMode.LEFT, Direction.LEFT)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		}));	
+	}
 
 	@Override
-	protected void placePathMarkers() {
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new DrivingAction[] {
-				new DrivingAction(3, DrivingMode.STRAIGHT, Direction.LEFT),
-				new DrivingAction(1, DrivingMode.RIGHT, Direction.UP),
-				new DrivingAction(5, DrivingMode.BIG_LEFT, Direction.DOWN)
+	protected void placePeoplePathMarkers() {
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 1.f, 0.1f, new MovingAction[]{
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP)
 		}));
-				//, new int[] {3, -1, 1, -1, 5}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.UP)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new DrivingAction[] {
-				new DrivingAction(5, DrivingMode.STRAIGHT, Direction.DOWN),
-				new DrivingAction(3, DrivingMode.RIGHT, Direction.LEFT),
-				new DrivingAction(7, DrivingMode.BIG_LEFT, Direction.RIGHT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.RIGHT, Direction.LEFT)
 		}));
-				//, new int[] {5, -1, 3, -1, 7}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.35f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.LEFT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.LEFT)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.65f, new DrivingAction[] {
-				new DrivingAction(7, DrivingMode.STRAIGHT, Direction.RIGHT),
-				new DrivingAction(5, DrivingMode.RIGHT, Direction.DOWN),
-				new DrivingAction(1, DrivingMode.BIG_LEFT, Direction.UP)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.f, 0.9f, new MovingAction[] {
+				new MovingAction(5, DrivingMode.RIGHT, Direction.DOWN)
 		}));
-				//, new int[] {7, -1, 5, -1, 1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.DOWN)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 1.f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.DOWN)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new DrivingAction[] {
-				new DrivingAction(1, DrivingMode.STRAIGHT, Direction.UP),
-				new DrivingAction(7, DrivingMode.RIGHT, Direction.RIGHT),
-				new DrivingAction(3, DrivingMode.BIG_LEFT, Direction.LEFT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 1.f, new MovingAction[] {
+				new MovingAction(7, DrivingMode.RIGHT, Direction.RIGHT)
 		}));
-				//, new int[] {1, -1, 7, -1, 3}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 1.f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
 		}));
-				//, null));			
 	}
 
 	@Override
@@ -87,5 +107,4 @@ public class Intersection extends Street{
 	public void changeTrafficLights() {
 		trafficLightManager.changeTrafficLights();
 	}
-
 }

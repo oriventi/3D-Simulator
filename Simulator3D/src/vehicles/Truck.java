@@ -1,15 +1,16 @@
 package vehicles;
 
+import animations.Animation;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.ID;
 import traffic.PathMarker;
 
-public class Truck extends Vehicle{
+public class Truck extends MovingEntity{
 
 	public Truck(PathMarker startMarker) {
-		super(startMarker);
+		super(startMarker, true);
 	}
 
 	@Override
@@ -31,6 +32,30 @@ public class Truck extends Vehicle{
 	protected void renderContent(MasterRenderer renderer) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	protected int setMeshRotation() {
+		// TODO Auto-generated method stub
+		return 90;
+	}
+
+	@Override
+	protected Animation setStartingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation setMovingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation setStoppingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

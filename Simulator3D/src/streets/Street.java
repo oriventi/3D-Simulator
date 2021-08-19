@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import traffic.PathMarker;
 import traffic.StreetManager;
 import vehicles.Car;
-import vehicles.Vehicle;
+import vehicles.MovingEntity;
 import entities.Entity;
 import entities.EntityShadowList;
 import models.Mesh;
@@ -28,13 +28,15 @@ public abstract class Street {
 	private Mesh mesh;
 	private Entity entity;
 	
-	protected List<PathMarker> pathMarkers;
-	private List<Vehicle> cars;
+	protected List<PathMarker> vehiclePathMarkers;
+	protected List<PathMarker> peoplePathMarkers;
+	private List<MovingEntity> allMovingEntitiesOnStreet;
 	
 	public Street(int xtile, int ytile) {
 		
-		pathMarkers = new ArrayList<PathMarker>();
-		cars = new ArrayList<Vehicle>();
+		vehiclePathMarkers = new ArrayList<PathMarker>();
+		peoplePathMarkers = new ArrayList<PathMarker>();
+		allMovingEntitiesOnStreet = new ArrayList<MovingEntity>();
 		
 		this.xtile = xtile;
 		this.ytile = ytile;
@@ -52,18 +54,24 @@ public abstract class Street {
 				
 		mesh = setMesh();
 		rotation = setRotation();
-		placePathMarkers();
+		placeVehiclePathMarkers();
+		placePeoplePathMarkers();
 		applyPathMarkersToPosition();
 		makeEntity();
 	}
 		
 	protected abstract Mesh setMesh();
 	
-	protected abstract void placePathMarkers();
+	protected abstract void placeVehiclePathMarkers();
+	
+	protected abstract void placePeoplePathMarkers();
 	
 	private void applyPathMarkersToPosition() {
-		for(int i = 0; i < pathMarkers.size(); i++) {
-			pathMarkers.get(i).setPositionToStreetRotation(rotation);
+		for(int i = 0; i < vehiclePathMarkers.size(); i++) {
+			vehiclePathMarkers.get(i).setPositionToStreetRotation(rotation);
+		}
+		for(int i = 0; i < peoplePathMarkers.size(); i++) {
+			peoplePathMarkers.get(i).setPositionToStreetRotation(rotation);
 		}
 	}
 
@@ -73,14 +81,12 @@ public abstract class Street {
 	
 	public void destroy() {
 		destroyContent();
-		//EntityManager.removeEntity(entity);
 	}
 	
 	protected abstract void destroyContent();
 
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
-		//EntityManager.addEntity(entity);
 	}
 	
 	public void render(MasterRenderer renderer) {
@@ -88,15 +94,15 @@ public abstract class Street {
 		renderContent(renderer);
 	}
 		
-	public void addCar(Vehicle car) {
-		cars.add(car);
+	public void addMovingEntity(MovingEntity movingEntity) {
+		allMovingEntitiesOnStreet.add(movingEntity);
 	}
 	
-	public void removeCar(Vehicle car) {
-		cars.remove(car);
+	public void removeMovingEntity(MovingEntity movingEntity) {
+		allMovingEntitiesOnStreet.remove(movingEntity);
 	}
 	
-	public int getNeighbors() {
+	public int getNeighboringStreetsCount() {
 		int neighbors = 0;
 		if(top)
 			neighbors += 1;
@@ -133,11 +139,15 @@ public abstract class Street {
 		return rotation;
 	}
 	
-	public List<Vehicle> getCars(){
-		return cars;
+	public List<MovingEntity> getCars(){
+		return allMovingEntitiesOnStreet;
 	}
 	
-	public List<PathMarker> getPathMarkers(){
-		return pathMarkers;
+	public List<PathMarker> getPathMarkers(boolean returnVehiclePathMarkers){
+		if(returnVehiclePathMarkers) {
+			return vehiclePathMarkers;
+		}else {
+			return peoplePathMarkers;
+		}
 	}
 }

@@ -5,7 +5,7 @@ import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
-import traffic.DrivingAction;
+import traffic.MovingAction;
 import traffic.PathMarker;
 
 public class Curve extends Street{
@@ -19,33 +19,49 @@ public class Curve extends Street{
 	protected Mesh setMesh() {
 		return MeshContainer.curve;
 	}
+	
+	@Override
+	protected void placeVehiclePathMarkers() {
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP)
+		}));	
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.4f, new MovingAction[] {
+				new MovingAction(4, DrivingMode.LEFT, Direction.RIGHT)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.6f, 0.65f, new MovingAction[] {
+				new MovingAction(5, DrivingMode.STRAIGHT, Direction.RIGHT)
+		}));
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		}));
+	}
 
 	@Override
-	protected void placePathMarkers() {
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new DrivingAction[] {
-				new DrivingAction(1, DrivingMode.RIGHT, Direction.UP)
+	protected void placePeoplePathMarkers() {
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 1.f, 0.1f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP)
 		}));
-				//, new int[] {-1, -1, 1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.UP)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.0f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new DrivingAction[] {
-				new DrivingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.1f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
 		}));
-				//, new int[] {3, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.4f, new DrivingAction[] {
-				new DrivingAction(4, DrivingMode.LEFT, Direction.RIGHT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.8f, new MovingAction[] {
+				new MovingAction(4, DrivingMode.LEFT, Direction.RIGHT)
 		}));
-				//, new int[] {-1, 4, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.6f, 0.65f, new DrivingAction[] {
-				new DrivingAction(5, DrivingMode.STRAIGHT, Direction.RIGHT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.2f, 0.9f, new MovingAction[] {
+				new MovingAction(5, DrivingMode.STRAIGHT, Direction.RIGHT)
 		}));
-				//, new int[] {5, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
 		}));
-				//, null));
 	}
 
 	@Override

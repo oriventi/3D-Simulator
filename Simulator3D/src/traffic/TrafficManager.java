@@ -9,19 +9,23 @@ import org.lwjgl.util.vector.Vector2f;
 import World.TileManager;
 import entities.Camera;
 import entities.EntityShadowList;
+import people.Pedestrian;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import toolbox.Maths;
 import toolbox.MousePicker;
 import vehicles.Car;
 import vehicles.Truck;
-import vehicles.Vehicle;
+import vehicles.MovingEntity;
 
 public class TrafficManager {
 
-	private List<Vehicle> vehicles = new ArrayList<>();
+	private List<MovingEntity> vehicles;
+	private List<MovingEntity> people;
 	
 	public TrafficManager() {
+		vehicles = new ArrayList<MovingEntity>();
+		people = new ArrayList<MovingEntity>();
 	}
 	
 	
@@ -36,10 +40,17 @@ public class TrafficManager {
 				spawnNormalVehicle(xtile, ytile);
 				tslc = 0;
 			}
+			if(Keyboard.isKeyDown(Keyboard.KEY_P)) {
+				spawnPedestrian(xtile, ytile);
+				tslc = 0;
+			}
 		}
 
 		for(int i = 0; i < vehicles.size(); i++) {
 			vehicles.get(i).update();
+		}
+		for(int i = 0; i < people.size(); i++) {
+			people.get(i).update();
 		}
 	}
 	
@@ -47,16 +58,22 @@ public class TrafficManager {
 		for(int i = 0; i < vehicles.size(); i++) {
 			vehicles.get(i).render(renderer);
 		}
+		for(int i = 0; i < people.size(); i++) {
+			people.get(i).render(renderer);
+		}
 	}
 	
 	private void spawnNormalVehicle(int xtile, int ytile) {
 		int randNum = Maths.getRandomBetween(0, 10);
-		if(randNum <= 7) {
-			vehicles.add(new Car(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
+		if(randNum <= 8) {
+			vehicles.add(new Car(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(true).get(0)));
 		}else {
-			vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers().get(0)));
+			vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(true).get(0)));
 		}
-		EntityShadowList.addEntity(vehicles.get(vehicles.size() - 1).getEntity());
+	}
+	
+	private void spawnPedestrian(int xtile, int ytile) {
+		people.add(new Pedestrian(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(false).get(0)));
 	}
 	
 	//returns tile from mousePosition
@@ -78,9 +95,6 @@ public class TrafficManager {
 		if(tiley > TileManager.size - 1) {
 			tiley = TileManager.size -1 ;
 		}
-		
-		//Output XTile and YTile from Mouse hovered
-		//System.out.println(tilex + " + " + tiley);
 		
 		return new Vector2f(tilex, tiley);
 		

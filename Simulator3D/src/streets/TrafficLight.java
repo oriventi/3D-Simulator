@@ -34,17 +34,17 @@ public class TrafficLight {
 	
 	public void setRed(Street street) {
 		red = true;
-		street.getPathMarkers().get(pathMarker).setStop(red);
+		street.getPathMarkers(true).get(pathMarker).setStop(red);
 	}
 	
 	public void setGreen(Street street) {
 		red = false;
-		street.getPathMarkers().get(pathMarker).setStop(red);
+		street.getPathMarkers(true).get(pathMarker).setStop(red);
 	}
 	
 	public void changeLights(Street street) {
 		red = !red;
-		street.getPathMarkers().get(pathMarker).setStop(red);
+		street.getPathMarkers(true).get(pathMarker).setStop(red);
 	}
 	
 	public void destroy() {

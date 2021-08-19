@@ -1,53 +1,62 @@
 package people;
 
-import org.lwjgl.util.vector.Vector3f;
-
-import entities.Entity;
-import entities.EntityShadowList;
+import animations.Animation;
 import models.Mesh;
+import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.ID;
-import toolbox.Maths;
 import traffic.PathMarker;
+import vehicles.MovingEntity;
 
-public abstract class Pedestrian {
+public class Pedestrian extends MovingEntity{
 
-	protected Vector3f position;
-	protected PathMarker currentMarker;
-	protected PathMarker nextMarker;
-	protected int maxSpeed;
-	
-	protected Entity entity;
-	protected Mesh mesh;
-	protected float entitySize;
-	
-	protected ID id;
-	
 	public Pedestrian(PathMarker startMarker) {
-		currentMarker = startMarker;
-		position = startMarker.getPosition3f();
+		super(startMarker, false);
+	}
+
+	@Override
+	protected ID setID() {
+		return ID.PEDESTRIAN;
+	}
+
+	@Override
+	protected float setMaxSpeed() {
+		return 2;
+	}
+
+	@Override
+	protected Mesh setMesh() {
+		return MeshContainer.man_1;
+	}
+
+	@Override
+	protected int setMeshRotation() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected void renderContent(MasterRenderer renderer) {
+		// TODO Auto-generated method stub
 		
-		id = setID();
-		maxSpeed = setMaxSpeed();
-		
-		mesh = setMesh();
-		entitySize = Maths.getRandomBetween(8, 13) / 10.f;
-		entity = new Entity(mesh, position, 0, 0, 0, entitySize);
 	}
-	
-	protected abstract ID setID();
-	
-	protected abstract Mesh setMesh();
-	
-	protected abstract int setMaxSpeed();
-	
-	public void render(MasterRenderer renderer) {
-		renderer.processEntity(entity);
-		EntityShadowList.addEntity(entity);
+
+	@Override
+	protected Animation setStartingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public void destroy() {
-		EntityShadowList.removeEntity(entity);
+
+	@Override
+	protected Animation setMovingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
+
+	@Override
+	protected Animation setStoppingAnimation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

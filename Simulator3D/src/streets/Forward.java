@@ -5,7 +5,7 @@ import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
-import traffic.DrivingAction;
+import traffic.MovingAction;
 import traffic.PathMarker;
 
 public class Forward extends Street{
@@ -21,24 +21,35 @@ public class Forward extends Street{
 	}
 
 	@Override
-	protected void placePathMarkers() {
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new DrivingAction[] {
-				new DrivingAction(1, DrivingMode.STRAIGHT, Direction.UP)
+	protected void placeVehiclePathMarkers() {
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.9f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.STRAIGHT, Direction.UP)
 		}));
-				//, new int[] {1, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f
-				, new DrivingAction[] {
-						new DrivingAction(-1, DrivingMode.INVALID, Direction.UP)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new MovingAction[] {
+						new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
 				}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new DrivingAction[] {
-				new DrivingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
 		}));
-				//, new int[] {3, -1, -1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.DOWN)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.DOWN)
 		}));
-				//, null));		
+	}
+
+	@Override
+	protected void placePeoplePathMarkers() {
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.9f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.STRAIGHT, Direction.UP)
+		}));	
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.1f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.DOWN)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.DOWN)
+		}));
 	}
 
 	@Override
@@ -59,6 +70,5 @@ public class Forward extends Street{
 	public void destroyContent() {
 		// TODO Auto-generated method stub
 		
-	}
-	
+	}	
 }

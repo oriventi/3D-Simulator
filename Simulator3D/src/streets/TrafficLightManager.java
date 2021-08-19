@@ -15,12 +15,12 @@ public class TrafficLightManager {
 	}
 	
 	private void initArray() {
-		if(street.getNeighbors() == 4) {
+		if(street.getNeighboringStreetsCount() == 4) {
 			traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);
 			traffic_lights[1] = new TrafficLight(street, 0.9f, 0.1f, 0, 0);
 			traffic_lights[2] = new TrafficLight(street, 0.9f, 0.9f, 270, 4);
 			traffic_lights[3] = new TrafficLight(street, 0.1f, 0.9f, 180, 6);
-		}else if(street.getNeighbors() == 3) {
+		}else if(street.getNeighboringStreetsCount() == 3) {
 			
 			if(street.getRotation() == 0) {
 				traffic_lights[0] = new TrafficLight(street, 0.1f, 0.1f, 90, 2);

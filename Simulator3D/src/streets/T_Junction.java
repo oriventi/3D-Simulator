@@ -5,7 +5,7 @@ import models.MeshContainer;
 import renderEngine.MasterRenderer;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
-import traffic.DrivingAction;
+import traffic.MovingAction;
 import traffic.PathMarker;
 
 public class T_Junction extends Street{
@@ -23,34 +23,51 @@ public class T_Junction extends Street{
 	}
 
 	@Override
-	protected void placePathMarkers() {
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new DrivingAction[] {
-				new DrivingAction(3, DrivingMode.STRAIGHT, Direction.LEFT),
-				new DrivingAction(1, DrivingMode.RIGHT, Direction.UP)
+	protected void placeVehiclePathMarkers() {
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.35f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.STRAIGHT, Direction.LEFT),
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP)
 		}));
-				//, new int[] {3, -1, 1, -1, -1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.UP)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.65f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new DrivingAction[] {
-				new DrivingAction(3, DrivingMode.RIGHT, Direction.LEFT),
-				new DrivingAction(5, DrivingMode.BIG_LEFT, Direction.RIGHT)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.35f, 0.1f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.RIGHT, Direction.LEFT),
+				new MovingAction(5, DrivingMode.LEFT, Direction.RIGHT)
 		}));
-				//, new int[] {-1, -1, 3, -1, 5}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.35f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.LEFT)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.35f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.LEFT)
 		}));
-				//, null));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.65f, new DrivingAction[] {
-				new DrivingAction(5, DrivingMode.STRAIGHT, Direction.RIGHT),
-				new DrivingAction(1, DrivingMode.BIG_LEFT, Direction.UP)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.65f, new MovingAction[] {
+				new MovingAction(5, DrivingMode.STRAIGHT, Direction.RIGHT),
+				new MovingAction(1, DrivingMode.LEFT, Direction.UP)
 		}));
-				//, new int[] {5, -1, -1, -1, 1}));
-		pathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new DrivingAction[] {
-				new DrivingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		vehiclePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.65f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		}));	
+	}
+
+	@Override
+	protected void placePeoplePathMarkers() {
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 1.f, 0.1f, new MovingAction[] {
+				new MovingAction(1, DrivingMode.RIGHT, Direction.UP)
 		}));
-				//, null));			
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.UP)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.f, new MovingAction[] {
+				new MovingAction(3, DrivingMode.RIGHT, Direction.LEFT)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.f, 0.1f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.LEFT)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.1f, 0.9f, new MovingAction[] {
+				new MovingAction(5 , DrivingMode.STRAIGHT, Direction.RIGHT)
+		}));
+		peoplePathMarkers.add(new PathMarker(xtile, ytile, 0.9f, 0.9f, new MovingAction[] {
+				new MovingAction(-1, DrivingMode.INVALID, Direction.RIGHT)
+		}));
+		
 	}
 
 	@Override
@@ -80,5 +97,4 @@ public class T_Junction extends Street{
 	public void changeTrafficLights() {
 		trafficLightManager.changeTrafficLights();
 	}
-
 }

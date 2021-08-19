@@ -17,11 +17,6 @@ public class No_Connection extends Street{
 	}
 
 	@Override
-	protected void placePathMarkers() {
-		
-	}
-
-	@Override
 	protected int setRotation() {
 		return 0;
 	}
@@ -33,6 +28,18 @@ public class No_Connection extends Street{
 
 	@Override
 	public void destroyContent() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void placeVehiclePathMarkers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void placePeoplePathMarkers() {
 		// TODO Auto-generated method stub
 		
 	}

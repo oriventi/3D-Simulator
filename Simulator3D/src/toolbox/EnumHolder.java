@@ -3,7 +3,7 @@ package toolbox;
 public class EnumHolder {
 
 	public enum DrivingMode{
-		STRAIGHT, LEFT, RIGHT, SMALL_LEFT, BIG_LEFT, FULL_STOP, INVALID
+		STRAIGHT, LEFT, RIGHT, FULL_STOP, INVALID
 	}
 	
 	public enum Direction{
@@ -11,7 +11,7 @@ public class EnumHolder {
 	}
 	
 	public enum ID{
-		TRUCK, CAR, INVALID
+		TRUCK, CAR, PEDESTRIAN, INVALID
 	}
 	
 }

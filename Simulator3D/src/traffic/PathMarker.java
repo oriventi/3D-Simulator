@@ -15,7 +15,7 @@ public class PathMarker{
 	private float anim_rot; //animation, rotation of the cube
 	private int xtile, ytile; //which tile
 	private float xpos, ypos; //actual position in world grid
-	private DrivingAction[] possibleActions;
+	private MovingAction[] possibleActions;
 	private boolean stop;
 	
 	private Vector2f position = new Vector2f();
@@ -24,7 +24,7 @@ public class PathMarker{
 	
 	private Entity cube; //in order to render the cube
 	
-	public PathMarker(int xtile, int ytile, float relativeX, float relativeY, DrivingAction[] possibleActions) {
+	public PathMarker(int xtile, int ytile, float relativeX, float relativeY, MovingAction[] possibleActions) {
 		
 		this.relativePos.x = relativeX;
 		this.relativePos.y = relativeY;
@@ -101,15 +101,19 @@ public class PathMarker{
 		return ypos;
 	}
 	
-	public Vector3f getPosition3f() {
-		return new Vector3f(xpos, 0.15f, ypos);
+	public Vector3f getPosition3f(boolean isVehicle) {
+		if(isVehicle) {
+			return new Vector3f(xpos, 0.2f, ypos);
+		}else {
+			return new Vector3f(xpos, 0.5f, ypos);
+		}
 	}
 	
 	public Vector2f getPosition2f() {
 		return new Vector2f(xpos, ypos);
 	}
 	
-	public DrivingAction[] getPossibleActions() {
+	public MovingAction[] getPossibleActions() {
 		return possibleActions;
 	}
 	
