@@ -5,7 +5,7 @@ import java.util.List;
 
 public class HUDManager {
 
-	private List<HUDTexture> huds;
+	private static List<HUDTexture> huds;
 	private HUDRenderer renderer;
 	
 	public HUDManager() {
@@ -13,11 +13,11 @@ public class HUDManager {
 		renderer = new HUDRenderer();
 	}
 	
-	public void addHUD(HUDTexture hud) {
+	public static void addHUD(HUDTexture hud) {
 		huds.add(hud);
 	}
 	
-	public void removeHUD(HUDTexture hud) {
+	public static void removeHUD(HUDTexture hud) {
 		huds.remove(hud);
 	}
 	
