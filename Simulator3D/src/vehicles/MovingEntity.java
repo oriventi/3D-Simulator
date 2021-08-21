@@ -18,7 +18,7 @@ import streets.Street;
 import toolbox.Maths;
 import toolbox.EnumHolder.Direction;
 import toolbox.EnumHolder.DrivingMode;
-import toolbox.EnumHolder.ID;
+import toolbox.EnumHolder.MovingEntityID;
 import traffic.MovingAction;
 import traffic.PathMarker;
 import traffic.StreetManager;
@@ -39,8 +39,12 @@ public abstract class MovingEntity {
 	
 	protected DrivingMode currentMode;
 	protected Direction currentDirection;
-	protected ID id;
+	protected MovingEntityID id;
 	protected boolean isVehicle;
+	
+	protected Animation startingAnimation;
+	protected Animation movingAnimation;
+	protected Animation stoppingAnimation;
 
 	public MovingEntity(PathMarker startMarker, boolean isVehicle) {
 		currentMarker = startMarker;
@@ -59,12 +63,16 @@ public abstract class MovingEntity {
 		entity = new Entity(setMesh(), position, 0, 0, 0, 0.7f);
 		EntityShadowList.addEntity(entity);
 		
+		startingAnimation = setStartingAnimation();
+		movingAnimation = setMovingAnimation();
+		stoppingAnimation = setStoppingAnimation();
+		
 		id = setID();
 		
 		updateNextMarkerAndModeAndDirection();
 	}
 	
-	protected abstract ID setID();
+	protected abstract MovingEntityID setID();
 	
 	protected abstract float setMaxSpeed();
 	
@@ -378,7 +386,7 @@ public abstract class MovingEntity {
 		return isVehicle;
 	}
 	
-	public ID getId() {
+	public MovingEntityID getId() {
 		return id;
 	}
 }

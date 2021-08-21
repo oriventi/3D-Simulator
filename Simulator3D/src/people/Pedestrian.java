@@ -4,7 +4,7 @@ import animations.Animation;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
-import toolbox.EnumHolder.ID;
+import toolbox.EnumHolder.MovingEntityID;
 import toolbox.Maths;
 import traffic.PathMarker;
 import vehicles.MovingEntity;
@@ -16,8 +16,8 @@ public class Pedestrian extends MovingEntity{
 	}
 
 	@Override
-	protected ID setID() {
-		return ID.PEDESTRIAN;
+	protected MovingEntityID setID() {
+		return MovingEntityID.PEDESTRIAN;
 	}
 
 	@Override

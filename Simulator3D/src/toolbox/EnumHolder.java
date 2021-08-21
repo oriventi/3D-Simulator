@@ -10,8 +10,12 @@ public class EnumHolder {
 		UP, DOWN, RIGHT, LEFT, INVALID
 	}
 	
-	public enum ID{
+	public enum MovingEntityID{
 		TRUCK, CAR, PEDESTRIAN, INVALID
+	}
+	
+	public enum AnimationID{
+		WALKING, INVALID
 	}
 	
 }

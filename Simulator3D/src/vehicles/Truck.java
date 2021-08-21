@@ -4,7 +4,7 @@ import animations.Animation;
 import models.Mesh;
 import models.MeshContainer;
 import renderEngine.MasterRenderer;
-import toolbox.EnumHolder.ID;
+import toolbox.EnumHolder.MovingEntityID;
 import traffic.PathMarker;
 
 public class Truck extends MovingEntity{
@@ -14,8 +14,8 @@ public class Truck extends MovingEntity{
 	}
 
 	@Override
-	protected ID setID() {
-		return ID.TRUCK;
+	protected MovingEntityID setID() {
+		return MovingEntityID.TRUCK;
 	}
 
 	@Override
