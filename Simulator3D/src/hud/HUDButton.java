@@ -47,9 +47,7 @@ public class HUDButton {
 		HUDManager.addHUD(normalTexture);
 	}
 	
-	public void update() {
-		System.out.println(Mouse.getY() + " " + ypos);
-		
+	public void update() {		
 		if(enabled) {
 			if(mouseIsHovering) {
 				onMouseStopsHovering();
@@ -90,7 +88,6 @@ public class HUDButton {
 		if(MainGameLoop.gameState == GameState.UI_MODE) {
 			if(mouseIsHovering && Mouse.isButtonDown(0) && timeSinceLastClick > 0.5f) {
 				timeSinceLastClick = 0;
-				System.out.println("CLICKED ON BUTTON");
 			}
 		}
 	}
