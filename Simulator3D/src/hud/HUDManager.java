@@ -13,6 +13,9 @@ public class HUDManager {
 		renderer = new HUDRenderer();
 	}
 	
+	public void update() {
+	}
+	
 	public static void addHUD(HUDTexture hud) {
 		huds.add(hud);
 	}

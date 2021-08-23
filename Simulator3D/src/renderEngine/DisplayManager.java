@@ -2,6 +2,7 @@ package renderEngine;
 
 
 import org.lwjgl.LWJGLException;
+
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
@@ -12,8 +13,10 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class DisplayManager {
 
-	public static final int WIDTH = 1280;
-	public static final int HEIGHT = 720;
+	public static final int WIDTH = 1920;
+	public static final int HEIGHT = 1080;
+	
+	public static int resizeRatio;
 	
 	private static final int FPS_CAP = 200;
 	
@@ -23,6 +26,8 @@ public class DisplayManager {
 	
 	public static void createDisplay() {
 		
+		resizeRatio = HEIGHT / 720;
+		
 		ContextAttribs attribs = new ContextAttribs(3,2)
 		.withForwardCompatible(true)
 		.withProfileCore(true);
@@ -30,6 +35,7 @@ public class DisplayManager {
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("FPS: ?");
+			//Display.setFullscreen(true);
 			Display.create(new PixelFormat(), attribs);
 			GL11.glEnable(GL13.GL_MULTISAMPLE);
 		} catch (LWJGLException e) {

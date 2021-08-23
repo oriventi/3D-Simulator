@@ -1,49 +1,40 @@
 package mainPackage;
 
-import java.util.ArrayList;
-
-import java.util.List;
-
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import World.World;
 import entities.Camera;
-import entities.Entity;
 import entities.EntityShadowList;
 import entities.Light;
 import entities.LightManager;
 import entities.Player;
+import hud.HUDButton;
 import hud.HUDManager;
 import hud.HUDTexture;
-import models.RawModel;
+import models.MeshContainer;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
-import models.Mesh;
-import models.MeshContainer;
 import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
-import renderEngine.OBJLoader;
-import renderEngine.Renderer;
-import shaders.StaticShader;
 import textures.Color;
-import textures.ModelTexture;
 import toolbox.MousePicker;
-import vehicles.Car;
+import toolbox.EnumHolder.GameState;
 
 public class MainGameLoop {
 
 	public static Loader loader;
 	public static HUDManager hudManager;
+	public static GameState gameState;
 	
 	public static void main(String[] args) {
 		
 		DisplayManager.createDisplay();
 		
 		loader = new Loader();
+		gameState = GameState.GAME_MODE;
 		MeshContainer container = new MeshContainer(loader);
 		EntityShadowList entityManager = new EntityShadowList();
 		Player player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
@@ -52,7 +43,8 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
-		hudManager = new HUDManager();
+		hudManager = new HUDManager();		
+		HUDButton button = new HUDButton(loader.loadTexture("grass_1"), loader.loadTexture("palette"), 100, 0, 100, 100);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
@@ -68,6 +60,7 @@ public class MainGameLoop {
 			camera.move();
 			picker.update();
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);
+			button.update();
 			
 			//render
 			multisampleFbo.bindFrameBuffer();

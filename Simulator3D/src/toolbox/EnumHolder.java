@@ -18,4 +18,8 @@ public class EnumHolder {
 		WALKING, INVALID
 	}
 	
+	public enum GameState{
+		UI_MODE, GAME_MODE, INVALID
+	}
+	
 }

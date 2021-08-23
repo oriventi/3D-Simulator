@@ -25,6 +25,7 @@ import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import textures.Color;
 import textures.ModelTexture;
+import toolbox.EnumHolder.GameState;
 import toolbox.Maths;
 import toolbox.MousePicker;
 import traffic.StreetManager;
@@ -105,12 +106,14 @@ public class TileManager {
 			street_mode = false;
 		}
 		
-		 if(Mouse.isButtonDown(0)) {
-			 tslr = 0;
-			 setTileContent(mousex, mousey);			 
-		 }else if(Mouse.isButtonDown(1)) {
-			 removeTileContent(mousex, mousey);		 
-		 }
+		if(MainGameLoop.gameState == GameState.GAME_MODE) {
+			if(Mouse.isButtonDown(0)) {
+			 	tslr = 0;
+			 	setTileContent(mousex, mousey);			 
+		 	}else if(Mouse.isButtonDown(1)) {
+			 	removeTileContent(mousex, mousey);		 
+		 	}
+		}
 		 
 		 if(Keyboard.isKeyDown(Keyboard.KEY_R) && tslr >= 0.3f) {
 			 tslr = 0;
