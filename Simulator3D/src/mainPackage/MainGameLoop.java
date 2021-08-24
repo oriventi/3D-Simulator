@@ -44,7 +44,7 @@ public class MainGameLoop {
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
 		hudManager = new HUDManager();		
-		HUDButton button = new HUDButton(loader.loadTexture("grass_1"), loader.loadTexture("palette"), 100, 0, 100, 100);
+		HUDButton button = new HUDButton(loader.loadTexture("buttons/close_button"), loader.loadTexture("buttons/close_button_hovered"), 100, 0, 50, 50);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		

@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector2f;
 
+import animations.Animation;
 import mainPackage.MainGameLoop;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
@@ -23,6 +24,8 @@ public class HUDButton {
 	
 	private boolean mouseIsHovering;
 	private boolean enabled;
+	
+	private Animation hoverAnimation;
 	
 	private float timeSinceLastClick;
 	
@@ -70,6 +73,7 @@ public class HUDButton {
 				mouseIsHovering = true;
 				HUDManager.addHUD(hoveredTexture);
 				HUDManager.removeHUD(normalTexture);
+				//TODO hoverAnimation
 			}
 		}
 	}
@@ -81,6 +85,7 @@ public class HUDButton {
 			mouseIsHovering = false;
 			HUDManager.addHUD(normalTexture);
 			HUDManager.removeHUD(hoveredTexture);
+			//TODO hoverAnimation
 		}
 	}
 	
@@ -98,6 +103,10 @@ public class HUDButton {
 	
 	public void disable() {
 		enabled = false;
+	}
+	
+	public void setHoverAnimation(Animation hoverAnimation) {
+		this.hoverAnimation = hoverAnimation;
 	}
 	
 	

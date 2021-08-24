@@ -12,6 +12,8 @@ import entities.EntityShadowList;
 import people.Pedestrian;
 import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
+import streets.Blind_Alley;
+import streets.Forward;
 import toolbox.Maths;
 import toolbox.MousePicker;
 import vehicles.Car;
@@ -73,7 +75,10 @@ public class TrafficManager {
 	}
 	
 	private void spawnPedestrian(int xtile, int ytile) {
-		people.add(new Pedestrian(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(false).get(0)));
+		if(StreetManager.getStreetSystem()[xtile][ytile] instanceof Forward ||
+				StreetManager.getStreetSystem()[xtile][ytile] instanceof Blind_Alley) {
+			people.add(new Pedestrian(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(false).get(0)));
+		}
 	}
 	
 	//returns tile from mousePosition
