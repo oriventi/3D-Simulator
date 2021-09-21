@@ -32,9 +32,9 @@ public class HUDButton {
 		lastClickTimer = new Timer(0.6f);
 		lastClickTimer.start();
 		
-		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), xpos, ypos, xsize, ysize);
-		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), xpos, ypos, xsize, ysize);
-		HUDRenderList.addHUD(normalTexture);
+		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), this.xpos, this.ypos, this.xsize, this.ysize);
+		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos, this.ypos, this.xsize, this.ysize);
+		normalTexture.startDrawing();
 	}
 	
 	public void update() {		
@@ -54,8 +54,8 @@ public class HUDButton {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
 				MainGameLoop.gameState = GameState.UI_MODE;
 				mouseIsHovering = true;
-				HUDRenderList.addHUD(hoveredTexture);
-				HUDRenderList.removeHUD(normalTexture);
+				hoveredTexture.startDrawing();
+				normalTexture.stopDrawing();
 			}
 		}
 	}
@@ -65,8 +65,8 @@ public class HUDButton {
 				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize || DisplayManager.HEIGHT - Mouse.getY() < ypos) {
 			MainGameLoop.gameState = GameState.GAME_MODE;
 			mouseIsHovering = false;
-			HUDRenderList.addHUD(normalTexture);
-			HUDRenderList.removeHUD(hoveredTexture);
+			normalTexture.startDrawing();
+			hoveredTexture.stopDrawing();
 		}
 	}
 	
@@ -86,5 +86,17 @@ public class HUDButton {
 	
 	public void disable() {
 		enabled = false;
-	}	
+	}
+	
+	public void setPosition(int xpos, int ypos) {
+		this.xpos = xpos;
+		this.ypos = ypos;
+		normalTexture.setPosition(xpos, ypos);
+		hoveredTexture.setPosition(xpos, ypos);
+	}
+	
+	public void destroy() {
+		MainGameLoop.gameState = GameState.GAME_MODE;
+		hoveredTexture.stopDrawing();
+	}
 }

@@ -1,7 +1,6 @@
 package mainPackage;
 
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import World.World;
@@ -12,7 +11,7 @@ import entities.LightManager;
 import entities.Player;
 import hud.HUDButton;
 import hud.HUDRenderList;
-import hud.HUDTexture;
+import hud.HUDWindow;
 import models.MeshContainer;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
@@ -20,8 +19,8 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import textures.Color;
-import toolbox.MousePicker;
 import toolbox.EnumHolder.GameState;
+import toolbox.MousePicker;
 
 public class MainGameLoop {
 
@@ -45,7 +44,7 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
-		HUDButton button = new HUDButton("close_button", 100, 20, 50, 30);
+		HUDButton windowButton = new HUDButton("close_button", 100, 100, 70, 70);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
@@ -58,10 +57,39 @@ public class MainGameLoop {
 			renderer.renderShadowMap(EntityShadowList.entities);
 			
 			//game logic
+			windowButton.update();
+			if(windowButton.onMouseClicked()) {
+				HUDRenderList.addWindow(new HUDWindow(300, 200, 300, 500) {
+					
+					@Override
+					protected void updateContent() {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					protected void renderContent() {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					protected void moveContentWithWindowMovement(int xpos, int ypos) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					protected void destroyContent() {
+						// TODO Auto-generated method stub
+						
+					}
+				});//indow(300, 200, 300, 500));
+			}
 			camera.move();
 			picker.update();
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);
-			button.update();
+			hudManager.update();
 			
 			//render
 			multisampleFbo.bindFrameBuffer();
