@@ -28,8 +28,8 @@ public class PostProcessing {
 	
 	public static void doPostProcessing(int colourTexture){
 		start();
-		//	hBlur.render(colourTexture);
-		//	vBlur.render(hBlur.getOutputTexture());
+		//hBlur.render(colourTexture);
+		//vBlur.render(hBlur.getOutputTexture());
 		contrastChanger.render(colourTexture);
 		end();
 	}

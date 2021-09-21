@@ -143,9 +143,11 @@ public class TileManager {
 
 	//Draws selector on grid, vec contains x and y of the tile
 	private void drawSelector(MasterRenderer renderer, MousePicker picker, Camera cam) {
-		mouseTile = getTileFromPosition(picker.getPosition(cam).x, picker.getPosition(cam).z);
-		selector.setPosition(mouseTile.x * tsize -wsize / 2, 0.5f, mouseTile.y * tsize - wsize / 2);
-		renderer.processEntity(selector);
+		if(MainGameLoop.gameState == GameState.GAME_MODE) {
+			mouseTile = getTileFromPosition(picker.getPosition(cam).x, picker.getPosition(cam).z);
+			selector.setPosition(mouseTile.x * tsize -wsize / 2, 0.5f, mouseTile.y * tsize - wsize / 2);
+			renderer.processEntity(selector);
+		}
 	}
 	
 	//MouseX and MouseY

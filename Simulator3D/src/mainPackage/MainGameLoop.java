@@ -11,7 +11,7 @@ import entities.Light;
 import entities.LightManager;
 import entities.Player;
 import hud.HUDButton;
-import hud.HUDManager;
+import hud.HUDRenderList;
 import hud.HUDTexture;
 import models.MeshContainer;
 import postProcessing.Fbo;
@@ -26,7 +26,7 @@ import toolbox.EnumHolder.GameState;
 public class MainGameLoop {
 
 	public static Loader loader;
-	public static HUDManager hudManager;
+	public static HUDRenderList hudManager;
 	public static GameState gameState;
 	
 	public static void main(String[] args) {
@@ -43,7 +43,7 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
-		hudManager = new HUDManager();		
+		hudManager = new HUDRenderList();		
 		HUDButton button = new HUDButton(loader.loadTexture("buttons/close_button"), loader.loadTexture("buttons/close_button_hovered"), 100, 0, 50, 50);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());

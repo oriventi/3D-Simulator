@@ -25,7 +25,7 @@ import models.Mesh;
  */
 public class ShadowMapMasterRenderer {
 
-	private static final int SHADOW_MAP_SIZE = 4096;
+	private static final int SHADOW_MAP_SIZE = 2048;
 
 	private ShadowFrameBuffer shadowFbo;
 	private ShadowShader shader;

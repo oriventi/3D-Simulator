@@ -3,12 +3,12 @@ package hud;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HUDManager {
+public class HUDRenderList {
 
 	private static List<HUDTexture> huds;
 	private HUDRenderer renderer;
 	
-	public HUDManager() {
+	public HUDRenderList() {
 		huds = new ArrayList<HUDTexture>();
 		renderer = new HUDRenderer();
 	}

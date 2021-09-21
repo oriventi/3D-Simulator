@@ -1,10 +1,7 @@
 package hud;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
 
-import animations.Animation;
 import mainPackage.MainGameLoop;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
@@ -14,9 +11,6 @@ public class HUDButton {
 	private HUDTexture normalTexture;
 	private HUDTexture hoveredTexture;
 	
-	private Vector2f texturePosition;
-	private Vector2f textureScale;
-	
 	private int xpos;
 	private int ypos;
 	private int xsize;
@@ -25,7 +19,7 @@ public class HUDButton {
 	private boolean mouseIsHovering;
 	private boolean enabled;
 	
-	private Animation hoverAnimation;
+	//private Animation hoverAnimation;
 	
 	private float timeSinceLastClick;
 	
@@ -36,18 +30,10 @@ public class HUDButton {
 		this.ysize = ysize * DisplayManager.resizeRatio;
 		enabled = true;
 		mouseIsHovering = false;
-		texturePosition = new Vector2f();
-		textureScale = new Vector2f();
 		
-		texturePosition.x = (2.f * (xpos + xsize / 2.f) / (float)DisplayManager.WIDTH ) - 1.f;
-		texturePosition.y = -(2.f * (ypos + ysize / 2.f) / (float)DisplayManager.HEIGHT ) + 1.f;
-		
-		textureScale.x = (float)xsize / (float)DisplayManager.WIDTH;
-		textureScale.y = (float)ysize / (float)DisplayManager.HEIGHT;
-		
-		normalTexture = new HUDTexture(normalTextureID, texturePosition, textureScale);
-		hoveredTexture = new HUDTexture(hoveredTextureID, texturePosition, textureScale);
-		HUDManager.addHUD(normalTexture);
+		normalTexture = new HUDTexture(normalTextureID, xpos, ypos, xsize, ysize);
+		hoveredTexture = new HUDTexture(hoveredTextureID, xpos, ypos, xsize, ysize);
+		HUDRenderList.addHUD(normalTexture);
 	}
 	
 	public void update() {		
@@ -63,7 +49,6 @@ public class HUDButton {
 			timeSinceLastClick += DisplayManager.getFrameTimeSeconds();
 		}
 		
-		onMouseClicked();
 	}
 	
 	private void onMouseStartsHovering() {
@@ -71,8 +56,8 @@ public class HUDButton {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
 				MainGameLoop.gameState = GameState.UI_MODE;
 				mouseIsHovering = true;
-				HUDManager.addHUD(hoveredTexture);
-				HUDManager.removeHUD(normalTexture);
+				HUDRenderList.addHUD(hoveredTexture);
+				HUDRenderList.removeHUD(normalTexture);
 				//TODO hoverAnimation
 			}
 		}
@@ -83,18 +68,20 @@ public class HUDButton {
 				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize || DisplayManager.HEIGHT - Mouse.getY() < ypos) {
 			MainGameLoop.gameState = GameState.GAME_MODE;
 			mouseIsHovering = false;
-			HUDManager.addHUD(normalTexture);
-			HUDManager.removeHUD(hoveredTexture);
+			HUDRenderList.addHUD(normalTexture);
+			HUDRenderList.removeHUD(hoveredTexture);
 			//TODO hoverAnimation
 		}
 	}
 	
-	public void onMouseClicked() {
+	public boolean onMouseClicked() {
 		if(MainGameLoop.gameState == GameState.UI_MODE) {
 			if(mouseIsHovering && Mouse.isButtonDown(0) && timeSinceLastClick > 0.5f) {
 				timeSinceLastClick = 0;
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public void enable() {
@@ -103,11 +90,5 @@ public class HUDButton {
 	
 	public void disable() {
 		enabled = false;
-	}
-	
-	public void setHoverAnimation(Animation hoverAnimation) {
-		this.hoverAnimation = hoverAnimation;
-	}
-	
-	
+	}	
 }
