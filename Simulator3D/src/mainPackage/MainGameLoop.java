@@ -35,6 +35,8 @@ public class MainGameLoop {
 		
 		loader = new Loader();
 		gameState = GameState.GAME_MODE;
+		hudManager = new HUDRenderList();		
+		
 		MeshContainer container = new MeshContainer(loader);
 		EntityShadowList entityManager = new EntityShadowList();
 		Player player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
@@ -43,8 +45,7 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
-		hudManager = new HUDRenderList();		
-		HUDButton button = new HUDButton(loader.loadTexture("buttons/close_button"), loader.loadTexture("buttons/close_button_hovered"), 100, 0, 50, 50);
+		HUDButton button = new HUDButton("close_button", 100, 20, 50, 30);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
@@ -76,6 +77,7 @@ public class MainGameLoop {
 			DisplayManager.updateDisplay();
 		}
 		
+		//cleanUp on close
 		PostProcessing.cleanUp();
 		multisampleFbo.cleanUp();
 		outputFbo.cleanUp();

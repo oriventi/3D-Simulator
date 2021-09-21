@@ -2,6 +2,7 @@ package hud;
 
 import org.lwjgl.input.Mouse;
 
+import animations.Timer;
 import mainPackage.MainGameLoop;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
@@ -18,21 +19,21 @@ public class HUDButton {
 	
 	private boolean mouseIsHovering;
 	private boolean enabled;
+		
+	private Timer lastClickTimer;
 	
-	//private Animation hoverAnimation;
-	
-	private float timeSinceLastClick;
-	
-	public HUDButton(int normalTextureID, int hoveredTextureID, int xpos, int ypos, int xsize, int ysize) {
+	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize) {
 		this.xpos = xpos * DisplayManager.resizeRatio;
 		this.ypos = ypos * DisplayManager.resizeRatio;
 		this.xsize = xsize * DisplayManager.resizeRatio;
 		this.ysize = ysize * DisplayManager.resizeRatio;
 		enabled = true;
 		mouseIsHovering = false;
+		lastClickTimer = new Timer(0.6f);
+		lastClickTimer.start();
 		
-		normalTexture = new HUDTexture(normalTextureID, xpos, ypos, xsize, ysize);
-		hoveredTexture = new HUDTexture(hoveredTextureID, xpos, ypos, xsize, ysize);
+		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), xpos, ypos, xsize, ysize);
+		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), xpos, ypos, xsize, ysize);
 		HUDRenderList.addHUD(normalTexture);
 	}
 	
@@ -45,10 +46,7 @@ public class HUDButton {
 			}
 		}
 		
-		if(timeSinceLastClick < 3.0f) {
-			timeSinceLastClick += DisplayManager.getFrameTimeSeconds();
-		}
-		
+		lastClickTimer.update();
 	}
 	
 	private void onMouseStartsHovering() {
@@ -58,7 +56,6 @@ public class HUDButton {
 				mouseIsHovering = true;
 				HUDRenderList.addHUD(hoveredTexture);
 				HUDRenderList.removeHUD(normalTexture);
-				//TODO hoverAnimation
 			}
 		}
 	}
@@ -70,14 +67,13 @@ public class HUDButton {
 			mouseIsHovering = false;
 			HUDRenderList.addHUD(normalTexture);
 			HUDRenderList.removeHUD(hoveredTexture);
-			//TODO hoverAnimation
 		}
 	}
 	
 	public boolean onMouseClicked() {
 		if(MainGameLoop.gameState == GameState.UI_MODE) {
-			if(mouseIsHovering && Mouse.isButtonDown(0) && timeSinceLastClick > 0.5f) {
-				timeSinceLastClick = 0;
+			if(mouseIsHovering && Mouse.isButtonDown(0) && lastClickTimer.timeReachedEnd()) {
+				lastClickTimer.restart();
 				return true;
 			}
 		}
