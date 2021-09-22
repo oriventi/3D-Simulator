@@ -9,6 +9,7 @@ import entities.EntityShadowList;
 import entities.Light;
 import entities.LightManager;
 import entities.Player;
+import fileManager.FileManager;
 import hud.HUDButton;
 import hud.HUDRenderList;
 import hud.HUDWindow;
@@ -84,7 +85,7 @@ public class MainGameLoop {
 						// TODO Auto-generated method stub
 						
 					}
-				});//indow(300, 200, 300, 500));
+				});
 			}
 			camera.move();
 			picker.update();

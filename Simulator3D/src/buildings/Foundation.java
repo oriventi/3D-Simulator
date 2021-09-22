@@ -13,12 +13,15 @@ public class Foundation {
 	private float xpos, ypos;
 	private Entity foundationEntity;
 	private Entity[] content;
+	
+	private String buildingId;
 
 	public Foundation(int xtile, int ytile) {
 		this.xtile = xtile;
 		this.ytile = ytile;
 		this.xpos = (xtile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		this.ypos = (ytile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
+		buildingId = "0";
 		
 		makeEntity();
 		
@@ -42,5 +45,9 @@ public class Foundation {
 	
 	public float getYPos() {
 		return ypos;
+	}
+	
+	public String getBuildingID() {
+		return buildingId;
 	}
 }

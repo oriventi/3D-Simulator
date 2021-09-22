@@ -31,4 +31,10 @@ public class HouseThree extends Building{
 		return 1;
 	}
 
+	@Override
+	protected int setBuildingID() {
+		// TODO Auto-generated method stub
+		return 3;
+	}
+
 }

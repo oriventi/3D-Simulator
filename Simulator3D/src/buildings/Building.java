@@ -20,6 +20,8 @@ public abstract class Building extends TileContent{
 	private Entity entity;
 	private Foundation[] foundations;
 	
+	private String buildingID = "";
+	
 	public Building(int xtile, int ytile) {
 		super(xtile, ytile);
 		this.xtile = xtile;
@@ -29,6 +31,7 @@ public abstract class Building extends TileContent{
 		rotation = setRotation();
 		xFoundations = setXFoundationSize();
 		yFoundations = setYFoundationSize();
+		buildingID = setBuildingID() + "r" + rotation;
 		generateFoundations();
 		calculateBuildingsPosition();
 		
@@ -63,6 +66,8 @@ public abstract class Building extends TileContent{
 	
 	protected abstract int setRotation();
 	
+	protected abstract int setBuildingID();
+	
 	private void makeEntity() {
 		entity = new Entity(mesh, new Vector3f(xpos, 0.5f, ypos), 0, rotation, 0, 1);
 		EntityShadowList.addEntity(entity);
@@ -93,6 +98,10 @@ public abstract class Building extends TileContent{
 	
 	public int getYFoundations() {
 		return yFoundations;
+	}
+	
+	public String getBuildingID() {
+		return buildingID;
 	}
 		
 }

@@ -33,4 +33,10 @@ public class Bank extends Building{
 		return 0;
 	}
 
+	@Override
+	protected int setBuildingID() {
+		// TODO Auto-generated method stub
+		return 7;
+	}
+
 }
