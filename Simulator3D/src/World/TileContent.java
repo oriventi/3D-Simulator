@@ -15,4 +15,6 @@ public abstract class TileContent {
 	public abstract void render(MasterRenderer renderer);
 	
 	public abstract void increaseRotation();
+	
+	public abstract String getBuildingID();
 }

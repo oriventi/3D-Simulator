@@ -10,6 +10,7 @@ import entities.Light;
 import entities.LightManager;
 import entities.Player;
 import fileManager.FileManager;
+import fileManager.WorldFileManager;
 import hud.HUDButton;
 import hud.HUDRenderList;
 import hud.HUDWindow;
@@ -53,6 +54,8 @@ public class MainGameLoop {
 		Fbo outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.init(loader);
 		
+		WorldFileManager worldFileManager = new WorldFileManager();
+		
 		while(!Display.isCloseRequested()) {
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
@@ -60,6 +63,7 @@ public class MainGameLoop {
 			//game logic
 			windowButton.update();
 			if(windowButton.onMouseClicked()) {
+				worldFileManager.fillWorldByInformationFromFile("world1");
 				HUDRenderList.addWindow(new HUDWindow(300, 200, 300, 500) {
 					
 					@Override

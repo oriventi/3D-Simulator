@@ -28,6 +28,8 @@ public abstract class Street {
 	private Mesh mesh;
 	private Entity entity;
 	
+	private String buildingID;
+	
 	protected List<PathMarker> vehiclePathMarkers;
 	protected List<PathMarker> peoplePathMarkers;
 	private List<MovingEntity> allMovingEntitiesOnStreet;
@@ -37,6 +39,8 @@ public abstract class Street {
 		vehiclePathMarkers = new ArrayList<PathMarker>();
 		peoplePathMarkers = new ArrayList<PathMarker>();
 		allMovingEntitiesOnStreet = new ArrayList<MovingEntity>();
+		
+		buildingID = "0";
 		
 		this.xtile = xtile;
 		this.ytile = ytile;
@@ -149,5 +153,9 @@ public abstract class Street {
 		}else {
 			return peoplePathMarkers;
 		}
+	}
+	
+	public String getBuildingID() {
+		return buildingID;
 	}
 }

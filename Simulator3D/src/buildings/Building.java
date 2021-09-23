@@ -77,6 +77,7 @@ public abstract class Building extends TileContent{
 	public void increaseRotation() {
 		rotation += 90;
 		entity.setRotY(rotation);
+		buildingID = setBuildingID() + "r" + rotation;
 	}
 	
 	@Override
@@ -100,6 +101,7 @@ public abstract class Building extends TileContent{
 		return yFoundations;
 	}
 	
+	@Override
 	public String getBuildingID() {
 		return buildingID;
 	}

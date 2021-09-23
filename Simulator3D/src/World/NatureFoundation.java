@@ -1,6 +1,5 @@
 package World;
 
-import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import entities.Entity;
@@ -17,12 +16,16 @@ public class NatureFoundation extends TileContent{
 	
 	private Entity[] foliage;
 	private Entity foundationEntity;
+	
+	private String buildingID;
 
 	public NatureFoundation(int xtile, int ytile, int foliageCount) {
 		super(xtile, ytile);
 		
 		this.xpos = (xtile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
 		this.ypos = (ytile + 0.5f) * TileManager.tsize - TileManager.wsize / 2;
+		
+		buildingID = "8";
 		
 		foundationEntity = new Entity(MeshContainer.natureFoundation, new Vector3f(xpos, 0, ypos), 0, rotation, 0, 1);
 		
@@ -44,7 +47,7 @@ public class NatureFoundation extends TileContent{
 			foliageXPos = Maths.getRandomBetween(1 + (int)(10/foliage.length) * i, (int)(10/foliage.length) * i + 1);
 			foliageYPos = Maths.getRandomBetween(1, 9);
 			foliageRot = Maths.getRandomBetween(0, 360);
-			foliageSize = Maths.getRandomBetween(7, 13) / 10.f;
+			foliageSize = Maths.getRandomBetween(7, 10) / 10.f;
 			
 			foliage[i] = new Entity(getRandomFoliageMesh(), new Vector3f(xpos + foliageXPos - 5, 0, ypos + foliageYPos - 5),
 					0, foliageRot, 0, foliageSize);
@@ -86,5 +89,11 @@ public class NatureFoundation extends TileContent{
 
 	@Override
 	public void increaseRotation() {
+	}
+
+	@Override
+	public String getBuildingID() {
+		// TODO Auto-generated method stub
+		return buildingID;
 	}
 }

@@ -39,17 +39,19 @@ public class FileManager {
 		}
 	}
 	
-	public void readFile(String name) {
+	public String readFile(String name) {
 		try {
 			File file = new File(directory + name);
+			StringBuilder sb = new StringBuilder();
 			Scanner scanner = new Scanner(file);
 			while(scanner.hasNextLine()) {
-				String data = scanner.nextLine();
-				System.out.println(data);
+				sb.append(scanner.nextLine() + "\n");
 			}
 			scanner.close();
+			return sb.toString();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	

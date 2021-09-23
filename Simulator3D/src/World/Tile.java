@@ -56,5 +56,16 @@ public class Tile {
 	public TileContent getContent() {
 		return content;
 	}
+	
+	public String getBuildingID() {
+		if(content == null && !hasStreet()) {
+			return "-1";
+		}else if(hasStreet()) {
+			return "0";
+		}else {
+			return content.getBuildingID();
+		}
+		
+	}
 
 }
