@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class FileManager {
@@ -39,16 +40,20 @@ public class FileManager {
 		}
 	}
 	
-	public String readFile(String name) {
+	public String[] readFile(String name) {
 		try {
+			ArrayList<String> lines = new ArrayList<String>();
 			File file = new File(directory + name);
-			StringBuilder sb = new StringBuilder();
 			Scanner scanner = new Scanner(file);
 			while(scanner.hasNextLine()) {
-				sb.append(scanner.nextLine() + "\n");
+				lines.add(scanner.nextLine());
 			}
 			scanner.close();
-			return sb.toString();
+			
+			String[] lineArray = new String[lines.size()];
+			lineArray = lines.toArray(lineArray);
+			
+			return lineArray;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;

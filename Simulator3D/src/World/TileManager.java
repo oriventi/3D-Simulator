@@ -42,7 +42,7 @@ public class TileManager {
 	private float tslr = 0;
 	
 	private static Tile[][] tiles;
-	private StreetManager streetManager;
+	private static StreetManager streetManager;
 	
 	private Entity selector;
 
@@ -151,7 +151,7 @@ public class TileManager {
 	}
 	
 	//MouseX and MouseY
-	public void setTileContent(float xpos, float ypos) {
+	private void setTileContent(float xpos, float ypos) {
 		Vector2f tile = getTileFromPosition(xpos, ypos);
 		if(street_mode) {
 			
@@ -163,6 +163,16 @@ public class TileManager {
 			
 		}
 		
+	}
+	
+	public static void setTileContent(TileContent content, int xtile, int ytile, int rotation) {
+		tiles[xtile][ytile].removeContent();
+		tiles[xtile][ytile].setContent(content, false);
+		int rotNumber = rotation / 90;
+		
+		for(int i = 0; i < rotNumber; i++) {
+			tiles[xtile][ytile].getContent().increaseRotation();
+		}
 	}
 	
 	//MouseX and MouseY
@@ -228,6 +238,10 @@ public class TileManager {
 	
 	public static Tile[][] getTileSystem(){
 		return tiles;
+	}
+	
+	public static StreetManager getStreetManager() {
+		return streetManager;
 	}
 	
 }
