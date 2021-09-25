@@ -88,5 +88,8 @@ public class Camera {
 		}
 	}
 	
+	public void setPitch(float pitch) {
+		this.pitch = pitch;
+	}	
 	
 }

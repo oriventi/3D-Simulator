@@ -28,7 +28,7 @@ public class World {
 	private List<Entity> entities = new ArrayList<>();
 	
 	private TileManager tileManager;
-	private TrafficManager trafficManager;
+	private static TrafficManager trafficManager;
 	
 	private Loader loader;
 	private Camera cam;
@@ -96,6 +96,10 @@ public class World {
 		Mesh mesh = new Mesh(loader.loadToVAO(vertices, textureCoords, normals, indices), new ModelTexture(loader.loadTexture("palette")));
 		Entity entity = new Entity(mesh, new Vector3f(0,0,0), 0, 0, 0, 1);
 		return entity;
+	}
+	
+	public static TrafficManager getTrafficManager() {
+		return trafficManager;
 	}
 
 }

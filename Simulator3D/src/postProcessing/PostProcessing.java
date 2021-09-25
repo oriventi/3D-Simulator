@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL30;
 
 import gaussianBlur.HorizontalBlur;
 import gaussianBlur.VerticalBlur;
+import menu.MenuUpdater;
 import models.RawModel;
 import renderEngine.Loader;
 
@@ -28,9 +29,13 @@ public class PostProcessing {
 	
 	public static void doPostProcessing(int colourTexture){
 		start();
-		//hBlur.render(colourTexture);
-		//vBlur.render(hBlur.getOutputTexture());
-		contrastChanger.render(colourTexture);
+		if(MenuUpdater.isMenuActivated()) {
+			hBlur.render(colourTexture);
+			vBlur.render(hBlur.getOutputTexture());
+			contrastChanger.render(vBlur.getOutputTexture());
+		}else {
+			contrastChanger.render(colourTexture);
+		}
 		end();
 	}
 	

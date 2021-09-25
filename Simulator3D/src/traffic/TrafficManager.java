@@ -105,4 +105,21 @@ public class TrafficManager {
 		
 	}
 	
+	public void spawnRandomTraffic() {
+		people.clear();
+		vehicles.clear();
+		for(int i = 0; i < TileManager.size; i++) {
+			for(int j = 0; j < TileManager.size; j++) {
+				if(StreetManager.getStreetSystem()[i][j] != null) {
+					if(Maths.getRandomBetween(0, 10) <= 4) {
+						spawnNormalVehicle(i, j);
+					}
+					if(Maths.getRandomBetween(0, 10) <= 6) {
+						spawnPedestrian(i, j);	
+					}
+				}
+			}
+		}
+	}
+	
 }

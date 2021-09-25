@@ -33,7 +33,7 @@ public abstract class HUDWindow {
 		taskbar.startDrawing();
 		
 		closeButton = new HUDButton("close_button", this.xpos + this.xsize - 50 * DisplayManager.resizeRatio, this.ypos,
-				50 * DisplayManager.resizeRatio, 35 * DisplayManager.resizeRatio);
+				50 * DisplayManager.resizeRatio, 35 * DisplayManager.resizeRatio, false);
 		
 		mouseIsHovering = false;
 		mouseIsMoving = false;

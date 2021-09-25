@@ -3,21 +3,27 @@ package hud;
 import java.util.ArrayList;
 import java.util.List;
 
+import menu.MenuUpdater;
+
 public class HUDRenderList {
 
 	private static List<HUDTexture> huds;
 	private static List<HUDWindow> windows;
+	private static List<HUDTexture> menuHuds;
 	private HUDRenderer renderer;
 	
 	public HUDRenderList() {
 		huds = new ArrayList<HUDTexture>();
 		windows = new ArrayList<HUDWindow>();
+		menuHuds = new ArrayList<HUDTexture>();
 		renderer = new HUDRenderer();
 	}
 	
 	public void update() {
-		for(int i = 0; i < windows.size(); i++) {
-			windows.get(i).update();
+		if(!MenuUpdater.isMenuActivated()) {
+			for(int i = 0; i < windows.size(); i++) {
+				windows.get(i).update();
+			}
 		}
 	}
 	
@@ -38,7 +44,11 @@ public class HUDRenderList {
 	}
 	
 	public void render() {
-		renderer.render(huds);
+		if(MenuUpdater.isMenuActivated()) {
+			renderer.render(menuHuds);
+		}else {
+			renderer.render(huds);	
+		}
 	}
 	
 	public void cleanUp() {

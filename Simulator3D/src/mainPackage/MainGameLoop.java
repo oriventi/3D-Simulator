@@ -1,19 +1,21 @@
 package mainPackage;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 import World.World;
+import animations.Timer;
 import entities.Camera;
 import entities.EntityShadowList;
 import entities.Light;
 import entities.LightManager;
 import entities.Player;
-import fileManager.FileManager;
 import fileManager.WorldFileManager;
 import hud.HUDButton;
 import hud.HUDRenderList;
-import hud.HUDWindow;
+import menu.MenuUpdater;
+import menu.PauseMenu;
 import models.MeshContainer;
 import postProcessing.Fbo;
 import postProcessing.PostProcessing;
@@ -29,6 +31,8 @@ public class MainGameLoop {
 	public static Loader loader;
 	public static HUDRenderList hudManager;
 	public static GameState gameState;
+	public static Player player;
+	public static Camera camera;
 	
 	public static void main(String[] args) {
 		
@@ -36,17 +40,18 @@ public class MainGameLoop {
 		
 		loader = new Loader();
 		gameState = GameState.GAME_MODE;
-		hudManager = new HUDRenderList();		
+		hudManager = new HUDRenderList();
 		
+		MenuUpdater menuUpdater = new MenuUpdater();
 		MeshContainer container = new MeshContainer(loader);
-		EntityShadowList entityManager = new EntityShadowList();
-		Player player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
-		Camera camera = new Camera(player);
+		EntityShadowList entityShadowList = new EntityShadowList();
+		player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
+		camera = new Camera(player);
 		MasterRenderer renderer = new MasterRenderer(camera, loader);
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 		
-		HUDButton windowButton = new HUDButton("close_button", 100, 100, 70, 70);
+		HUDButton windowButton = new HUDButton("close_button", 100, 100, 70, 70, false);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 		
@@ -56,45 +61,40 @@ public class MainGameLoop {
 		
 		WorldFileManager worldFileManager = new WorldFileManager();
 		
+		//TEST
+		PauseMenu menu = new PauseMenu();
+		Timer timer = new Timer(0.5f);
+		timer.start();
+		
 		while(!Display.isCloseRequested()) {
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
+			timer.update();
 			
 			//game logic
 			windowButton.update();
 			if(windowButton.onMouseClicked()) {
 				worldFileManager.fillWorldByInformationFromFile("world1");
-				HUDRenderList.addWindow(new HUDWindow(300, 200, 300, 500) {
-					
-					@Override
-					protected void updateContent() {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					protected void renderContent() {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					protected void moveContentWithWindowMovement(int xpos, int ypos) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					protected void destroyContent() {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+				World.getTrafficManager().spawnRandomTraffic();
 			}
+			
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && timer.timeReachedEnd()) {
+				timer.restart();
+				if(MenuUpdater.isMenuActivated()) {
+					MenuUpdater.deactivateMenu();
+				}else {
+					MenuUpdater.activateMenu(menu);
+				}
+			}
+			menuUpdater.update();
+
 			camera.move();
 			picker.update();
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);
 			hudManager.update();
+			if(MenuUpdater.isMenuActivated()) {
+				menuUpdater.update();
+			}
 			
 			//render
 			multisampleFbo.bindFrameBuffer();

@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 
 import animations.Timer;
 import mainPackage.MainGameLoop;
+import menu.MenuUpdater;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
 
@@ -19,14 +20,16 @@ public class HUDButton {
 	
 	private boolean mouseIsHovering;
 	private boolean enabled;
+	private boolean isMenuButton;
 		
 	private Timer lastClickTimer;
 	
-	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize) {
+	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton) {
 		this.xpos = xpos * DisplayManager.resizeRatio;
 		this.ypos = ypos * DisplayManager.resizeRatio;
 		this.xsize = xsize * DisplayManager.resizeRatio;
 		this.ysize = ysize * DisplayManager.resizeRatio;
+		this.isMenuButton = isMenuButton;
 		enabled = true;
 		mouseIsHovering = false;
 		lastClickTimer = new Timer(0.6f);
@@ -38,11 +41,13 @@ public class HUDButton {
 	}
 	
 	public void update() {		
-		if(enabled) {
-			if(mouseIsHovering) {
-				onMouseStopsHovering();
-			}else {
-				onMouseStartsHovering();
+		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
+			if(enabled) {
+				if(mouseIsHovering) {
+					onMouseStopsHovering();
+				}else {
+					onMouseStartsHovering();
+				}
 			}
 		}
 		
