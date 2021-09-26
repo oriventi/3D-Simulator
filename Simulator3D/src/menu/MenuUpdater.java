@@ -16,18 +16,17 @@ public class MenuUpdater {
 	public static void activateMenu(Menu menu) {
 		MainGameLoop.gameState = GameState.UI_MODE;
 		activatedMenu = menu;
-		activatedMenu.activate();
+		activatedMenu.activateMenu();
 		isMenuActivated = true;
 	}
 	
 	public static void deactivateMenu() {
-		activatedMenu.deactivate();
+		activatedMenu.deactivateMenu();
 		activatedMenu.deactivated = true;
 	}
 	
 	private void doDeactivating() {
-		if(activatedMenu.deactivate()) {
-			activatedMenu.reset();
+		if(activatedMenu.deactivateMenu()) {
 			MainGameLoop.gameState = GameState.GAME_MODE;
 			activatedMenu = null;
 			isMenuActivated = false;

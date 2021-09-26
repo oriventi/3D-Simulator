@@ -27,8 +27,8 @@ public abstract class HUDWindow {
 		mouseStartPosition = new Vector2f();
 		windowOffset = new Vector2f();
 		
-		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, this.ysize);
-		taskbar = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, 35 * DisplayManager.resizeRatio);
+		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, this.ysize, false);
+		taskbar = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, 35 * DisplayManager.resizeRatio, false);
 		backgroundTexture.startDrawing();
 		taskbar.startDrawing();
 		

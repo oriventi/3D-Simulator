@@ -3,6 +3,8 @@ package entities;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import menu.MenuUpdater;
+
 
 public class Camera {
 
@@ -22,13 +24,15 @@ public class Camera {
 	}
 
 	public void move() {
-		calculateZoom();
 		calculatePitch();
+		calculateZoom();
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
 		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
-		player.move();
+		if(!MenuUpdater.isMenuActivated()) {
+			player.move();
+		}
 	}
 
 	public Vector3f getPosition() {

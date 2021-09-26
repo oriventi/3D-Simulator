@@ -9,13 +9,15 @@ public class HUDTexture {
 	private Vector2f position;
 	private Vector2f scale;
 	private int xpos, ypos, xsize, ysize;
+	private boolean isMenuTexture;
 	
-	public HUDTexture(int texture, int xpos, int ypos, int xsize, int ysize) {
+	public HUDTexture(int texture, int xpos, int ypos, int xsize, int ysize, boolean isMenuTexture) {
 		this.texture = texture;
 		this.xpos = xpos;
 		this.ypos = ypos;
 		this.xsize = xsize;
 		this.ysize = ysize;
+		this.isMenuTexture = isMenuTexture;
 		
 		position = new Vector2f();
 		setPosition(xpos, ypos);
@@ -32,11 +34,19 @@ public class HUDTexture {
 	}
 	
 	public void startDrawing() {
-		HUDRenderList.addHUD(this);
+		if(isMenuTexture) {
+			HUDRenderList.addMenuHUD(this);
+		}else {
+			HUDRenderList.addHUD(this);
+		}
 	}
 	
 	public void stopDrawing() {
-		HUDRenderList.removeHUD(this);
+		if(isMenuTexture) {
+			HUDRenderList.removeMenuHUD(this);
+		}else {
+			HUDRenderList.removeHUD(this);
+		}
 	}
 	
 	public int getTexture() {

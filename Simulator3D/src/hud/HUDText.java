@@ -26,6 +26,8 @@ public class HUDText {
 	private Vector2f position;
 	private float lineMaxSize;
 	private int numberOfLines;
+	
+	private boolean isMenuText;
 
 	private FontType font;
 
@@ -68,18 +70,23 @@ public class HUDText {
 	}
 	*/
 	
-	public HUDText(String text, float fontSize, FontType font, int xpos, int ypos, int maxLineLength) {
+	public HUDText(String text, float fontSize, FontType font, int xpos, int ypos, int maxLineLength, boolean centered, boolean isMenuText) {
 		position = new Vector2f();
 		this.textString = text;
 		this.fontSize = fontSize;
 		this.font = font;
+		this.isMenuText = isMenuText;
 		xpos *= DisplayManager.resizeRatio;
 		ypos *= DisplayManager.resizeRatio;
 		maxLineLength *= DisplayManager.resizeRatio;
 		position.x = xpos / (float) DisplayManager.WIDTH;
 		position.y = ypos / (float) DisplayManager.HEIGHT;
 		this.lineMaxSize = (maxLineLength)/ (float)Display.getWidth();
-		this.centerText = true;
+		this.centerText = centered;
+		TextMaster.loadText(this);
+	}
+	
+	public void draw() {
 		TextMaster.loadText(this);
 	}
 
@@ -95,6 +102,10 @@ public class HUDText {
 	 */
 	public FontType getFont() {
 		return font;
+	}
+	
+	public boolean isMenuText() {
+		return isMenuText;
 	}
 
 	/**

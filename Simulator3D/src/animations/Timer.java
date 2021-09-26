@@ -27,6 +27,10 @@ public class Timer {
 			return false;
 		}
 	}
+	
+	public float getCurrentTime() {
+		return time;
+	}
 		
 	public void start() {
 		isPaused = false;

@@ -6,6 +6,7 @@ public abstract class Menu {
 	protected boolean hasDeactivationFinished;
 	protected boolean activated;
 	protected boolean deactivated;
+
 	
 	public Menu() {
 		hasActivationFinished = false;
@@ -24,26 +25,25 @@ public abstract class Menu {
 		}
 	}
 	
+	protected abstract void activate();
+	
+	protected abstract void deactivate();
+		
 	protected abstract boolean onActivated();
 	
 	protected abstract boolean onDeactivated();
 	
-	public void activate() {
+	public void activateMenu() {
 		activated = true;
 		deactivated = false;
 		hasActivationFinished = false;
+		activate();
 	}
 	
-	public void reset() {
-		activated = false;
-		deactivated = false;
-		hasActivationFinished = false;
-		hasDeactivationFinished = false;
-	}
-	
-	public boolean deactivate() {
+	public boolean deactivateMenu() {
 		activated = false;
 		deactivated = true;
+		deactivate();
 		return hasDeactivationFinished;
 	}
 }

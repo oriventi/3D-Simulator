@@ -52,7 +52,6 @@ public class MainGameLoop {
 		
 		//TEST
 		font = new FontType(loader.loadTexture("calibri"), new File("res/font/calibri.fnt"));
-		HUDText text = new HUDText("Das ist ein Text!", 10, font, 200, 200, 300);
 		
 		MenuUpdater menuUpdater = new MenuUpdater();
 		MeshContainer container = new MeshContainer(loader);
@@ -74,7 +73,6 @@ public class MainGameLoop {
 		WorldFileManager worldFileManager = new WorldFileManager();
 		
 		//TEST
-		PauseMenu menu = new PauseMenu();
 		Timer timer = new Timer(0.5f);
 		timer.start();
 		
@@ -84,6 +82,11 @@ public class MainGameLoop {
 			timer.update();
 			
 			//game logic
+			if(MenuUpdater.isMenuActivated()) {
+				menuUpdater.update();
+			}else {
+				picker.update();
+			}
 			windowButton.update();
 			if(windowButton.onMouseClicked()) {
 				worldFileManager.fillWorldByInformationFromFile("world1");
@@ -94,18 +97,12 @@ public class MainGameLoop {
 				if(MenuUpdater.isMenuActivated()) {
 					MenuUpdater.deactivateMenu();
 				}else {
-					MenuUpdater.activateMenu(menu);
+					MenuUpdater.activateMenu(new PauseMenu());
 				}
 			}
-			menuUpdater.update();
-
 			camera.move();
-			picker.update();
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);
 			hudManager.update();
-			if(MenuUpdater.isMenuActivated()) {
-				menuUpdater.update();
-			}
 			
 			//render
 			multisampleFbo.bindFrameBuffer();

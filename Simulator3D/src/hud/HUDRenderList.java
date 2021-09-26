@@ -43,6 +43,14 @@ public class HUDRenderList {
 		huds.remove(hud);
 	}
 	
+	public static void addMenuHUD(HUDTexture hud) {
+		menuHuds.add(hud);
+	}
+	
+	public static void removeMenuHUD(HUDTexture hud) {
+		menuHuds.remove(hud);
+	}
+	
 	public void render() {
 		if(MenuUpdater.isMenuActivated()) {
 			renderer.render(menuHuds);

@@ -25,6 +25,10 @@ public class HUDButton {
 		
 	private Timer lastClickTimer;
 	
+	private String textContent;
+	private float fontSize;
+	private float r, g, b;
+	
 	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton) {
 		this.xpos = xpos * DisplayManager.resizeRatio;
 		this.ypos = ypos * DisplayManager.resizeRatio;
@@ -36,13 +40,19 @@ public class HUDButton {
 		lastClickTimer = new Timer(0.6f);
 		lastClickTimer.start();
 		
-		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), this.xpos, this.ypos, this.xsize, this.ysize);
-		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos, this.ypos, this.xsize, this.ysize);
+		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), this.xpos, this.ypos, this.xsize, this.ysize, isMenuButton);
+		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos, this.ypos, this.xsize, this.ysize, isMenuButton);
 		normalTexture.startDrawing();
 	}
 	
-	public void setText(String textContent, int fontSize) {
-		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos, ypos, xsize);
+	public void setText(String textContent, float fontSize, float r, float g, float b) {
+		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize)), xsize, false, isMenuButton);
+		text.setColour(r, g, b);
+		this.textContent = textContent;
+		this.fontSize = fontSize;
+		this.r = r;
+		this.g = g;
+		this.b = b;
 	}
 	
 	public void update() {		
@@ -85,10 +95,12 @@ public class HUDButton {
 	}
 	
 	public boolean onMouseClicked() {
-		if(MainGameLoop.gameState == GameState.UI_MODE) {
-			if(mouseIsHovering && Mouse.isButtonDown(0) && lastClickTimer.timeReachedEnd()) {
-				lastClickTimer.restart();
-				return true;
+		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
+			if(MainGameLoop.gameState == GameState.UI_MODE) {
+				if(mouseIsHovering && Mouse.isButtonDown(0) && lastClickTimer.timeReachedEnd()) {
+					lastClickTimer.restart();
+					return true;
+				}
 			}
 		}
 		return false;
@@ -107,10 +119,38 @@ public class HUDButton {
 		this.ypos = ypos;
 		normalTexture.setPosition(xpos, ypos);
 		hoveredTexture.setPosition(xpos, ypos);
+		if(hasText()) {
+			removeText();
+			setText(textContent, fontSize, r, g, b);
+		}
 	}
 	
 	public void destroy() {
-		MainGameLoop.gameState = GameState.GAME_MODE;
+		if(!isMenuButton) {
+			MainGameLoop.gameState = GameState.GAME_MODE;
+		}
 		hoveredTexture.stopDrawing();
+		normalTexture.stopDrawing();
+		
+		removeText();
+	}
+	
+	public boolean hasText() {
+		return (text != null);
+	}
+	
+	public void removeText() {
+		if(hasText()) {
+			//text = null;
+			text.remove();
+		}
+	}
+	
+	public int getXPos() {
+		return xpos;
+	}
+	
+	public int getYPos() {
+		return ypos;
 	}
 }

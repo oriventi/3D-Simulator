@@ -14,6 +14,8 @@ import renderEngine.DisplayManager;
 import renderEngine.MasterRenderer;
 import streets.Blind_Alley;
 import streets.Forward;
+import streets.No_Connection;
+import streets.Street;
 import toolbox.Maths;
 import toolbox.MousePicker;
 import vehicles.Car;
@@ -110,7 +112,7 @@ public class TrafficManager {
 		vehicles.clear();
 		for(int i = 0; i < TileManager.size; i++) {
 			for(int j = 0; j < TileManager.size; j++) {
-				if(StreetManager.getStreetSystem()[i][j] != null) {
+				if(StreetManager.getStreetSystem()[i][j] != null && !(StreetManager.getStreetSystem()[i][j] instanceof No_Connection)) {
 					if(Maths.getRandomBetween(0, 10) <= 4) {
 						spawnNormalVehicle(i, j);
 					}

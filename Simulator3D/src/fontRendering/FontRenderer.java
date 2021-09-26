@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL30;
 
 import fontMeshCreator.FontType;
 import hud.HUDText;
+import menu.MenuUpdater;
 
 public class FontRenderer {
 
@@ -25,7 +26,9 @@ public class FontRenderer {
 			GL13.glActiveTexture(GL13.GL_TEXTURE0);
 			GL11.glBindTexture(GL11.GL_TEXTURE_2D, font.getTextureAtlas());
 			for(HUDText text : texts.get(font)) {
-				renderText(text);
+				if((text.isMenuText() && MenuUpdater.isMenuActivated()) || (!text.isMenuText() && !MenuUpdater.isMenuActivated())) {
+					renderText(text);
+				}
 			}
 		}
 		endRendering();
