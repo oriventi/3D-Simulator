@@ -1,12 +1,16 @@
 package menu;
 
+import hud.HUDButton;
 import mainPackage.MainGameLoop;
 import renderEngine.DisplayManager;
 
 public class PauseMenu extends Menu{
 
-	private float initPlayerRotation;
-	private float initPitch;
+	private HUDButton resumeButton;
+	private HUDButton optionsButton;
+	private HUDButton saveButton;
+	private HUDButton exitButton;
+	
 	
 	public PauseMenu() {
 		super();
@@ -31,11 +35,14 @@ public class PauseMenu extends Menu{
 	
 	@Override
 	protected boolean onDeactivated() {
-		if(MainGameLoop.camera.getPitch() > initPitch) {
-			MainGameLoop.camera.setPitch(MainGameLoop.camera.getPitch() - 20.f * DisplayManager.getFrameTimeSeconds());
-			return false;
-		}
 		return true;
 		
+	}
+	
+	private void initButtons() {
+		resumeButton = new HUDButton(normalTextureName, xpos, ypos, xsize, ysize, true);
+		optionsButton = new HUDButton(normalTextureName, xpos, ypos, xsize, ysize, true);
+		saveButton = new HUDButton(normalTextureName, xpos, ypos, xsize, ysize, true);
+		exitButton = new HUDButton(normalTextureName, xpos, ypos, xsize, ysize, true);
 	}
 }

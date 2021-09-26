@@ -12,6 +12,7 @@ public class HUDButton {
 	
 	private HUDTexture normalTexture;
 	private HUDTexture hoveredTexture;
+	private HUDText text;
 	
 	private int xpos;
 	private int ypos;
@@ -40,6 +41,10 @@ public class HUDButton {
 		normalTexture.startDrawing();
 	}
 	
+	public void setText(String textContent, int fontSize) {
+		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos, ypos, xsize);
+	}
+	
 	public void update() {		
 		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
 			if(enabled) {
@@ -57,7 +62,9 @@ public class HUDButton {
 	private void onMouseStartsHovering() {
 		if(Mouse.getX() < xpos + xsize && Mouse.getX() > xpos) {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
-				MainGameLoop.gameState = GameState.UI_MODE;
+				if(!isMenuButton) {
+					MainGameLoop.gameState = GameState.UI_MODE;
+				}
 				mouseIsHovering = true;
 				hoveredTexture.startDrawing();
 				normalTexture.stopDrawing();
@@ -68,7 +75,9 @@ public class HUDButton {
 	private void onMouseStopsHovering() {
 		if(Mouse.getX() > xpos + xsize || Mouse.getX() < xpos 
 				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize || DisplayManager.HEIGHT - Mouse.getY() < ypos) {
-			MainGameLoop.gameState = GameState.GAME_MODE;
+			if(!isMenuButton) {
+				MainGameLoop.gameState = GameState.GAME_MODE;
+			}
 			mouseIsHovering = false;
 			normalTexture.startDrawing();
 			hoveredTexture.stopDrawing();

@@ -1,7 +1,10 @@
 package mainPackage;
 
+import java.io.File;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import World.World;
@@ -12,8 +15,11 @@ import entities.Light;
 import entities.LightManager;
 import entities.Player;
 import fileManager.WorldFileManager;
+import fontMeshCreator.FontType;
+import fontRendering.TextMaster;
 import hud.HUDButton;
 import hud.HUDRenderList;
+import hud.HUDText;
 import menu.MenuUpdater;
 import menu.PauseMenu;
 import models.MeshContainer;
@@ -33,6 +39,7 @@ public class MainGameLoop {
 	public static GameState gameState;
 	public static Player player;
 	public static Camera camera;
+	public static FontType font;
 	
 	public static void main(String[] args) {
 		
@@ -41,6 +48,11 @@ public class MainGameLoop {
 		loader = new Loader();
 		gameState = GameState.GAME_MODE;
 		hudManager = new HUDRenderList();
+		TextMaster.init();
+		
+		//TEST
+		font = new FontType(loader.loadTexture("calibri"), new File("res/font/calibri.fnt"));
+		HUDText text = new HUDText("Das ist ein Text!", 10, font, 200, 200, 300);
 		
 		MenuUpdater menuUpdater = new MenuUpdater();
 		MeshContainer container = new MeshContainer(loader);
@@ -77,7 +89,6 @@ public class MainGameLoop {
 				worldFileManager.fillWorldByInformationFromFile("world1");
 				World.getTrafficManager().spawnRandomTraffic();
 			}
-			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && timer.timeReachedEnd()) {
 				timer.restart();
 				if(MenuUpdater.isMenuActivated()) {
@@ -105,12 +116,14 @@ public class MainGameLoop {
 			PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 			
 			hudManager.render();
+			TextMaster.render();
 
 			//update
 			DisplayManager.updateDisplay();
 		}
 		
 		//cleanUp on close
+		TextMaster.cleanUp();
 		PostProcessing.cleanUp();
 		multisampleFbo.cleanUp();
 		outputFbo.cleanUp();
