@@ -65,9 +65,8 @@ public class HUDButton {
 				}
 			}
 			if(isSwiping) updatePositionWhileSwiping();
+			lastClickTimer.update();
 		}
-		
-		lastClickTimer.update();
 	}
 	
 	public void setText(String textContent, float fontSize, float r, float g, float b) {
@@ -140,9 +139,9 @@ public class HUDButton {
 		if(!isMenuButton) {
 			MainGameLoop.gameState = GameState.GAME_MODE;
 		}
+		disable();
 		hoveredTexture.stopDrawing();
 		normalTexture.stopDrawing();
-		
 		removeText();
 	}
 	
@@ -165,25 +164,17 @@ public class HUDButton {
 		return ypos;
 	}
 	
-	public void setXPos(int xpos) {
-		this.xpos = xpos;
-	}
-	
-	public void setYPos(int ypos) {
-		this.ypos = ypos;
-	}
-	
-	public void swipe(int xspeed, int yspeed, int xBorder, int yBorder, float delayTime) {
+	public void swipeTo(int xspeed, int yspeed, int xBorder, int yBorder, float delayTime) {
 		if(xspeed != 0) {
 			isSwiping = true;
-			float runningXTime = Math.abs(xpos - xBorder) / (float)xspeed + 1.f;
+			float runningXTime = Math.abs(xpos - xBorder) / (float)xspeed;
 			swipeXAnimation = new LinearAnimation(runningXTime, xspeed, xBorder, delayTime);
 			swipeXAnimation.startAnimation();
 		}
 	
 		if(yspeed != 0) {
 			isSwiping = true;
-			float runningYTime = Math.abs(ypos - yBorder) / (float)yspeed + 1.f;
+			float runningYTime = Math.abs(ypos - yBorder) / (float)yspeed;
 			swipeYAnimation = new LinearAnimation(runningYTime, yspeed, yBorder, delayTime);
 			swipeYAnimation.startAnimation();
 		}
@@ -191,7 +182,7 @@ public class HUDButton {
 	
 	public void updatePositionWhileSwiping() {
 		if(swipeXAnimation != null) {
-			if(swipeXAnimation.reachedBorder(xpos)) {
+			if(swipeXAnimation.reachedTargetValue(xpos)) {
 				swipeXAnimation.destroy();
 				swipeXAnimation = null;
 			}else {
@@ -199,7 +190,7 @@ public class HUDButton {
 			}
 		}
 		if(swipeYAnimation != null) {
-			if(swipeYAnimation.reachedBorder(ypos)) {
+			if(swipeYAnimation.reachedTargetValue(ypos)) {
 				swipeYAnimation.destroy();
 				swipeYAnimation = null;
 			}else {
@@ -213,5 +204,9 @@ public class HUDButton {
 	
 	public boolean hasSwipingFinished() {
 		return !isSwiping;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

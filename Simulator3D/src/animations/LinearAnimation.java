@@ -40,7 +40,7 @@ public class LinearAnimation extends Animation{
 		}
 	}
 	
-	public boolean reachedBorder(int varToCheck) {
+	public boolean reachedTargetValue(int varToCheck) {
 		return (varToCheck == breakBorder);
 	}
 	

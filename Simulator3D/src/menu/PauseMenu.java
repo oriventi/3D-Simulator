@@ -1,6 +1,5 @@
 package menu;
 
-import animations.LinearAnimation;
 import animations.Timer;
 import hud.HUDButton;
 import mainPackage.MainGameLoop;
@@ -8,33 +7,28 @@ import renderEngine.DisplayManager;
 
 public class PauseMenu extends Menu{
 
-	private HUDButton resumeButton;
-	private HUDButton optionsButton;
-	private HUDButton saveButton;
-	private HUDButton exitButton;
-	
 	private HUDButton quitToDesktop;
 	private HUDButton quitToMainMenu;
+	
+	private HUDButton[] buttons;
+	private String[] buttonNames = new String[]{"Resume", "Options", "Save World", "Quit", "Quit to Desktop", "Quit to Main Menu"};
+	
 	
 	private Timer timer;
 		
 	public PauseMenu() {
 		super();
-		resumeButton = new HUDButton("pauseMenu_button", -300, 200, 300, 60, true);
-		resumeButton.setText("Resume", 1.3f, 0.9f, 0.9f, 0.9f);
-		resumeButton.swipe(1300, 0, 100, 0, 0);
-	
-		optionsButton = new HUDButton("pauseMenu_button", -300, 300, 300, 60, true);
-		optionsButton.setText("Options", 1.3f, 0.9f, 0.9f, 0.9f);
-		optionsButton.swipe(1300, 0, 100, 0, 0.2f);
-
-		saveButton = new HUDButton("pauseMenu_button", -300, 400, 300, 60, true);
-		saveButton.setText("Save World", 1.3f, 0.9f, 0.9f, 0.9f);
-		saveButton.swipe(1300, 0, 100, 0, 0.4f);
-
-		exitButton = new HUDButton("pauseMenu_button", -300, 500, 300, 60, true);
-		exitButton.setText("Quit", 1.3f, 0.9f, 0.9f, 0.9f);
-		exitButton.swipe(1300, 0, 100, 0, 0.6f);
+		buttons = new HUDButton[6];
+		for(int i = 0; i < buttons.length; i++) {
+			if(i < 4) {
+				buttons[i] = new HUDButton("pauseMenu_button", -300, 200 + i * 100, 300, 60, true);
+				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1);
+				buttons[i].swipeTo(1300, 0, 100, 0, i * 0.2f);
+			}else {
+				buttons[i] = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true);
+				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1);
+			}
+		}
 		
 		timer = new Timer(1.6f);
 	}
@@ -43,8 +37,9 @@ public class PauseMenu extends Menu{
 	protected void updateContent() {
 		timer.update();
 		MainGameLoop.player.increaseRotation(0, 5 * DisplayManager.getFrameTimeSeconds(), 0);
-		updateButtons();
 		
+		updateButtons();
+		checkForButtonClick();
 	}
 
 	@Override
@@ -52,6 +47,7 @@ public class PauseMenu extends Menu{
 		if(MainGameLoop.camera.getPitch() < 50) {
 			MainGameLoop.camera.setPitch(MainGameLoop.camera.getPitch() + 50.f * DisplayManager.getFrameTimeSeconds());
 		}
+		MainGameLoop.camera.swipePitchTo(50, 50);
 		
 		if(timer.timeReachedEnd() && MainGameLoop.camera.getPitch() >= 50) {
 			return true;
@@ -61,16 +57,11 @@ public class PauseMenu extends Menu{
 	
 	@Override
 	protected boolean updateDeactivationProcess() {
-		exitActivated = false;
-		
-		if(exitButton.getXPos() <= -300) {
-			resumeButton.destroy();
-			optionsButton.destroy();
-			saveButton.destroy();
-			exitButton.destroy();
-			if(quitToDesktop != null) {
-				quitToDesktop.destroy();
-				quitToMainMenu.destroy();
+		if(buttons[3].hasSwipingFinished()) {
+			for(int i = 0; i < buttons.length; i++) {
+				if(buttons[i] != null) {
+					buttons[i].destroy();
+				}
 			}
 			return true;
 		}
@@ -80,64 +71,49 @@ public class PauseMenu extends Menu{
 	@Override
 	protected void onDeactivated() {
 		timer.restart();
-		resumeButton.swipe(-1300, 0, -300, 0, 0);
-		optionsButton.swipe(-1300, 0, -300, 0, 0.2f);
-		saveButton.swipe(-1300, 0, -300, 0, 0.4f);
-		exitButton.swipe(-1300, 0, -300, 0, 0.6f);
-		
-		if(quitToDesktop != null) {
-			quitToDesktop.swipe(0, 1300, 0, 900, 0);
-			quitToMainMenu.swipe(0, 1300, 0, 900, 0.1f);
+		for(int i = 0; i < buttons.length; i++) {
+			if(buttons[i] != null) {
+				if(i < 4) {
+					buttons[i].swipeTo(-1300, 0, -300, 0, i * 0.2f);
+				}else {
+					buttons[i].swipeTo(0, 1300, 0, 900, (i-4) * 0.1f);
+				}
+			}
 		}
 	}
 	
 	private void updateButtons() {
-		resumeButton.update();
-		optionsButton.update();
-		saveButton.update();
-		exitButton.update();
-		if(quitToDesktop != null) {
-			quitToDesktop.update();
-			quitToMainMenu.update();
+		for(int i = 0; i < buttons.length; i++) {
+			if(buttons[i] != null) {
+				buttons[i].update();
+			}
 		}
-		checkForButtonClick();
 	}
 	
-	private boolean exitActivated = false;
 	private void checkForButtonClick() {
-		if(resumeButton.onMouseClicked()) {
+		if(buttons[0].onMouseClicked()) {
 			MenuUpdater.deactivateCurrentMenu();
 		}
-		if(exitButton.onMouseClicked()) {
-			if(quitToDesktop == null) {
-				exitActivated = true;
-				quitToDesktop = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true);
-				quitToDesktop.setText("Quit to Desktop", 1.3f, 0.9f, 0.9f, 0.9f);
-				quitToDesktop.swipe(0, -1300, 0, 500, 0);
-
-				quitToMainMenu = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true);
-				quitToMainMenu.setText("Quit to Main Menu", 1.3f, 0.9f, 0.9f, 0.9f);
-				quitToMainMenu.swipe(0, -1300, 0, 600, 0);
+		
+		if(buttons[3].onMouseClicked()) {
+			if(buttons[4].getYPos() >= 900) {
+				buttons[4].swipeTo(0, -1300, 0, 500, 0);
+				buttons[5].swipeTo(0, -1300, 0, 600, 0);
+				buttons[4].enable();
+				buttons[5].enable();
 			}else {
-				timer.restart();
-				exitActivated = false;
-				quitToDesktop.swipe(0, 1300, 0, 900, 0);
-				quitToMainMenu.swipe(0, 1300, 0, 900, 0.1f);
-				timer.restart();
+				buttons[4].swipeTo(0, 1300, 0, 900, 0);
+				buttons[5].swipeTo(0, 1300, 0, 900, 0.1f);
+				buttons[4].disable();
+				buttons[5].disable();
 			}
 		}
-		if(quitToDesktop != null && !exitActivated) {
-			if(quitToDesktop.getYPos() >= 900) {
-				quitToDesktop.destroy();
-				quitToDesktop = null;
-				quitToMainMenu.destroy();
-				quitToMainMenu = null;
+			
+		if(buttons[4].isEnabled()) {
+			if(buttons[4].onMouseClicked()) {
+				MainGameLoop.closeGame();
 			}
-			if(quitToDesktop != null) {
-				if(quitToDesktop.onMouseClicked()) {
-					MainGameLoop.closeGame();
-				}
-			}	
 		}
+		
 	}
 }

@@ -3,6 +3,7 @@ package entities;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+import animations.LinearAnimation;
 import menu.MenuUpdater;
 
 
@@ -19,6 +20,8 @@ public class Camera {
 
 	public Player player;
 	
+	private LinearAnimation swipeAnimation;
+	
 	public Camera(Player player) {
 		this.player = player;
 	}
@@ -32,6 +35,9 @@ public class Camera {
 		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
 		if(!MenuUpdater.isMenuActivated()) {
 			player.move();
+		}
+		if(swipeAnimation != null) {
+			doSwipeMovement();
 		}
 	}
 
@@ -89,6 +95,24 @@ public class Camera {
 			}
 			float angleChange = Mouse.getDX() * 0.3f;
 			player.increaseRotation(0, -angleChange, 0);
+		}
+	}
+	
+	public void swipePitchTo(int targetPitch, int speed) {
+		float runningTime = (this.pitch - targetPitch) / speed;
+		if(this.pitch < targetPitch) {
+			swipeAnimation = new LinearAnimation(runningTime, speed, targetPitch, 0);
+		}else {
+			swipeAnimation = new LinearAnimation(runningTime, -speed, targetPitch, 0);
+		}
+		swipeAnimation.startAnimation();
+	}
+	
+	private void doSwipeMovement() {
+		pitch = swipeAnimation.getCurrentValue(pitch);
+		if(swipeAnimation.isFinished()) {
+			swipeAnimation.destroy();
+			swipeAnimation = null;
 		}
 	}
 	
