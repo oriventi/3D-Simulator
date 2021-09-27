@@ -16,28 +16,26 @@ public class MenuUpdater {
 	public static void activateMenu(Menu menu) {
 		MainGameLoop.gameState = GameState.UI_MODE;
 		activatedMenu = menu;
-		activatedMenu.activateMenu();
+		activatedMenu.startActivationProcess();
 		isMenuActivated = true;
 	}
 	
-	public static void deactivateMenu() {
-		activatedMenu.deactivateMenu();
+	public static void deactivateCurrentMenu() {
+		activatedMenu.startDeactivationProcess();
 		activatedMenu.deactivated = true;
 	}
 	
-	private void doDeactivating() {
-		if(activatedMenu.deactivateMenu()) {
-			MainGameLoop.gameState = GameState.GAME_MODE;
-			activatedMenu = null;
-			isMenuActivated = false;
-		}
+	private void deleteMenu() {
+		MainGameLoop.gameState = GameState.GAME_MODE;
+		activatedMenu = null;
+		isMenuActivated = false;
 	}
 	
 	public void update() {
 		if(isMenuActivated && activatedMenu != null) {
 			activatedMenu.update();
-			if(activatedMenu.deactivated) {
-				doDeactivating();
+			if(activatedMenu.hasDeactivationFinished()) {
+				deleteMenu();
 			}
 		}
 	}

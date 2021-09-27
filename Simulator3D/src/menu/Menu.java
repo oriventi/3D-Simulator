@@ -13,37 +13,37 @@ public abstract class Menu {
 		hasDeactivationFinished = false;
 	}
 	
-	protected abstract void updateMenu();
+	protected abstract void updateContent();
 	
 	public void update() {
-		updateMenu();
+		updateContent();
 		if(activated && !hasActivationFinished) {
-			hasActivationFinished = onActivated();
+			hasActivationFinished = updateActivationProcess();
 		}
 		if(deactivated && !hasDeactivationFinished) {
-			hasDeactivationFinished = onDeactivated();
+			hasDeactivationFinished = updateDeactivationProcess();
 		}
 	}
-	
-	protected abstract void activate();
-	
-	protected abstract void deactivate();
 		
-	protected abstract boolean onActivated();
+	protected abstract void onDeactivated();
+		
+	protected abstract boolean updateActivationProcess();
 	
-	protected abstract boolean onDeactivated();
+	protected abstract boolean updateDeactivationProcess();
 	
-	public void activateMenu() {
+	public void startActivationProcess() {
 		activated = true;
 		deactivated = false;
 		hasActivationFinished = false;
-		activate();
 	}
 	
-	public boolean deactivateMenu() {
+	public void startDeactivationProcess() {
 		activated = false;
 		deactivated = true;
-		deactivate();
+		onDeactivated();
+	}
+	
+	public boolean hasDeactivationFinished() {
 		return hasDeactivationFinished;
 	}
 }

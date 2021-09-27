@@ -15,7 +15,7 @@ public class EnumHolder {
 	}
 	
 	public enum AnimationID{
-		WALKING, INVALID
+		LINEAR, INVALID
 	}
 	
 	public enum GameState{

@@ -2,6 +2,8 @@ package hud;
 
 import org.lwjgl.input.Mouse;
 
+import animations.Animation;
+import animations.LinearAnimation;
 import animations.Timer;
 import mainPackage.MainGameLoop;
 import menu.MenuUpdater;
@@ -25,15 +27,23 @@ public class HUDButton {
 		
 	private Timer lastClickTimer;
 	
+	//Text
 	private String textContent;
 	private float fontSize;
 	private float r, g, b;
+	
+	//Swipe
+	private LinearAnimation swipeXAnimation;
+	private LinearAnimation swipeYAnimation;
+	private boolean isSwiping;
 	
 	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton) {
 		this.xpos = xpos * DisplayManager.resizeRatio;
 		this.ypos = ypos * DisplayManager.resizeRatio;
 		this.xsize = xsize * DisplayManager.resizeRatio;
 		this.ysize = ysize * DisplayManager.resizeRatio;
+		
+		isSwiping = false;
 		this.isMenuButton = isMenuButton;
 		enabled = true;
 		mouseIsHovering = false;
@@ -45,16 +55,6 @@ public class HUDButton {
 		normalTexture.startDrawing();
 	}
 	
-	public void setText(String textContent, float fontSize, float r, float g, float b) {
-		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize)), xsize, false, isMenuButton);
-		text.setColour(r, g, b);
-		this.textContent = textContent;
-		this.fontSize = fontSize;
-		this.r = r;
-		this.g = g;
-		this.b = b;
-	}
-	
 	public void update() {		
 		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
 			if(enabled) {
@@ -64,9 +64,20 @@ public class HUDButton {
 					onMouseStartsHovering();
 				}
 			}
+			if(isSwiping) updatePositionWhileSwiping();
 		}
 		
 		lastClickTimer.update();
+	}
+	
+	public void setText(String textContent, float fontSize, float r, float g, float b) {
+		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize)), xsize, false, isMenuButton);
+		text.setColour(r, g, b);
+		this.textContent = textContent;
+		this.fontSize = fontSize;
+		this.r = r;
+		this.g = g;
+		this.b = b;
 	}
 	
 	private void onMouseStartsHovering() {
@@ -141,8 +152,8 @@ public class HUDButton {
 	
 	public void removeText() {
 		if(hasText()) {
-			//text = null;
 			text.remove();
+			text = null;
 		}
 	}
 	
@@ -152,5 +163,55 @@ public class HUDButton {
 	
 	public int getYPos() {
 		return ypos;
+	}
+	
+	public void setXPos(int xpos) {
+		this.xpos = xpos;
+	}
+	
+	public void setYPos(int ypos) {
+		this.ypos = ypos;
+	}
+	
+	public void swipe(int xspeed, int yspeed, int xBorder, int yBorder, float delayTime) {
+		if(xspeed != 0) {
+			isSwiping = true;
+			float runningXTime = Math.abs(xpos - xBorder) / (float)xspeed + 1.f;
+			swipeXAnimation = new LinearAnimation(runningXTime, xspeed, xBorder, delayTime);
+			swipeXAnimation.startAnimation();
+		}
+	
+		if(yspeed != 0) {
+			isSwiping = true;
+			float runningYTime = Math.abs(ypos - yBorder) / (float)yspeed + 1.f;
+			swipeYAnimation = new LinearAnimation(runningYTime, yspeed, yBorder, delayTime);
+			swipeYAnimation.startAnimation();
+		}
+	}
+	
+	public void updatePositionWhileSwiping() {
+		if(swipeXAnimation != null) {
+			if(swipeXAnimation.reachedBorder(xpos)) {
+				swipeXAnimation.destroy();
+				swipeXAnimation = null;
+			}else {
+				setPosition((int)swipeXAnimation.getCurrentValue(xpos), ypos);
+			}
+		}
+		if(swipeYAnimation != null) {
+			if(swipeYAnimation.reachedBorder(ypos)) {
+				swipeYAnimation.destroy();
+				swipeYAnimation = null;
+			}else {
+				setPosition(xpos, (int)swipeYAnimation.getCurrentValue(ypos));
+			}
+		}
+		if(swipeXAnimation == null && swipeYAnimation == null) {
+			isSwiping = false;
+		}
+	}
+	
+	public boolean hasSwipingFinished() {
+		return !isSwiping;
 	}
 }

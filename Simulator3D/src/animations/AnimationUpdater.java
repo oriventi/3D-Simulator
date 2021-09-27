@@ -7,7 +7,7 @@ import toolbox.EnumHolder.AnimationID;
 
 public class AnimationUpdater {
 	
-	private List<Animation> animationList;
+	private static List<Animation> animationList;
 
 	public AnimationUpdater() {
 		animationList = new ArrayList<Animation>();
@@ -19,11 +19,11 @@ public class AnimationUpdater {
 		}
 	}
 	
-	public void addAnimation(Animation animation) {
+	public static void addAnimation(Animation animation) {
 		animationList.add(animation);
 	}
 	
-	public void removeAnimation(Animation animation) {
+	public static void removeAnimation(Animation animation) {
 		animationList.remove(animation);
 	}
 	
