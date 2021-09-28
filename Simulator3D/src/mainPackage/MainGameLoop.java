@@ -18,7 +18,9 @@ import fileManager.WorldFileManager;
 import fontMeshCreator.FontType;
 import fontRendering.TextMaster;
 import hud.HUDButton;
+import hud.HUDDialog;
 import hud.HUDRenderList;
+import hud.HUDWindow;
 import menu.MenuUpdater;
 import menu.PauseMenu;
 import models.MeshContainer;
@@ -77,8 +79,37 @@ public class MainGameLoop {
 		//TEST
 		Timer timer = new Timer(0.5f);
 		timer.start();
+		HUDDialog dialog = new HUDDialog("", 500, 400, false);
+		HUDRenderList.addWindow(new HUDWindow(600, 100, 200, 100) {
+			
+			@Override
+			protected void updateContent() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			protected void renderContent() {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			protected void moveContentWithWindowMovement(int xpos, int ypos) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			protected void destroyContent() {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		dialog.show();
 		
 		while(!Display.isCloseRequested() && !isClosed) {
+			dialog.update();
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
 			timer.update();

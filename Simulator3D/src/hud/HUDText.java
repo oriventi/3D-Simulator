@@ -78,9 +78,9 @@ public class HUDText {
 		this.isMenuText = isMenuText;
 		xpos *= DisplayManager.resizeRatio;
 		ypos *= DisplayManager.resizeRatio;
-		maxLineLength *= DisplayManager.resizeRatio;
-		position.x = xpos / (float) DisplayManager.WIDTH;
-		position.y = ypos / (float) DisplayManager.HEIGHT;
+		//maxLineLength *= DisplayManager.resizeRatio;
+		position.x = (xpos / (float) DisplayManager.WIDTH) / (float)DisplayManager.resizeRatio;
+		position.y = (ypos / (float) DisplayManager.HEIGHT) / (float)DisplayManager.resizeRatio;
 		this.lineMaxSize = (maxLineLength)/ (float)Display.getWidth();
 		this.centerText = centered;
 		TextMaster.loadText(this);

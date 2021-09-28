@@ -24,6 +24,7 @@ public class HUDButton {
 	private boolean mouseIsHovering;
 	private boolean enabled;
 	private boolean isMenuButton;
+	private boolean visible;
 		
 	private Timer lastClickTimer;
 	
@@ -31,6 +32,7 @@ public class HUDButton {
 	private String textContent;
 	private float fontSize;
 	private float r, g, b;
+	private boolean isCentered;
 	
 	//Swipe
 	private LinearAnimation swipeXAnimation;
@@ -38,11 +40,11 @@ public class HUDButton {
 	private boolean isSwiping;
 	
 	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton) {
-		this.xpos = xpos * DisplayManager.resizeRatio;
-		this.ypos = ypos * DisplayManager.resizeRatio;
-		this.xsize = xsize * DisplayManager.resizeRatio;
-		this.ysize = ysize * DisplayManager.resizeRatio;
-		
+		this.xpos = (int) (xpos * DisplayManager.resizeRatio);
+		this.ypos = (int) (ypos * DisplayManager.resizeRatio);
+		this.xsize = (int) (xsize * DisplayManager.resizeRatio);
+		this.ysize = (int) (ysize * DisplayManager.resizeRatio);
+		visible = true;
 		isSwiping = false;
 		this.isMenuButton = isMenuButton;
 		enabled = true;
@@ -69,14 +71,15 @@ public class HUDButton {
 		}
 	}
 	
-	public void setText(String textContent, float fontSize, float r, float g, float b) {
-		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize)), xsize, false, isMenuButton);
+	public void setText(String textContent, float fontSize, float r, float g, float b, boolean isTextCentered) {
+		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize * DisplayManager.resizeRatio)), xsize, isTextCentered, isMenuButton);
 		text.setColour(r, g, b);
 		this.textContent = textContent;
 		this.fontSize = fontSize;
 		this.r = r;
 		this.g = g;
 		this.b = b;
+		this.isCentered = isTextCentered;
 	}
 	
 	private void onMouseStartsHovering() {
@@ -131,7 +134,7 @@ public class HUDButton {
 		hoveredTexture.setPosition(xpos, ypos);
 		if(hasText()) {
 			removeText();
-			setText(textContent, fontSize, r, g, b);
+			setText(textContent, fontSize, r, g, b, isCentered);
 		}
 	}
 	
@@ -165,6 +168,8 @@ public class HUDButton {
 	}
 	
 	public void swipeTo(int xspeed, int yspeed, int xBorder, int yBorder, float delayTime) {
+		yBorder *= DisplayManager.resizeRatio;
+		xBorder *= DisplayManager.resizeRatio;
 		if(xspeed != 0) {
 			isSwiping = true;
 			float runningXTime = Math.abs(xpos - xBorder) / (float)xspeed;
@@ -208,5 +213,9 @@ public class HUDButton {
 	
 	public boolean isEnabled() {
 		return enabled;
+	}
+	
+	public void setVisibility(boolean visible) {
+		this.visible = visible;
 	}
 }

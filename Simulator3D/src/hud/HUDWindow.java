@@ -20,26 +20,26 @@ public abstract class HUDWindow {
 	private boolean mouseIsHovering;
 	
 	public HUDWindow(int xpos, int ypos, int xsize, int ysize) {
-		this.xpos = xpos * DisplayManager.resizeRatio;
-		this.ypos = ypos * DisplayManager.resizeRatio;
-		this.xsize = xsize * DisplayManager.resizeRatio;
-		this.ysize = ysize * DisplayManager.resizeRatio;
+		this.xpos = (int) (xpos * DisplayManager.resizeRatio);
+		this.ypos = (int) (ypos * DisplayManager.resizeRatio);
+		this.xsize = (int) (xsize * DisplayManager.resizeRatio);
+		this.ysize = (int) (ysize * DisplayManager.resizeRatio);
 		mouseStartPosition = new Vector2f();
 		windowOffset = new Vector2f();
 		
 		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, this.ysize, false);
-		taskbar = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, 35 * DisplayManager.resizeRatio, false);
+		taskbar = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), this.xpos, this.ypos, this.xsize, (int)(35 * DisplayManager.resizeRatio), false);
 		backgroundTexture.startDrawing();
 		taskbar.startDrawing();
 		
-		closeButton = new HUDButton("close_button", this.xpos + this.xsize - 50 * DisplayManager.resizeRatio, this.ypos,
-				50 * DisplayManager.resizeRatio, 35 * DisplayManager.resizeRatio, false);
+		closeButton = new HUDButton("close_button", xpos + xsize - 50, (int)ypos,
+				50, 35, false);
 		
 		mouseIsHovering = false;
 		mouseIsMoving = false;
 
 	}
-	
+
 	protected abstract void updateContent();
 	
 	protected abstract void renderContent();
@@ -49,6 +49,7 @@ public abstract class HUDWindow {
 	protected abstract void destroyContent();	
 	
 	public void update() {
+		MainGameLoop.gameState = GameState.UI_MODE;
 		if(mouseIsHovering) {
 			if(!mouseIsMoving) {
 				checkForMouseStopsHovering();
@@ -62,7 +63,7 @@ public abstract class HUDWindow {
 		updateContent();
 		renderContent();
 	}
-		
+	
 	private void checkForMouseStartsHovering() {
 		if(Mouse.getX() < xpos + xsize && Mouse.getX() > xpos) {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
@@ -103,7 +104,7 @@ public abstract class HUDWindow {
 	}
 	
 	private void updateWindowPosition(int xpos, int ypos) {
-		closeButton.setPosition(xpos + xsize - 50 * DisplayManager.resizeRatio, ypos);
+		closeButton.setPosition((int)(xpos + xsize - 50 * DisplayManager.resizeRatio), ypos);
 		backgroundTexture.setPosition(xpos, ypos);
 		taskbar.setPosition(xpos, ypos);
 		moveContentWithWindowMovement(xpos, ypos);
@@ -118,6 +119,7 @@ public abstract class HUDWindow {
 			taskbar.stopDrawing();
 			closeButton.destroy();
 			destroyContent();
+			MainGameLoop.gameState = GameState.GAME_MODE;
 			HUDRenderList.removeWindow(this);
 		}
 	}

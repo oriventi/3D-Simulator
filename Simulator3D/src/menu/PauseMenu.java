@@ -22,15 +22,15 @@ public class PauseMenu extends Menu{
 		for(int i = 0; i < buttons.length; i++) {
 			if(i < 4) {
 				buttons[i] = new HUDButton("pauseMenu_button", -300, 200 + i * 100, 300, 60, true);
-				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1);
+				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 				buttons[i].swipeTo(1300, 0, 100, 0, i * 0.2f);
 			}else {
 				buttons[i] = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true);
-				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1);
+				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 			}
 		}
 		
-		timer = new Timer(1.6f);
+		timer = new Timer(2f);
 	}
 
 	@Override
@@ -96,14 +96,14 @@ public class PauseMenu extends Menu{
 		}
 		
 		if(buttons[3].onMouseClicked()) {
-			if(buttons[4].getYPos() >= 900) {
+			if(buttons[4].getYPos() >= 900 * DisplayManager.resizeRatio) {
 				buttons[4].swipeTo(0, -1300, 0, 500, 0);
 				buttons[5].swipeTo(0, -1300, 0, 600, 0);
 				buttons[4].enable();
 				buttons[5].enable();
 			}else {
 				buttons[4].swipeTo(0, 1300, 0, 900, 0);
-				buttons[5].swipeTo(0, 1300, 0, 900, 0.1f);
+				buttons[5].swipeTo(0, 1300, 0, 900, 0.1f * DisplayManager.resizeRatio);
 				buttons[4].disable();
 				buttons[5].disable();
 			}
