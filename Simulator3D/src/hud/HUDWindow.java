@@ -4,6 +4,7 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector2f;
 
 import mainPackage.MainGameLoop;
+import menu.MenuUpdater;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
 
@@ -49,19 +50,23 @@ public abstract class HUDWindow {
 	protected abstract void destroyContent();	
 	
 	public void update() {
-		MainGameLoop.gameState = GameState.UI_MODE;
-		if(mouseIsHovering) {
-			if(!mouseIsMoving) {
-				checkForMouseStopsHovering();
-				onWindowClose();	
+		if(!MenuUpdater.isMenuActivated()) {
+			if(mouseIsHovering) {
+				if(!mouseIsMoving) {
+					checkForMouseStopsHovering();
+					onWindowClose();	
+				}
+				if(MainGameLoop.gameState == GameState.GAME_MODE) {
+					MainGameLoop.gameState = GameState.UI_MODE;
+				}
+				onWindowMove();
+			}else {
+				checkForMouseStartsHovering();
 			}
-			onWindowMove();
-		}else {
-			checkForMouseStartsHovering();
+			
+			updateContent();
+			renderContent();
 		}
-		
-		updateContent();
-		renderContent();
 	}
 	
 	private void checkForMouseStartsHovering() {

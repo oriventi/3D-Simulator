@@ -79,33 +79,8 @@ public class MainGameLoop {
 		//TEST
 		Timer timer = new Timer(0.5f);
 		timer.start();
-		HUDDialog dialog = new HUDDialog("", 500, 400, false);
-		HUDRenderList.addWindow(new HUDWindow(600, 100, 200, 100) {
-			
-			@Override
-			protected void updateContent() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void renderContent() {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void moveContentWithWindowMovement(int xpos, int ypos) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			protected void destroyContent() {
-				// TODO Auto-generated method stub
-				
-			}
-		});
+		HUDDialog dialog = new HUDDialog("Hallo",
+				"Moechtest du Hello World ausgeben?", 500, 200, false);
 		dialog.show();
 		
 		while(!Display.isCloseRequested() && !isClosed) {
@@ -113,6 +88,11 @@ public class MainGameLoop {
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
 			timer.update();
+			if(dialog.onPositiveClicked()) {
+				System.out.println("HELLO WORLD!");
+			}
+			if(dialog.onNegativeClicked()) {
+			}
 			
 			//game logic
 			if(MenuUpdater.isMenuActivated()) {

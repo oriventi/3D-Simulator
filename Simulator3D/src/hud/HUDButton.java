@@ -2,7 +2,6 @@ package hud;
 
 import org.lwjgl.input.Mouse;
 
-import animations.Animation;
 import animations.LinearAnimation;
 import animations.Timer;
 import mainPackage.MainGameLoop;
@@ -20,11 +19,11 @@ public class HUDButton {
 	private int ypos;
 	private int xsize;
 	private int ysize;
+	private int original_xsize, original_ysize;
 	
 	private boolean mouseIsHovering;
 	private boolean enabled;
 	private boolean isMenuButton;
-	private boolean visible;
 		
 	private Timer lastClickTimer;
 	
@@ -32,7 +31,7 @@ public class HUDButton {
 	private String textContent;
 	private float fontSize;
 	private float r, g, b;
-	private boolean isCentered;
+	private boolean isTextCentered;
 	
 	//Swipe
 	private LinearAnimation swipeXAnimation;
@@ -44,7 +43,8 @@ public class HUDButton {
 		this.ypos = (int) (ypos * DisplayManager.resizeRatio);
 		this.xsize = (int) (xsize * DisplayManager.resizeRatio);
 		this.ysize = (int) (ysize * DisplayManager.resizeRatio);
-		visible = true;
+		original_xsize = this.xsize;
+		original_ysize = this.ysize;
 		isSwiping = false;
 		this.isMenuButton = isMenuButton;
 		enabled = true;
@@ -72,14 +72,15 @@ public class HUDButton {
 	}
 	
 	public void setText(String textContent, float fontSize, float r, float g, float b, boolean isTextCentered) {
-		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize * DisplayManager.resizeRatio)), xsize, isTextCentered, isMenuButton);
+		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize * DisplayManager.resizeRatio)),
+				xsize, isTextCentered, isMenuButton);
 		text.setColour(r, g, b);
 		this.textContent = textContent;
 		this.fontSize = fontSize;
 		this.r = r;
 		this.g = g;
 		this.b = b;
-		this.isCentered = isTextCentered;
+		this.isTextCentered = isTextCentered;
 	}
 	
 	private void onMouseStartsHovering() {
@@ -134,8 +135,17 @@ public class HUDButton {
 		hoveredTexture.setPosition(xpos, ypos);
 		if(hasText()) {
 			removeText();
-			setText(textContent, fontSize, r, g, b, isCentered);
+			setText(textContent, fontSize, r, g, b, isTextCentered);
 		}
+	}
+	
+	public void scale(float scale) {
+		xsize = (int) (original_xsize * scale);
+		ysize = (int) (original_ysize * scale);
+		normalTexture.scale(scale);
+		hoveredTexture.scale(scale);
+		removeText();
+		setText(textContent, scale, scale, scale, scale, isTextCentered);
 	}
 	
 	public void destroy() {
@@ -213,9 +223,5 @@ public class HUDButton {
 	
 	public boolean isEnabled() {
 		return enabled;
-	}
-	
-	public void setVisibility(boolean visible) {
-		this.visible = visible;
 	}
 }

@@ -86,6 +86,12 @@ public class HUDText {
 		TextMaster.loadText(this);
 	}
 	
+	public void scale(float scale) {
+		remove();
+		fontSize *= scale;
+		TextMaster.loadText(this);
+	}
+	
 	public void draw() {
 		TextMaster.loadText(this);
 	}

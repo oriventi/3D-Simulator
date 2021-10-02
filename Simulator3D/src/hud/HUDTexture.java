@@ -8,7 +8,7 @@ public class HUDTexture {
 	private int texture;
 	private Vector2f position;
 	private Vector2f scale;
-	private int xpos, ypos, xsize, ysize;
+	private int xpos, ypos, xsize, ysize, original_xsize, original_ysize;
 	private boolean isMenuTexture;
 	
 	public HUDTexture(int texture, int xpos, int ypos, int xsize, int ysize, boolean isMenuTexture) {
@@ -25,6 +25,9 @@ public class HUDTexture {
 		scale = new Vector2f();
 		scale.x = (float)xsize / (float)DisplayManager.WIDTH;
 		scale.y = (float)ysize / (float)DisplayManager.HEIGHT;
+		
+		original_xsize = xsize;
+		original_ysize = ysize;
 	}
 	
 	public HUDTexture(int texture, Vector2f position, Vector2f scale) {
@@ -54,8 +57,15 @@ public class HUDTexture {
 	}
 	
 	public void setPosition(int xpos, int ypos) {
-		position.x = (2.f * (xpos + xsize / 2.f) / (float)DisplayManager.WIDTH ) - 1.f;
-		position.y = -(2.f * (ypos + ysize / 2.f) / (float)DisplayManager.HEIGHT ) + 1.f;
+		position.x = (2.f * (xpos + original_xsize / 2.f) / (float)DisplayManager.WIDTH ) - 1.f;
+		position.y = -(2.f * (ypos + original_ysize / 2.f) / (float)DisplayManager.HEIGHT ) + 1.f;
+	}
+	
+	public void scale(float scale) {
+		xsize = (int) (original_xsize * scale);
+		ysize = (int) (original_ysize * scale);
+		this.scale.x = (float)xsize / (float) DisplayManager.WIDTH;
+		this.scale.y = (float)ysize / (float) DisplayManager.HEIGHT;
 	}
 	
 	public Vector2f getPosition() {
