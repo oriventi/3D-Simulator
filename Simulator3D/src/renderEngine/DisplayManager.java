@@ -13,8 +13,8 @@ import org.lwjgl.opengl.PixelFormat;
 
 public class DisplayManager {
 
-	public static final int WIDTH = 2560;
-	public static final int HEIGHT = 1440;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	
 	public static float resizeRatio;
 	
