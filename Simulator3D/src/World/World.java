@@ -21,11 +21,16 @@ import toolbox.MousePicker;
 import traffic.TrafficManager;
 import vehicles.Car;
 
+
+/**
+ * contains, updates and renders the World, the content of the tiles and the trafic
+ * @author Oriventi
+ *
+ */
 public class World {
 	
 	private int size;
 	private Entity worldEntity;
-	private List<Entity> entities = new ArrayList<>();
 	
 	private TileManager tileManager;
 	private static TrafficManager trafficManager;
@@ -34,6 +39,13 @@ public class World {
 	private Camera cam;
 	private Light sun;
 	
+	/**
+	 * init variables and starts trafficManager
+	 * @param loader
+	 * @param sun
+	 * @param size
+	 * @param cam
+	 */
 	public World(Loader loader, Light sun, int size, Camera cam) {
 		this.loader = loader;
 		this.size = size;
@@ -43,15 +55,25 @@ public class World {
 		worldEntity = generateMesh(loader);
 	//	EntityManager.addEntity(worldEntity);
 		trafficManager = new TrafficManager();
+		trafficManager.start();
 		
 	}
 	
-	
+	/**
+	 * updates the tileManager, and the trafficManagers userInput
+	 * @param timeSinceLastFrame
+	 * @param mousePicker
+	 */
 	public void update(float tslf, MousePicker picker) {
 		tileManager.update(tslf, picker.getPosition(cam).x, picker.getPosition(cam).z);
-		trafficManager.update(picker, cam);
+		trafficManager.updateUserInput(picker, cam);
 	}
 	
+	/**
+	 * renders the world, the content of the trafficManager, and the content of the tiles
+	 * @param renderer
+	 * @param mousePicker
+	 */
 	public void render(MasterRenderer renderer, MousePicker picker) {
 		//DRAW STATIC
 		tileManager.render(renderer, picker, cam);
@@ -59,10 +81,11 @@ public class World {
 		renderer.processEntity(worldEntity);
 	}
 	
-	public List<Entity> getEntities(){
-		return entities;
-	}
-	
+	/**
+	 * generates the world Surface entity
+	 * @param loader
+	 * @return worldEntity
+	 */
 	private Entity generateMesh(Loader loader) {
 
 		float col = (float) (6.5f / 8.f);
@@ -98,6 +121,10 @@ public class World {
 		return entity;
 	}
 	
+	/**
+	 * returns static trafficManager instance
+	 * @return trafficManager
+	 */
 	public static TrafficManager getTrafficManager() {
 		return trafficManager;
 	}

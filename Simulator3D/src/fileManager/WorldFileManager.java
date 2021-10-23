@@ -10,6 +10,11 @@ import buildings.HouseTwo;
 import buildings.OfficeOne;
 import buildings.SupermarketOne;
 
+/**
+ * loads, deletes, creates, and writes the world saved files
+ * @author Oriventi
+ *
+ */
 public class WorldFileManager {
 	
 	private FileManager fileManager;
@@ -18,10 +23,18 @@ public class WorldFileManager {
 		fileManager = new FileManager();
 	}
 	
+	/**
+	 * overwrites the current world in existing file with name
+	 * @param name
+	 */
 	public void saveCurrentWorldInFile(String name) {
 		fileManager.writeToFile(name + ".wrld", getWorldInformationAsString());
 	}
 	
+	/**
+	 * returns saved World file's data as a string
+	 * @return
+	 */
 	private String getWorldInformationAsString() {
 		StringBuilder sb = new StringBuilder();
 		for(int i = 0; i < TileManager.size; i++) {
@@ -33,10 +46,18 @@ public class WorldFileManager {
 		return sb.toString();
 	}
 	
+	/**
+	 * creates new world file with name
+	 * @param name
+	 */
 	public void createNewWorldFile(String name) {
 		fileManager.createFile(name + ".wrld");
 	}
 	
+	/**
+	 * fills world tiles by information from file name
+	 * @param name
+	 */
 	public void fillWorldByInformationFromFile(String name) {
 		String[] lines = fileManager.readFile(name + ".wrld");
 		for(int i = 0; i < lines.length; i++) {
@@ -47,6 +68,12 @@ public class WorldFileManager {
 		}
 	}
 	
+	/**
+	 * sets the content of tile(xtile, ytile) to the building with buildingID
+	 * @param xtile of tile
+	 * @param ytile of tile
+	 * @param buildingID of building
+	 */
 	private void fillTileByBuildingID(int xtile, int ytile, String buildingID) {
 		int rotation = 0;
 		String[] rotatedID;
@@ -90,6 +117,10 @@ public class WorldFileManager {
 		}
 	}
 	
+	/**
+	 * deletes world file with name 
+	 * @param name of file
+	 */
 	public void deleteWorld(String name) {
 		fileManager.deleteFile(name + ".wrld");
 	}

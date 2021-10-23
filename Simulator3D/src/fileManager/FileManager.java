@@ -7,6 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * reads and writes to a savedFile
+ * @author Oriventi
+ *
+ */
 public class FileManager {
 
 	private String directory = "res/savedFiles/";
@@ -15,6 +20,10 @@ public class FileManager {
 		
 	}
 	
+	/**
+	 * creates a new file with name (INCLUDE .wrld, .plyr, ...)
+	 * @param name + .wrld, ...
+	 */
 	public void createFile(String name) {
 		try {
 			File file = new File(directory + name);
@@ -29,6 +38,11 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * writes text to the file with name 
+	 * @param name (INCLUDE .txt, .wrld, ...)
+	 * @param text
+	 */
 	public void writeToFile(String name, String text) {
 		try {
 			FileWriter fileWriter = new FileWriter(directory + name);
@@ -40,6 +54,11 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * reads from file with name 
+	 * @param name
+	 * @return array of the file's lines
+	 */
 	public String[] readFile(String name) {
 		try {
 			ArrayList<String> lines = new ArrayList<String>();
@@ -60,6 +79,10 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * deletes the file with name
+	 * @param name of file (INCLUDE .txt, .wrld, ...)
+	 */
 	public void deleteFile(String name) {
 		File file = new File(directory + name);
 		if(file.delete()) {
@@ -69,6 +92,10 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * returns all world files in savedFiles directory
+	 * @return string array of names of saved Files
+	 */
 	public String[] getAllWorldsNames() {
 		File worldDirectory = new File(directory);
 		return worldDirectory.list();

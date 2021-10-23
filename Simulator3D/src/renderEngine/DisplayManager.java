@@ -11,10 +11,15 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.PixelFormat;
 
+/**
+ * manages the openGL display (create, update, destroy)
+ * @author Oriventi
+ *
+ */
 public class DisplayManager {
 
-	public static final int WIDTH = 2560;
-	public static final int HEIGHT = 1440;
+	public static final int WIDTH = 1600;
+	public static final int HEIGHT = 900;
 	
 	public static float resizeRatio;
 	
@@ -24,6 +29,9 @@ public class DisplayManager {
 	public static float delta;
 	private static float timer = 0;
 	
+	/**
+	 * creates the Display and calculates resizeRatio
+	 */
 	public static void createDisplay() {
 		
 		resizeRatio = HEIGHT / 720.f;
@@ -31,7 +39,7 @@ public class DisplayManager {
 		ContextAttribs attribs = new ContextAttribs(3,2)
 		.withForwardCompatible(true)
 		.withProfileCore(true);
-		
+
 		try {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle("FPS: ?");
@@ -46,6 +54,9 @@ public class DisplayManager {
 		lastFrameTime = getCurrentTime();
 	}
 	
+	/**
+	 * updates the Display and calculates the frameTime
+	 */
 	public static void updateDisplay() {
 		Display.sync(FPS_CAP);
 		Display.update();
@@ -55,6 +66,9 @@ public class DisplayManager {
 		lastFrameTime = currentFrameTime;
 	}
 	
+	/**
+	 * sets FPS to Title
+	 */
 	private static void setFPSToTitle() {
 		timer += delta;
 		if(timer >= 1) {
@@ -63,18 +77,33 @@ public class DisplayManager {
 		}
 	}
 	
+	/**
+	 * returns fps
+	 * @return fps
+	 */
 	public static float getFPS() {
 		return (1.f / delta);
 	}
 	
+	/**
+	 * returns the frameTime
+	 * @return frameTime
+	 */
 	public static float getFrameTimeSeconds() {
 		return delta;
 	}
 	
+	/**
+	 * destroys the display
+	 */
 	public static void closeDisplay() {
 		Display.destroy();
 	}
 	
+	/**
+	 * calculates the current Time of the current Frame
+	 * @return currentFrameTime
+	 */
 	private static long getCurrentTime() {
 		return Sys.getTime()* 1000 / Sys.getTimerResolution();
 	}

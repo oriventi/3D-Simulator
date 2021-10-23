@@ -6,7 +6,11 @@ import org.lwjgl.util.vector.Vector3f;
 import animations.LinearAnimation;
 import menu.MenuUpdater;
 
-
+/**
+ * camera of the player
+ * @author Oriventi
+ *
+ */
 public class Camera {
 
 	private float distanceFromPlayer = 50;
@@ -22,10 +26,17 @@ public class Camera {
 	
 	private LinearAnimation swipeAnimation;
 	
+	/**
+	 * defines player var
+	 * @param player who will use the camera
+	 */
 	public Camera(Player player) {
 		this.player = player;
 	}
 
+	/**
+	 * updates the cameras position and rotation by players input
+	 */
 	public void move() {
 		calculatePitch();
 		calculateZoom();
@@ -41,22 +52,43 @@ public class Camera {
 		}
 	}
 
+	/**
+	 * returns 3 dimensional vector of current position
+	 * @return
+	 */
 	public Vector3f getPosition() {
 		return position;
 	}
 
+	/**
+	 * returns current pitch
+	 * @return pitch
+	 */
 	public float getPitch() {
 		return pitch;
 	}
-
+	
+	/**
+	 * returns current yaw
+	 * @return yaw
+	 */
 	public float getYaw() {
 		return yaw;
 	}
 
+	/**
+	 * returns current roll
+	 * @return roll
+	 */
 	public float getRoll() {
 		return roll;
 	}
 
+	/**
+	 * calculates cameras position by players rotation, so its always behind the player
+	 * @param cameras horizontal distance from player
+	 * @param cameras vertical distance from player
+	 */
 	private void calculateCameraPosition(float horizDistance, float verticalDistance) {
 		float theta = player.getRotY();
 		float offsetX = (float) (horizDistance * Math.sin(Math.toRadians(theta)));
@@ -66,14 +98,25 @@ public class Camera {
 		position.y = player.getPosition().y + verticalDistance;
 	}
 
+	/**
+	 * calculates camera's horizontal distance from player
+	 * @return verticalDistance
+	 */
 	private float calculateHorizontalDistance() {
 		return (float) (distanceFromPlayer * Math.cos(Math.toRadians(pitch)));
 	}
 
+	/**
+	 * calculates camera's vertical distance from player
+	 * @return horizontalDistance
+	 */
 	private float calculateVerticalDistance() {
 		return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch)));
 	}
 	
+	/**
+	 * calculates cameras overall distance to the player
+	 */
 	private void calculateZoom() {
 		float zoomLevel = Mouse.getDWheel() * 0.1f;
 		distanceFromPlayer -= zoomLevel;
@@ -84,6 +127,9 @@ public class Camera {
 		}
 	}
 	
+	/**
+	 * calculates pitch of camera
+	 */
 	private void calculatePitch() {
 		if(Mouse.isButtonDown(2)) {
 			float pitchChange = Mouse.getDY() * 0.1f;
@@ -98,6 +144,11 @@ public class Camera {
 		}
 	}
 	
+	/**
+	 * swipes cameras pitch until it reaches targetPitch
+	 * @param pitch value which should be swiped to
+	 * @param speed of swiping
+	 */
 	public void swipePitchTo(int targetPitch, int speed) {
 		float runningTime = (this.pitch - targetPitch) / speed;
 		if(this.pitch < targetPitch) {
@@ -108,6 +159,9 @@ public class Camera {
 		swipeAnimation.startAnimation();
 	}
 	
+	/**
+	 * executes swipeMovement from animation 
+	 */
 	private void doSwipeMovement() {
 		pitch = swipeAnimation.getCurrentValue(pitch);
 		if(swipeAnimation.isFinished()) {
@@ -116,6 +170,10 @@ public class Camera {
 		}
 	}
 	
+	/**
+	 * sets pitch value
+	 * @param pitch
+	 */
 	public void setPitch(float pitch) {
 		this.pitch = pitch;
 	}	

@@ -18,6 +18,11 @@ import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
 
+/**
+ * actual render class
+ * @author Oriventi
+ *
+ */
 public class Renderer {
 	
 	private static final float FOV = 70;
@@ -26,12 +31,22 @@ public class Renderer {
 	
 	private StaticShader shader;
 	
+	/**
+	 * copys shader and enables cull facing only on front
+	 * @param shader
+	 * @param loader
+	 */
 	public Renderer(StaticShader shader, Loader loader) {
 		this.shader = shader;
 		GL11.glEnable(GL11.GL_CULL_FACE);
 		GL11.glCullFace(GL11.GL_BACK);
 	}
 	
+	/**
+	 * renders a entity and casts shadow
+	 * @param entities
+	 * @param toShadowSpace
+	 */
 	public void render(Map<Mesh, List<Entity>> entities, Matrix4f toShadowSpace) {
 		shader.connectTextures();
 		shader.loadToShadowMapSpaceMatrix(toShadowSpace);
@@ -46,6 +61,10 @@ public class Renderer {
 		}
 	}
 	
+	/**
+	 * prepares the mesh model to draw by loading vbos
+	 * @param model
+	 */
 	private void prepareMesh(Mesh model) {
 		RawModel rawModel = model.getRawModel();
 		GL30.glBindVertexArray(rawModel.getVaoID());
@@ -59,6 +78,9 @@ public class Renderer {
 		}
 	}
 	
+	/**
+	 * unbinds loaded mesh from openGLs buffer
+	 */
 	private void unbindMesh() {
 		GL20.glDisableVertexAttribArray(0);
 		GL20.glDisableVertexAttribArray(1);
@@ -66,6 +88,10 @@ public class Renderer {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+	 * prepares instance (entity) of a mesh to draw
+	 * @param entity (mesh instance)
+	 */
 	private void prepareInstance(Entity entity) {
 		Matrix4f tranformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
 		shader.loadTransformationMatrix(tranformationMatrix);

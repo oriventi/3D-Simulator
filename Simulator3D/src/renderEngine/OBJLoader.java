@@ -12,8 +12,18 @@ import org.lwjgl.util.vector.Vector3f;
 
 import models.RawModel;
 
+/**
+ * Class loads obj files and creates a rawModel out of it
+ * @author Oriventi
+ */
 public class OBJLoader {
 
+	/**
+	 * loads the obj file and creates a vao (rawModel) out of it
+	 * @param fileName of obj file
+	 * @param loader
+	 * @return RawModel from obj
+	 */
 	public static RawModel loadObjModel(String fileName, Loader loader) {
 		FileReader fr = null;
 		try {
@@ -92,6 +102,15 @@ public class OBJLoader {
 		return loader.loadToVAO(verticesArray, textureArray, normalsArray, indicesArray);
 	}
 	
+	/**
+	 * creates vertex out of obj files data
+	 * @param vertexData
+	 * @param indices
+	 * @param textures
+	 * @param normals
+	 * @param textureArray
+	 * @param normalsArray
+	 */
 	private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray,
 			float[] normalsArray) {
 		

@@ -19,12 +19,25 @@ import org.newdawn.slick.opengl.TextureLoader;
 import models.Mesh;
 import models.RawModel;
 
+/**
+ * loads data
+ * @author Oriventi
+ *
+ */
 public class Loader {
 
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();
 	private List<Integer> textures = new ArrayList<Integer>();
 	
+	/**
+	 * loads data out of vbos and creates vao
+	 * @param positions of vertices
+	 * @param textureCoords 
+	 * @param normals of vertices
+	 * @param indices of positions
+	 * @return a rawModel
+	 */
 	public RawModel loadToVAO(float[] positions, float[] textureCoords, float[] normals, int[] indices) {
 		int vaoID = createVAO();
 		bindIndicesBuffer(indices);
@@ -35,6 +48,12 @@ public class Loader {
 		return new RawModel(vaoID, indices.length);
 	}
 	
+	/**
+	 * loads HUD Vao 
+	 * @param positions of hud vertices
+	 * @param textureCoords of hud
+	 * @return id of vao in OpenGL Buffer
+	 */
 	public int loadToVAO(float[] positions, float[] textureCoords) {
 		int vaoID = createVAO();
 		storeFloatInAttributeList(0, 2, positions);
@@ -43,6 +62,11 @@ public class Loader {
 		return vaoID;
 	}
 	
+	/**
+	 * loads rawModel only from positions
+	 * @param positions of vertices
+	 * @return rawModel out of data
+	 */
 	public RawModel loadToVAO(float[] positions) {
 		int vaoID = createVAO();
 		this.storeFloatInAttributeList(0, 2, positions);
@@ -50,6 +74,11 @@ public class Loader {
 		return new RawModel(vaoID, positions.length/2);
 	}
 	
+	/**
+	 * loads a texture
+	 * @param fileName
+	 * @return returns id of texture in openGL buffer
+	 */
 	public int loadTexture(String fileName) {
 		Texture texture = null;
 		try {
@@ -64,6 +93,10 @@ public class Loader {
 		return textureID;
 	}
 	
+	/**
+	 * creates a vao and binds it
+	 * @return id of vao from OpenGLs Buffer
+	 */
 	private int createVAO() {
 		int vaoID = GL30.glGenVertexArrays();
 		GL30.glBindVertexArray(vaoID);
@@ -71,6 +104,12 @@ public class Loader {
 		return vaoID;
 	}
 	
+	/**
+	 * stores a float in vbo
+	 * @param attributeNumber
+	 * @param coordinateSize
+	 * @param data
+	 */
 	private void storeFloatInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
@@ -81,6 +120,9 @@ public class Loader {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 	}
 	
+	/**
+	 * cleans all vaos and vbos from openGL buffer in ram
+	 */
 	public void cleanUP() {
 		for(int vao: vaos) {
 			GL30.glDeleteVertexArrays(vao);
@@ -95,10 +137,17 @@ public class Loader {
 		}
 	}
 	
+	/**
+	 * unbinds a vao from OpenGLs Buffer
+	 */
 	private void unbindVAO() {
 		GL30.glBindVertexArray(0);
 	}
 	
+	/**
+	 * creates indices vbo
+	 * @param indices
+	 */
 	private void bindIndicesBuffer(int[] indices) {
 		int vboID = GL15.glGenBuffers();
 		vbos.add(vboID);
@@ -107,7 +156,11 @@ public class Loader {
 		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
 	}
 
-	
+	/**
+	 * parses int to buffer
+	 * @param data
+	 * @return bufferdata
+	 */
 	private IntBuffer parseToIntBuffer(int[] data) {
 		IntBuffer buffer = BufferUtils.createIntBuffer(data.length);
 		buffer.put(data);
@@ -115,6 +168,11 @@ public class Loader {
 		return buffer;
 	}
 	
+	/**
+	 * parses float to buffer
+	 * @param data
+	 * @return bufferdata
+	 */
 	private FloatBuffer parseToFloatBuffer(float[] data) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(data.length);
 		buffer.put(data);

@@ -58,18 +58,6 @@ public class HUDText {
 	 * @param centered
 	 *            - whether the text should be centered or not.
 	 */
-/*	public GUIText(String text, float fontSize, FontType font, Vector2f position, float maxLineLength,
-			boolean centered) {
-		this.textString = text;
-		this.fontSize = fontSize;
-		this.font = font;
-		this.position = position;
-		this.lineMaxSize = maxLineLength;
-		this.centerText = centered;
-		TextMaster.loadText(this);
-	}
-	*/
-	
 	public HUDText(String text, float fontSize, FontType font, int xpos, int ypos, int maxLineLength, boolean centered, boolean isMenuText) {
 		position = new Vector2f();
 		this.textString = text;
@@ -86,12 +74,7 @@ public class HUDText {
 		TextMaster.loadText(this);
 	}
 	
-	public void scale(float scale) {
-		remove();
-		fontSize *= scale;
-		TextMaster.loadText(this);
-	}
-	
+	//draws the text
 	public void draw() {
 		TextMaster.loadText(this);
 	}

@@ -41,8 +41,8 @@ public class MainGameLoop {
 	public static Player player;
 	public static Camera camera;
 	public static FontType font;
-	
-	private static boolean isClosed;
+
+	public static boolean isClosed;
 	
 	public static void main(String[] args) {
 		isClosed = false;
@@ -65,24 +65,24 @@ public class MainGameLoop {
 		MasterRenderer renderer = new MasterRenderer(camera, loader);
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
-		
+
 		HUDButton windowButton = new HUDButton("close_button", 100, 100, 70, 70, false);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
-		
+
 		Fbo multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
 		Fbo outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
 		PostProcessing.init(loader);
 		
 		WorldFileManager worldFileManager = new WorldFileManager();
-		
+
 		//TEST
 		Timer timer = new Timer(0.5f);
 		timer.start();
 		HUDDialog dialog = new HUDDialog("Hallo",
 				"Moechtest du Hello World ausgeben?", 500, 200, false);
 		dialog.show();
-		
+
 		while(!Display.isCloseRequested() && !isClosed) {
 			dialog.update();
 			//shadowMap
@@ -127,12 +127,13 @@ public class MainGameLoop {
 			PostProcessing.doPostProcessing(outputFbo.getColourTexture());
 			hudManager.render();
 			TextMaster.render();
-
+			
 			//update
 			DisplayManager.updateDisplay();
 		}
 		
 		//cleanUp on close
+		World.getTrafficManager().stopThread();
 		TextMaster.cleanUp();
 		PostProcessing.cleanUp();
 		multisampleFbo.cleanUp();

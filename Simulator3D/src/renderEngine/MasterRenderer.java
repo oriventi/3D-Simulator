@@ -21,6 +21,11 @@ import shaders.ShaderProgram;
 import shaders.StaticShader;
 import shadows.ShadowMapMasterRenderer;
 
+/**
+ * renders all entities, huds and shadowMaps to the screen
+ * @author Oriventi
+ *
+ */
 public class MasterRenderer {
 
 	private StaticShader shader =new StaticShader();
@@ -38,13 +43,20 @@ public class MasterRenderer {
 	public static final float NEAR_PLANE = 0.1f;
 	public static final float FAR_PLANE = 1000;
 	
+	/**
+	 * creates projection Matrix and loads needed data
+	 * @param camera 
+	 * @param loader
+	 */
 	public MasterRenderer(Camera cam, Loader loader) {
 		createProjectionMatrix();
 		renderer = new Renderer(shader, loader);
 		shadowMapRenderer = new ShadowMapMasterRenderer(cam);
 	}
 	
-	
+	/**
+	 * prepares window to draw
+	 */
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClearColor(skyColor.x, skyColor.y, skyColor.z, 1);
@@ -53,6 +65,11 @@ public class MasterRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, getShadowMapTexture());
 	}
 	
+	/**
+	 * renders all entities with the given light and shadowMap
+	 * @param lights
+	 * @param camera
+	 */
 	public void render(List<Light> lights, Camera camera) {
 		prepare();
 		shader.start();
@@ -64,6 +81,10 @@ public class MasterRenderer {
 		entities.clear();
 	}
 	
+	/**
+	 * processes the entity and prepares to draw
+	 * @param entity
+	 */
 	public void processEntity(Entity entity) {
 		Mesh entityModel = entity.getModel();
 		List<Entity> batch = entities.get(entityModel);
@@ -76,6 +97,10 @@ public class MasterRenderer {
 		}
 	}
 	
+	/**
+	 * renders the shadowMap
+	 * @param list of all entities which should cast a shadow
+	 */
 	public void renderShadowMap(List<Entity> entityList) {
 		for(int i = 0; i < entityList.size(); i++) {
 			processEntity(entityList.get(i));
@@ -84,19 +109,33 @@ public class MasterRenderer {
 		entities.clear();
 	}
 
+	/**
+	 * gets the current shadowMap
+	 * @return
+	 */
 	public int getShadowMapTexture() {
 		return shadowMapRenderer.getShadowMap();
 	}
 	
+	/**
+	 * cleans the shader up and deletes data from buffer
+	 */
 	public void cleanUp() {
 		shader.cleanUp();
 		shadowMapRenderer.cleanUp();
 	}
 	
+	/**
+	 * returns the projection matrix
+	 * @return projectionMatrix
+	 */
 	public Matrix4f getProjectionMatrix() {
 		return projectionMatrix;
 	}
 	
+	/**
+	 * creates the projection Matrix from given Data
+	 */
 	private void createProjectionMatrix() {
 		float aspectRatio = (float) Display.getWidth() / (float) Display.getHeight();
 		float y_scale = (float) ((1f / Math.tan(Math.toRadians(FOV / 2f))));

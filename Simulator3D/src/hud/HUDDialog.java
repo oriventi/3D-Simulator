@@ -1,8 +1,6 @@
 package hud;
 
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-
 import animations.LinearAnimation;
 import mainPackage.MainGameLoop;
 import menu.MenuUpdater;
@@ -11,12 +9,11 @@ import toolbox.EnumHolder.GameState;
 
 public class HUDDialog {
 	
-	private int xpos, ypos, xsize, ysize, original_xsize, original_ysize;
+	private int xpos, ypos, xsize, ysize;
 	private String questionText, headlineText;
 	private HUDButton okButton, cancelButton;
 	private HUDTexture backgroundTexture, taskbarTexture;
 	private HUDText contentText, headline;
-	private float scale;	
 	
 	private boolean isMenuDialog;
 	private boolean isDrawing;
@@ -29,13 +26,10 @@ public class HUDDialog {
 		
 		this.xsize = xsize;
 		this.ysize = ysize;
-		original_xsize = xsize;
-		original_ysize = ysize;
 		xpos = (int)(1280 / 2 - xsize / 2);
 		ypos = 900;
 		this.questionText = questionText;
 		this.headlineText = headlineText;
-		scale = 0.1f;
 		
 		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"),
 				(int)(xpos * DisplayManager.resizeRatio), (int)(ypos * DisplayManager.resizeRatio),
