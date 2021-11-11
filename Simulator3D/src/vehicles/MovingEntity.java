@@ -355,23 +355,18 @@ public abstract class MovingEntity {
 	 * adjusts the speed to the movingEntity in front, so it doesnt collide
 	 */
 	private float length = 100;
-	private double timer = 0;
 	private void adjustSpeedToFrontMovingEntity() {
-		timer += delta;
-		if(timer >= 0.15f) {
-			timer = 0;
-			length = getLengthToFrontMovingEntity();
-			if(length > 0 && length < 5) {
-				if(length < 5.0f) {
-					currentSpeed = 0.01f;
-				}else if(length < 5.5f) {
-					currentSpeed = 2;
-				}else if(length < 6.5f) {
-					currentSpeed = MAX_SPEED * (length / 5.5f);
-				}
-			}else {	
-				currentSpeed = MAX_SPEED;
+		length = getLengthToFrontMovingEntity();
+		if(length > 0 && length < 5) {
+			if(length < 5.5f) {
+				currentSpeed = 0.01f;
+			}else if(length < 6.5f) {
+				currentSpeed = 2;
+			}else if(length < 7.5f) {
+				currentSpeed = MAX_SPEED * (length / 5.5f);
 			}
+		}else {	
+			currentSpeed = MAX_SPEED;
 		}
 	}
 

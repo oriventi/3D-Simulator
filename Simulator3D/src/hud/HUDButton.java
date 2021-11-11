@@ -9,6 +9,11 @@ import menu.MenuUpdater;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
 
+/**
+ * creates and handles a button in the players hud
+ * @author Oriventi
+ *
+ */
 public class HUDButton {
 	
 	private HUDTexture normalTexture;
@@ -38,13 +43,22 @@ public class HUDButton {
 	private LinearAnimation swipeYAnimation;
 	private boolean isSwiping;
 	
+	/**
+	 * 
+	 * @param contains name of background Texture
+	 * @param x position of top left corner
+	 * @param y position of top left corner
+	 * @param size of button in pixels in x direction
+	 * @param size of button in pixels in y direction
+	 * @param whether button is part of a menu or part of the game
+	 */
 	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton) {
-		this.xpos = (int) (xpos * DisplayManager.resizeRatio);
-		this.ypos = (int) (ypos * DisplayManager.resizeRatio);
+		
+		this.xpos = xpos;
+		this.ypos = ypos;
 		this.xsize = (int) (xsize * DisplayManager.resizeRatio);
 		this.ysize = (int) (ysize * DisplayManager.resizeRatio);
-		original_xsize = this.xsize;
-		original_ysize = this.ysize;
+		System.out.println(xsize + " " + DisplayManager.resizeRatio + " " + (xsize * DisplayManager.resizeRatio));
 		isSwiping = false;
 		this.isMenuButton = isMenuButton;
 		enabled = true;
@@ -57,6 +71,9 @@ public class HUDButton {
 		normalTexture.startDrawing();
 	}
 	
+	/**
+	 * check whether player clicks on button or hovers over the button
+	 */
 	public void update() {		
 		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
 			if(enabled) {
@@ -71,6 +88,15 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * Sets a text as a content of the button
+	 * @param string of the text to show
+	 * @param size of the font 
+	 * @param r value of text color
+	 * @param g value of text color
+	 * @param b value of text color
+	 * @param whether the text is centered in the button or not
+	 */
 	public void setText(String textContent, float fontSize, float r, float g, float b, boolean isTextCentered) {
 		text = new HUDText(textContent, fontSize, MainGameLoop.font, xpos + xsize / 12, (int)(ypos + (ysize / 2 - 10* fontSize * DisplayManager.resizeRatio)),
 				xsize, isTextCentered, isMenuButton);
@@ -83,6 +109,9 @@ public class HUDButton {
 		this.isTextCentered = isTextCentered;
 	}
 	
+	/**
+	 * checks whether mouse starts hovering over the button
+	 */
 	private void onMouseStartsHovering() {
 		if(Mouse.getX() < xpos + xsize && Mouse.getX() > xpos) {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
@@ -96,6 +125,9 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * checks whether mouse stops hovering over the button
+	 */
 	private void onMouseStopsHovering() {
 		if(Mouse.getX() > xpos + xsize || Mouse.getX() < xpos 
 				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize || DisplayManager.HEIGHT - Mouse.getY() < ypos) {
@@ -108,6 +140,10 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * returns true if mouse clicks while hovering over the button
+	 * @return on mouse clicked
+	 */
 	public boolean onMouseClicked() {
 		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
 			if(MainGameLoop.gameState == GameState.UI_MODE) {
@@ -120,14 +156,25 @@ public class HUDButton {
 		return false;
 	}
 	
+	/**
+	 * enables the button
+	 */
 	public void enable() {
 		enabled = true;
 	}
 	
+	/**
+	 * disables the button
+	 */
 	public void disable() {
 		enabled = false;
 	}
 	
+	/**
+	 * sets the position of the button
+	 * @param x position of top left corner
+	 * @param y position of top left corner
+	 */
 	public void setPosition(int xpos, int ypos) {
 		this.xpos = xpos;
 		this.ypos = ypos;
@@ -139,15 +186,9 @@ public class HUDButton {
 		}
 	}
 	
-	public void scale(float scale) {
-		xsize = (int) (original_xsize * scale);
-		ysize = (int) (original_ysize * scale);
-		normalTexture.scale(scale);
-		hoveredTexture.scale(scale);
-		removeText();
-		setText(textContent, scale, scale, scale, scale, isTextCentered);
-	}
-	
+	/**
+	 * destroys the button and deletes content to clear ram
+	 */
 	public void destroy() {
 		if(!isMenuButton) {
 			MainGameLoop.gameState = GameState.GAME_MODE;
@@ -158,10 +199,17 @@ public class HUDButton {
 		removeText();
 	}
 	
+	/**
+	 * checks whether button has a text as content
+	 * @return if button contains text
+	 */
 	public boolean hasText() {
 		return (text != null);
 	}
 	
+	/**
+	 * checks whether button has text and removes it
+	 */
 	public void removeText() {
 		if(hasText()) {
 			text.remove();
@@ -169,14 +217,30 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * returns the x position of the top left corner of the button
+	 * @return
+	 */
 	public int getXPos() {
 		return xpos;
 	}
 	
+	/**
+	 * returns the y position of the top left corner of the button
+	 * @return
+	 */
 	public int getYPos() {
 		return ypos;
 	}
 	
+	/**
+	 * lets the button swipe from current position to xBorder, yBorder
+	 * @param speed in x direction to move
+	 * @param speed in y direction to move
+	 * @param x position when to stop swiping
+	 * @param y position when to stop swiping
+	 * @param says after how many seconds to start swiping
+	 */
 	public void swipeTo(int xspeed, int yspeed, int xBorder, int yBorder, float delayTime) {
 		yBorder *= DisplayManager.resizeRatio;
 		xBorder *= DisplayManager.resizeRatio;
@@ -195,6 +259,9 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * updates the position each frame while the button is in swiping mode
+	 */
 	public void updatePositionWhileSwiping() {
 		if(swipeXAnimation != null) {
 			if(swipeXAnimation.reachedTargetValue(xpos)) {
@@ -217,10 +284,18 @@ public class HUDButton {
 		}
 	}
 	
+	/**
+	 * checks whether button isSwiping
+	 * @return button is not swiping
+	 */
 	public boolean hasSwipingFinished() {
 		return !isSwiping;
 	}
 	
+	/**
+	 * checks whether button is enabled
+	 * @return button is enabled
+	 */
 	public boolean isEnabled() {
 		return enabled;
 	}

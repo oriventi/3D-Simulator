@@ -49,8 +49,8 @@ public class TrafficManager implements Runnable{
 	public void run() {
 		long lastFrameTime = Sys.getTime()* 1000 / Sys.getTimerResolution();
 		double delta;
+		System.out.println("THREAD 2 is running");
 		while(!exit) {
-			System.out.println("THREAD 2 is running");
 			long currentFrameTime =  Sys.getTime()* 1000 / Sys.getTimerResolution();;
 			delta = (currentFrameTime - lastFrameTime) / 1000.f;
 			updateMovingEntities(delta);
@@ -111,7 +111,6 @@ public class TrafficManager implements Runnable{
 	 * updates each pedestrian and vehicle
 	 */
 	public void updateMovingEntities(double delta) {
-		System.out.println(delta);
 		for(int i = 0; i < vehicles.size(); i++) {
 			vehicles.get(i).update(delta);
 		}
@@ -135,7 +134,7 @@ public class TrafficManager implements Runnable{
 	
 	private void spawnNormalVehicle(int xtile, int ytile) {
 		int randNum = Maths.getRandomBetween(0, 10);
-		if(randNum <= 8) {
+		if(randNum <= 10) {
 			vehicles.add(new Car(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(true).get(0)));
 		}else {
 			vehicles.add(new Truck(StreetManager.getStreetSystem()[xtile][ytile].getPathMarkers(true).get(0)));

@@ -7,6 +7,13 @@ import menu.MenuUpdater;
 import renderEngine.DisplayManager;
 import toolbox.EnumHolder.GameState;
 
+/**
+ * creates a dialog which shows a text and has two options to click: yes or no
+ * to let the dialog work properly you have to call update() each frame
+ * to show the dialog call show()
+ * @author Oriventi
+ *
+ */
 public class HUDDialog {
 	
 	private int xpos, ypos, xsize, ysize;
@@ -21,7 +28,14 @@ public class HUDDialog {
 	private boolean isSwiping;
 	private LinearAnimation swipeAnimation;
 	
-
+	/**
+	 * creates a new HUDDialog
+	 * @param text of the headline
+	 * @param text of the content / question
+	 * @param size of the dialog in x direction
+	 * @param size of the dialog in y direction
+	 * @param whether dialog is a part of the menu
+	 */
 	public HUDDialog(String headlineText, String questionText, int xsize, int ysize, boolean isMenuDialog) {
 		
 		this.xsize = xsize;
@@ -43,6 +57,9 @@ public class HUDDialog {
 		isDrawing = false;
 	}
 	
+	/**
+	 * checks whether mouse is hovering and executes the swipeAnimation if activated
+	 */
 	public void update() {
 		if(isMenuDialog && MenuUpdater.isMenuActivated() || !isMenuDialog && !MenuUpdater.isMenuActivated()) {
 			if(mouseIsHovering && isDrawing) {
@@ -62,6 +79,9 @@ public class HUDDialog {
 		}
 	}
 	
+	/**
+	 * activates all textures of the dialog and lets it swipe to the middle of the screen
+	 */
 	public void show() {
 		isDrawing = true;
 		backgroundTexture.startDrawing();
@@ -77,11 +97,21 @@ public class HUDDialog {
 		swipe();
 	}
 	
+	/**
+	 * destroys the all dialog components
+	 */
 	public void destroy() {
 		okButton.destroy();
+		cancelButton.destroy();
 		backgroundTexture.stopDrawing();
+		removeText();
 	}
 	
+	/**
+	 * sets the position of the top left corner of the dialog to xpos and ypos
+	 * @param x position of the dialog
+	 * @param y position of the dialog
+	 */
 	private void setPosition(int xpos, int ypos) {
 		this.xpos = xpos;
 		this.ypos = ypos;
@@ -93,7 +123,9 @@ public class HUDDialog {
 		setText();
 	}
 
-	
+	/**
+	 * lets the dialog swipe from its current position to the middle of the screen
+	 */
 	private void swipe() {
 		float runningTime = Math.abs((540 - ysize/2) / 600.f);
 		if(ypos >= 900) {
@@ -106,10 +138,16 @@ public class HUDDialog {
 		isSwiping = true;
 	}
 	
+	/**
+	 * updates the position of the dialog during the swipe animation
+	 */
 	private void doSwipeUpdate() {
 		setPosition(xpos, (int)swipeAnimation.getCurrentValue(ypos));
 	}
 	
+	/**
+	 * checks whether mouse starts hovering
+	 */
 	private void onMouseStartsHovering() {
 		if(Mouse.getX() > xpos * DisplayManager.resizeRatio && Mouse.getX() < (xpos + xsize) * DisplayManager.resizeRatio) {
 			if(DisplayManager.HEIGHT - Mouse.getY() < (ypos + ysize) * DisplayManager.resizeRatio &&
@@ -120,6 +158,9 @@ public class HUDDialog {
 		}
 	}
 	
+	/**
+	 * checks whether mouse stops hovering
+	 */
 	private void onMouseStopsHovering() {
 		if(Mouse.getX() > (xpos + xsize) * DisplayManager.resizeRatio || Mouse.getX() < xpos * DisplayManager.resizeRatio
 				|| DisplayManager.HEIGHT - Mouse.getY() > (ypos + ysize) * DisplayManager.resizeRatio ||
@@ -129,6 +170,10 @@ public class HUDDialog {
 		}
 	}
 	
+	/**
+	 * checks whether player clicked on yes button
+	 * @return true if player clicked on the positive button
+	 */
 	public boolean onPositiveClicked() {
 		if(okButton.onMouseClicked()) {
 			swipe();
@@ -137,6 +182,10 @@ public class HUDDialog {
 		return false;
 	}
 	
+	/**
+	 * checks whether player clicked on no button
+	 * @return true if player clicked on the negative button
+	 */
 	public boolean onNegativeClicked() {
 		if(cancelButton.onMouseClicked()) {
 			swipe();
@@ -145,6 +194,9 @@ public class HUDDialog {
 		return false;
 	}
 	
+	/**
+	 * draws the headline text and the content text at the specific position
+	 */
 	private void setText() {
 		headline = new HUDText(headlineText, 1.2f, MainGameLoop.font, (int)((xpos + 20) * DisplayManager.resizeRatio),
 				(int)((ypos + 6) * DisplayManager.resizeRatio),
@@ -157,6 +209,9 @@ public class HUDDialog {
 		contentText.setColour(0.9f, 0.9f, 0.9f);
 	}
 	
+	/**
+	 * removes all text
+	 */
 	private void removeText() {
 		headline.remove();
 		headline = null;

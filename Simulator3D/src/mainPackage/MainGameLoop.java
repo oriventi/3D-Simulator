@@ -66,7 +66,7 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 
-		HUDButton windowButton = new HUDButton("close_button", 100, 100, 70, 70, false);
+		HUDButton windowButton = new HUDButton("close_button", (int) (100*DisplayManager.resizeRatio), 100, 70, 70, false);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 
