@@ -40,7 +40,7 @@ public abstract class Animation {
 	
 	public void startAnimation() {
 		isPaused = false;
-		AnimationUpdater.addAnimation(this);
+		AnimationTimerUpdater.addAnimation(this);
 		delayTimer.start();
 	}
 	
@@ -74,7 +74,7 @@ public abstract class Animation {
 	}
 	
 	public void destroy() {
-		AnimationUpdater.removeAnimation(this);
+		AnimationTimerUpdater.removeAnimation(this);
 	}
 	
 }

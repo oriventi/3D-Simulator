@@ -2,6 +2,7 @@ package hud;
 
 import org.lwjgl.input.Mouse;
 import animations.LinearAnimation;
+import animations.Timer;
 import mainPackage.MainGameLoop;
 import menu.MenuUpdater;
 import renderEngine.DisplayManager;
@@ -27,6 +28,8 @@ public class HUDDialog {
 	private boolean mouseIsHovering;
 	private boolean isSwiping;
 	private LinearAnimation swipeAnimation;
+	private boolean hasClicked = false;
+	private Timer waitAfterClickTimer = new Timer(0.5f);
 	
 	/**
 	 * creates a new HUDDialog
@@ -76,6 +79,14 @@ public class HUDDialog {
 		if(isSwiping){
 			if(swipeAnimation.isFinished()) isSwiping = false;
 			doSwipeUpdate();
+		}
+		
+		if(hasClicked){
+			if(waitAfterClickTimer.timeReachedEnd()) {
+				waitAfterClickTimer.destroy();
+				hasClicked = false;
+				MainGameLoop.gameState = GameState.GAME_MODE;
+			}
 		}
 	}
 	
@@ -146,7 +157,7 @@ public class HUDDialog {
 	}
 	
 	/**
-	 * checks whether mouse starts hovering
+	 * checks whether mouse starts hovering and changes gameState to UI_MODE
 	 */
 	private void onMouseStartsHovering() {
 		if(Mouse.getX() > xpos * DisplayManager.resizeRatio && Mouse.getX() < (xpos + xsize) * DisplayManager.resizeRatio) {
@@ -159,7 +170,7 @@ public class HUDDialog {
 	}
 	
 	/**
-	 * checks whether mouse stops hovering
+	 * checks whether mouse stops hovering and changes gameState to GAME_MODE
 	 */
 	private void onMouseStopsHovering() {
 		if(Mouse.getX() > (xpos + xsize) * DisplayManager.resizeRatio || Mouse.getX() < xpos * DisplayManager.resizeRatio
@@ -177,6 +188,8 @@ public class HUDDialog {
 	public boolean onPositiveClicked() {
 		if(okButton.onMouseClicked()) {
 			swipe();
+			waitAfterClickTimer.start();
+			hasClicked = true;
 			return true;
 		}
 		return false;
@@ -189,6 +202,8 @@ public class HUDDialog {
 	public boolean onNegativeClicked() {
 		if(cancelButton.onMouseClicked()) {
 			swipe();
+			waitAfterClickTimer.start();
+			hasClicked = true;
 			return true;
 		}
 		return false;

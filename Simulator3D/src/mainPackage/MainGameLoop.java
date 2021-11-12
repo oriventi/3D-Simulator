@@ -7,7 +7,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
 
 import World.World;
-import animations.AnimationUpdater;
+import animations.AnimationTimerUpdater;
 import animations.Timer;
 import entities.Camera;
 import entities.EntityShadowList;
@@ -56,7 +56,7 @@ public class MainGameLoop {
 		//TEST
 		font = new FontType(loader.loadTexture("calibri"), new File("res/font/calibri.fnt"));
 		
-		AnimationUpdater animationUpdater = new AnimationUpdater();
+		AnimationTimerUpdater animationUpdater = new AnimationTimerUpdater();
 		MenuUpdater menuUpdater = new MenuUpdater();
 		MeshContainer container = new MeshContainer(loader);
 		EntityShadowList entityShadowList = new EntityShadowList();

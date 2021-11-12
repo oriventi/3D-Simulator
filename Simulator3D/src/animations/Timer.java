@@ -12,6 +12,7 @@ public class Timer {
 		time = 0;
 		this.maxTime = maxTime;
 		isPaused = true;
+		AnimationTimerUpdater.addTimer(this);
 	}
 	
 	public void update() {
@@ -26,6 +27,10 @@ public class Timer {
 		}else {
 			return false;
 		}
+	}
+	
+	public void destroy() {
+		AnimationTimerUpdater.removeTimer(this);
 	}
 	
 	public float getCurrentTime() {
