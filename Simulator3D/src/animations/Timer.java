@@ -18,6 +18,7 @@ public class Timer {
 	public void update() {
 		if(!isPaused && time < maxTime ) {
 			time += DisplayManager.getFrameTimeSeconds();
+			System.out.println(time);
 		}
 	}
 	

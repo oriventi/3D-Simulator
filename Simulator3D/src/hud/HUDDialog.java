@@ -29,7 +29,7 @@ public class HUDDialog {
 	private boolean isSwiping;
 	private LinearAnimation swipeAnimation;
 	private boolean hasClicked = false;
-	private Timer waitAfterClickTimer = new Timer(0.5f);
+	private Timer switchGameModeAfterClickTimer = new Timer(0.3f);
 	
 	/**
 	 * creates a new HUDDialog
@@ -82,10 +82,12 @@ public class HUDDialog {
 		}
 		
 		if(hasClicked){
-			if(waitAfterClickTimer.timeReachedEnd()) {
-				waitAfterClickTimer.destroy();
+			if(switchGameModeAfterClickTimer.timeReachedEnd()) {
+				switchGameModeAfterClickTimer.destroy();
 				hasClicked = false;
 				MainGameLoop.gameState = GameState.GAME_MODE;
+			}else {
+				MainGameLoop.gameState = GameState.UI_MODE;
 			}
 		}
 	}
@@ -188,7 +190,7 @@ public class HUDDialog {
 	public boolean onPositiveClicked() {
 		if(okButton.onMouseClicked()) {
 			swipe();
-			waitAfterClickTimer.start();
+			switchGameModeAfterClickTimer.start();
 			hasClicked = true;
 			return true;
 		}
@@ -202,7 +204,7 @@ public class HUDDialog {
 	public boolean onNegativeClicked() {
 		if(cancelButton.onMouseClicked()) {
 			swipe();
-			waitAfterClickTimer.start();
+			switchGameModeAfterClickTimer.start();
 			hasClicked = true;
 			return true;
 		}
