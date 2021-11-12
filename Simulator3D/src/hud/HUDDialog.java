@@ -61,7 +61,7 @@ public class HUDDialog {
 	}
 	
 	/**
-	 * checks whether mouse is hovering and executes the swipeAnimation if activated
+	 * checks whether mouse is hovering and executes the swipeAnimation if activated and handles game mode
 	 */
 	public void update() {
 		if(isMenuDialog && MenuUpdater.isMenuActivated() || !isMenuDialog && !MenuUpdater.isMenuActivated()) {
