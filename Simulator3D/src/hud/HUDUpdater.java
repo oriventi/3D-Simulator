@@ -5,25 +5,35 @@ import java.util.List;
 
 import menu.MenuUpdater;
 
-public class HUDRenderList {
+public class HUDUpdater {
 
 	private static List<HUDTexture> huds;
 	private static List<HUDWindow> windows;
 	private static List<HUDTexture> menuHuds;
+	private static List<HUDButton> buttons;
+	private static List<HUDDialog> dialogs;
 	private HUDRenderer renderer;
 	
-	public HUDRenderList() {
+	public HUDUpdater() {
 		huds = new ArrayList<HUDTexture>();
 		windows = new ArrayList<HUDWindow>();
 		menuHuds = new ArrayList<HUDTexture>();
+		dialogs = new ArrayList<HUDDialog>();
+		buttons = new ArrayList<HUDButton>();
 		renderer = new HUDRenderer();
 	}
 	
 	public void update() {
 		if(!MenuUpdater.isMenuActivated()) {
-			for(int i = 0; i < windows.size(); i++) {
-				windows.get(i).update();
+			for(HUDWindow window : windows) {
+				window.update();
 			}
+			for(HUDDialog dialog : dialogs) {
+				dialog.update();
+			}
+		}
+		for(HUDButton button : buttons) {
+			button.update();
 		}
 	}
 	
@@ -50,6 +60,24 @@ public class HUDRenderList {
 	public static void removeMenuHUD(HUDTexture hud) {
 		menuHuds.remove(hud);
 	}
+	
+
+	public static void addButton(HUDButton button) {
+		buttons.add(button);
+	}
+	
+	public static void removeButton(HUDButton button) {
+		buttons.remove(button);
+	}
+	
+	public static void addDialog(HUDDialog dialog) {
+		dialogs.add(dialog);
+	}
+	
+	public static void removeDialog(HUDDialog dialog) {
+		dialogs.remove(dialog);
+	}
+
 	
 	public void render() {
 		if(MenuUpdater.isMenuActivated()) {

@@ -58,9 +58,11 @@ public class HUDDialog {
 		
 		this.isMenuDialog = isMenuDialog;
 		isDrawing = false;
+		HUDUpdater.addDialog(this);
 	}
 	
 	/**
+	 * doesnt need to be called, works automatically
 	 * checks whether mouse is hovering and executes the swipeAnimation if activated and handles game mode
 	 */
 	public void update() {
@@ -100,10 +102,10 @@ public class HUDDialog {
 		backgroundTexture.startDrawing();
 		taskbarTexture.startDrawing();
 		okButton = new HUDButton("ok_button", xpos + xsize / 4 - 40, ypos + ysize - 80,
-				80, 50, isMenuDialog);
+				80, 50, isMenuDialog, false);
 		okButton.setText("OK  ", 1.5f, 0.9f, 0.9f, 0.9f, true);
 
-		cancelButton = new HUDButton("cancel_button", xpos + xsize * 3/4 - 40, ypos+ ysize - 80, 80 , 50, isMenuDialog);
+		cancelButton = new HUDButton("cancel_button", xpos + xsize * 3/4 - 40, ypos+ ysize - 80, 80 , 50, isMenuDialog, false);
 		setText();
 		cancelButton.setText("NO  ", 1.5f, 0.9f, 0.9f, 0.9f, true);
 		setPosition(xpos, ypos);
@@ -118,6 +120,7 @@ public class HUDDialog {
 		cancelButton.destroy();
 		backgroundTexture.stopDrawing();
 		removeText();
+		HUDUpdater.removeDialog(this);
 	}
 	
 	/**
@@ -140,7 +143,7 @@ public class HUDDialog {
 	 * lets the dialog swipe from its current position to the middle of the screen
 	 */
 	private void swipe() {
-		float runningTime = Math.abs((540 - ysize/2) / 600.f);
+		float runningTime = Math.abs((540 - ysize/2) / 600.f) + 1.f;
 		if(ypos >= 900) {
 			swipeAnimation = new LinearAnimation(runningTime, -1200, 360 - ysize / 2, 0);
 		

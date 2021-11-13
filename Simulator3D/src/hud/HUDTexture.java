@@ -38,17 +38,17 @@ public class HUDTexture {
 	
 	public void startDrawing() {
 		if(isMenuTexture) {
-			HUDRenderList.addMenuHUD(this);
+			HUDUpdater.addMenuHUD(this);
 		}else {
-			HUDRenderList.addHUD(this);
+			HUDUpdater.addHUD(this);
 		}
 	}
 	
 	public void stopDrawing() {
 		if(isMenuTexture) {
-			HUDRenderList.removeMenuHUD(this);
+			HUDUpdater.removeMenuHUD(this);
 		}else {
-			HUDRenderList.removeHUD(this);
+			HUDUpdater.removeHUD(this);
 		}
 	}
 	

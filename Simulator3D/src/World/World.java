@@ -56,7 +56,6 @@ public class World {
 	//	EntityManager.addEntity(worldEntity);
 		trafficManager = new TrafficManager();
 		trafficManager.start();
-		
 	}
 	
 	/**

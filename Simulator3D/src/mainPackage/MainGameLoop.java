@@ -10,6 +10,7 @@ import World.World;
 import animations.AnimationTimerUpdater;
 import animations.Timer;
 import entities.Camera;
+import entities.Entity;
 import entities.EntityShadowList;
 import entities.Light;
 import entities.LightManager;
@@ -19,7 +20,7 @@ import fontMeshCreator.FontType;
 import fontRendering.TextMaster;
 import hud.HUDButton;
 import hud.HUDDialog;
-import hud.HUDRenderList;
+import hud.HUDUpdater;
 import hud.HUDWindow;
 import menu.MenuUpdater;
 import menu.PauseMenu;
@@ -36,7 +37,7 @@ import toolbox.MousePicker;
 public class MainGameLoop {
 
 	public static Loader loader;
-	public static HUDRenderList hudManager;
+	public static HUDUpdater hudManager;
 	public static GameState gameState;
 	public static Player player;
 	public static Camera camera;
@@ -50,7 +51,7 @@ public class MainGameLoop {
 		
 		loader = new Loader();
 		gameState = GameState.GAME_MODE;
-		hudManager = new HUDRenderList();
+		hudManager = new HUDUpdater();
 		TextMaster.init();
 		
 		//TEST
@@ -63,10 +64,10 @@ public class MainGameLoop {
 		player = new Player(null, new Vector3f(0,0,0), 0, 180, 0, 1);
 		camera = new Camera(player);
 		MasterRenderer renderer = new MasterRenderer(camera, loader);
-		LightManager lightManager = new LightManager(new Light(new Vector3f(3000, 2000, 1000), new Color(1.f,1.f,1.f)));		
+		LightManager lightManager = new LightManager(new Light(new Vector3f(2000, 1000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 
-		HUDButton windowButton = new HUDButton("close_button", (int) (100*DisplayManager.resizeRatio), 100, 70, 70, false);
+		HUDButton windowButton = new HUDButton("close_button", (int) (100*DisplayManager.resizeRatio), 100, 70, 70, false, true);
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 
@@ -79,32 +80,25 @@ public class MainGameLoop {
 		//TEST
 		Timer timer = new Timer(0.5f);
 		timer.start();
-		HUDDialog dialog = new HUDDialog("Hallo",
-				"Moechtest du Hello World ausgeben?", 500, 200, false);
-		dialog.show();
 
+		
 		while(!Display.isCloseRequested() && !isClosed) {
-			dialog.update();
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
-			timer.update();
-			if(dialog.onPositiveClicked()) {
-				System.out.println("HELLO WORLD!");
-			}
-			if(dialog.onNegativeClicked()) {
-			}
-			
 			//game logic
 			if(MenuUpdater.isMenuActivated()) {
 				menuUpdater.update();
 			}else {
 				picker.update();
 			}
-			windowButton.update();
+			
+			//Button to load world
 			if(windowButton.onMouseClicked()) {
 				worldFileManager.fillWorldByInformationFromFile("world1");
 				World.getTrafficManager().spawnRandomTraffic();
 			}
+			
+			//pause menu handling
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && timer.timeReachedEnd()) {
 				timer.restart();
 				if(MenuUpdater.isMenuActivated()) {
@@ -113,6 +107,8 @@ public class MainGameLoop {
 					MenuUpdater.activateMenu(new PauseMenu());
 				}
 			}
+			
+			//Updaters
 			animationUpdater.update();
 			camera.move();
 			world.update(DisplayManager.getFrameTimeSeconds(), picker);

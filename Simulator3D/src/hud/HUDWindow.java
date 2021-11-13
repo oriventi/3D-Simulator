@@ -34,7 +34,7 @@ public abstract class HUDWindow {
 		taskbar.startDrawing();
 		
 		closeButton = new HUDButton("close_button", xpos + xsize - 50, (int)ypos,
-				50, 35, false);
+				50, 35, false, false);
 		
 		mouseIsHovering = false;
 		mouseIsMoving = false;
@@ -125,7 +125,7 @@ public abstract class HUDWindow {
 			closeButton.destroy();
 			destroyContent();
 			MainGameLoop.gameState = GameState.GAME_MODE;
-			HUDRenderList.removeWindow(this);
+			HUDUpdater.removeWindow(this);
 		}
 	}
 }

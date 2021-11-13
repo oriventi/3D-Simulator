@@ -21,11 +21,11 @@ public class PauseMenu extends Menu{
 		buttons = new HUDButton[6];
 		for(int i = 0; i < buttons.length; i++) {
 			if(i < 4) {
-				buttons[i] = new HUDButton("pauseMenu_button", -300, 200 + i * 100, 300, 60, true);
+				buttons[i] = new HUDButton("pauseMenu_button", -300, 200 + i * 100, 300, 60, true, false);
 				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 				buttons[i].swipeTo(1300, 0, 100, 0, i * 0.2f);
 			}else {
-				buttons[i] = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true);
+				buttons[i] = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true, false);
 				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 			}
 		}

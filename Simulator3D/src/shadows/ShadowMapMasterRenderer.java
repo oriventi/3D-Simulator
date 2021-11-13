@@ -12,6 +12,8 @@ import org.lwjgl.util.vector.Vector3f;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import hud.HUDText;
+import hud.HUDTexture;
 import models.Mesh;
 
 /**
@@ -53,6 +55,8 @@ public class ShadowMapMasterRenderer {
 		shadowBox = new ShadowBox(lightViewMatrix, camera);
 		shadowFbo = new ShadowFrameBuffer(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
+		HUDTexture texture = new HUDTexture(shadowFbo.getShadowMap(), 1000, 200, 512, 512, false);
+		texture.startDrawing();
 	}
 
 	/**
