@@ -129,11 +129,4 @@ public class ShadowFrameBuffer {
 		GL32.glFramebufferTexture(GL30.GL_FRAMEBUFFER, GL30.GL_DEPTH_ATTACHMENT, texture, 0);
 		return texture;
 	}
-	
-	private static int createNewDepthBufferAttachment(int width, int height) {
-		int texture = GL11.glGenTextures();
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
-
-		return texture;
-	}
 }
