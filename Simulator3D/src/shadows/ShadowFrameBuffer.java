@@ -5,9 +5,18 @@ import java.nio.ByteBuffer;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL21;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL32;
+import org.lwjgl.opengl.GL40;
+import org.lwjgl.opengl.GL41;
+import org.lwjgl.opengl.GL42;
+import org.lwjgl.opengl.GL43;
+import org.lwjgl.opengl.GL44;
+import org.lwjgl.util.vector.Vector4f;
 
 /**
  * The frame buffer for the shadow pass. This class sets up the depth texture

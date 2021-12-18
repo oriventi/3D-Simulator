@@ -41,7 +41,7 @@ public class MasterRenderer {
 	public Matrix4f projectionMatrix;
 	public static final float FOV = 70;
 	public static final float NEAR_PLANE = 0.1f;
-	public static final float FAR_PLANE = 1000;
+	public static final float FAR_PLANE = 600;
 	
 	/**
 	 * creates projection Matrix and loads needed data

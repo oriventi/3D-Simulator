@@ -27,7 +27,7 @@ import models.Mesh;
  */
 public class ShadowMapMasterRenderer {
 
-	private static final int SHADOW_MAP_SIZE = 2048;
+	private static final int SHADOW_MAP_SIZE = 4096;
 
 	private ShadowFrameBuffer shadowFbo;
 	private ShadowShader shader;
@@ -56,7 +56,7 @@ public class ShadowMapMasterRenderer {
 		shadowFbo = new ShadowFrameBuffer(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE);
 		entityRenderer = new ShadowMapEntityRenderer(shader, projectionViewMatrix);
 		HUDTexture texture = new HUDTexture(shadowFbo.getShadowMap(), 1000, 200, 512, 512, false);
-		texture.startDrawing();
+		//texture.startDrawing();
 	}
 
 	/**

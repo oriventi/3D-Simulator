@@ -67,7 +67,9 @@ public class MainGameLoop {
 		LightManager lightManager = new LightManager(new Light(new Vector3f(2000, 1000, 1000), new Color(1.f,1.f,1.f)));		
 		World world = new World(loader, LightManager.getSun(), 500, camera);
 
-		HUDButton windowButton = new HUDButton("close_button", (int) (100*DisplayManager.resizeRatio), 100, 70, 70, false, true);
+		HUDButton windowButton = new HUDButton("close_button", (int)100, (int)100, 70, 70, false, true);
+		HUDDialog dialog = new HUDDialog("MOIN", "Bist du cool?", 500, 200, false);
+		dialog.show();
 
 		MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
 
@@ -83,6 +85,8 @@ public class MainGameLoop {
 
 		
 		while(!Display.isCloseRequested() && !isClosed) {
+			dialog.onPositiveClicked();
+			dialog.onNegativeClicked();
 			//shadowMap
 			renderer.renderShadowMap(EntityShadowList.entities);
 			//game logic

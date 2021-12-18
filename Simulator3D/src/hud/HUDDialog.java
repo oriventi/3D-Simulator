@@ -1,6 +1,8 @@
 package hud;
 
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+
 import animations.LinearAnimation;
 import animations.Timer;
 import mainPackage.MainGameLoop;
@@ -41,20 +43,18 @@ public class HUDDialog {
 	 */
 	public HUDDialog(String headlineText, String questionText, int xsize, int ysize, boolean isMenuDialog) {
 		
-		this.xsize = xsize;
-		this.ysize = ysize;
-		xpos = (int)(1280 / 2 - xsize / 2);
-		ypos = 900;
+		this.xsize = (int)(xsize * DisplayManager.resizeRatio);
+		this.ysize = (int)(ysize * DisplayManager.resizeRatio);
+		xpos = (int)(Display.getWidth()/2 - this.xsize/2);
+		ypos = (int)(900 * DisplayManager.resizeRatio);
 		this.questionText = questionText;
 		this.headlineText = headlineText;
 		
-		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"),
-				(int)(xpos * DisplayManager.resizeRatio), (int)(ypos * DisplayManager.resizeRatio),
-				(int)(xsize * DisplayManager.resizeRatio),(int)(ysize * DisplayManager.resizeRatio), isMenuDialog);
+		backgroundTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), xpos, ypos,
+				this.xsize, this.ysize, isMenuDialog);
 		
-		taskbarTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"),
-				(int)(xpos * DisplayManager.resizeRatio), (int)(ypos * DisplayManager.resizeRatio),
-				(int)(xsize * DisplayManager.resizeRatio), (int)(35 * DisplayManager.resizeRatio), isMenuDialog);
+		taskbarTexture = new HUDTexture(MainGameLoop.loader.loadTexture("hudwindow_background"), xpos, ypos,
+				this.xsize, (int)(35 * DisplayManager.resizeRatio), isMenuDialog);
 		
 		this.isMenuDialog = isMenuDialog;
 		isDrawing = false;
@@ -101,11 +101,11 @@ public class HUDDialog {
 		isDrawing = true;
 		backgroundTexture.startDrawing();
 		taskbarTexture.startDrawing();
-		okButton = new HUDButton("ok_button", xpos + xsize / 4 - 40, ypos + ysize - 80,
+		okButton = new HUDButton("ok_button", xpos + xsize /4 - 40, ypos + ysize - 80,
 				80, 50, isMenuDialog, false);
 		okButton.setText("OK  ", 1.5f, 0.9f, 0.9f, 0.9f, true);
 
-		cancelButton = new HUDButton("cancel_button", xpos + xsize * 3/4 - 40, ypos+ ysize - 80, 80 , 50, isMenuDialog, false);
+		cancelButton = new HUDButton("cancel_button", (int)(xpos + xsize)*3/4 - 40, ypos+ ysize - 80, 80 , 50, isMenuDialog, false);
 		setText();
 		cancelButton.setText("NO  ", 1.5f, 0.9f, 0.9f, 0.9f, true);
 		setPosition(xpos, ypos);
@@ -131,10 +131,10 @@ public class HUDDialog {
 	private void setPosition(int xpos, int ypos) {
 		this.xpos = xpos;
 		this.ypos = ypos;
-		backgroundTexture.setPosition((int)(xpos * DisplayManager.resizeRatio), (int)(ypos * DisplayManager.resizeRatio));
-		taskbarTexture.setPosition((int)(xpos * DisplayManager.resizeRatio), (int)(ypos * DisplayManager.resizeRatio));
-		okButton.setPosition((int)((xpos + xsize / 4 - 40) * DisplayManager.resizeRatio), (int)((ypos + ysize - 80) * DisplayManager.resizeRatio));
-		cancelButton.setPosition((int)((xpos+ xsize * 3/4 - 40) * DisplayManager.resizeRatio), (int)((ypos + ysize - 80) * DisplayManager.resizeRatio));
+		backgroundTexture.setPosition(xpos, ypos);
+		taskbarTexture.setPosition(xpos, ypos);
+		okButton.setPosition(xpos + xsize/4 - (int)(40 * DisplayManager.resizeRatio), ypos + ysize - (int)(80 * DisplayManager.resizeRatio));
+		cancelButton.setPosition(xpos+ xsize * 3/4 - (int)(40 * DisplayManager.resizeRatio), ypos + ysize - (int)(80 * DisplayManager.resizeRatio));
 		removeText();
 		setText();
 	}
@@ -143,12 +143,12 @@ public class HUDDialog {
 	 * lets the dialog swipe from its current position to the middle of the screen
 	 */
 	private void swipe() {
-		float runningTime = Math.abs((540 - ysize/2) / 600.f) + 1.f;
+		float runningTime =Math.abs((540 - ysize/2) / 600.f) + 1.f;
 		if(ypos >= 900) {
-			swipeAnimation = new LinearAnimation(runningTime, -1200, 360 - ysize / 2, 0);
+			swipeAnimation = new LinearAnimation(runningTime, -1200, (int)(360 * DisplayManager.resizeRatio) - ysize / 2, 0);
 		
 		}else {
-			swipeAnimation = new LinearAnimation(runningTime,  1200,  900, 0);
+			swipeAnimation = new LinearAnimation(runningTime,  1200,  (int)(900 * DisplayManager.resizeRatio), 0);
 		}
 		swipeAnimation.startAnimation();
 		isSwiping = true;
@@ -165,9 +165,9 @@ public class HUDDialog {
 	 * checks whether mouse starts hovering and changes gameState to UI_MODE
 	 */
 	private void onMouseStartsHovering() {
-		if(Mouse.getX() > xpos * DisplayManager.resizeRatio && Mouse.getX() < (xpos + xsize) * DisplayManager.resizeRatio) {
-			if(DisplayManager.HEIGHT - Mouse.getY() < (ypos + ysize) * DisplayManager.resizeRatio &&
-					DisplayManager.HEIGHT - Mouse.getY() > ypos * DisplayManager.resizeRatio) {
+		if(Mouse.getX() > xpos && Mouse.getX() < xpos + xsize) {
+			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize &&
+					DisplayManager.HEIGHT - Mouse.getY() > ypos) {
 				mouseIsHovering = true;
 				MainGameLoop.gameState = GameState.UI_MODE;
 			}
@@ -178,9 +178,9 @@ public class HUDDialog {
 	 * checks whether mouse stops hovering and changes gameState to GAME_MODE
 	 */
 	private void onMouseStopsHovering() {
-		if(Mouse.getX() > (xpos + xsize) * DisplayManager.resizeRatio || Mouse.getX() < xpos * DisplayManager.resizeRatio
-				|| DisplayManager.HEIGHT - Mouse.getY() > (ypos + ysize) * DisplayManager.resizeRatio ||
-				DisplayManager.HEIGHT - Mouse.getY() < ypos * DisplayManager.resizeRatio) {
+		if(Mouse.getX() > xpos + xsize || Mouse.getX() < xpos
+				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize ||
+				DisplayManager.HEIGHT - Mouse.getY() < ypos) {
 			mouseIsHovering = false;
 			MainGameLoop.gameState = GameState.GAME_MODE;
 		}
@@ -218,14 +218,14 @@ public class HUDDialog {
 	 * draws the headline text and the content text at the specific position
 	 */
 	private void setText() {
-		headline = new HUDText(headlineText, 1.2f, MainGameLoop.font, (int)((xpos + 20) * DisplayManager.resizeRatio),
-				(int)((ypos + 6) * DisplayManager.resizeRatio),
+		headline = new HUDText(headlineText, 1.2f, MainGameLoop.font, xpos + (int)(20 * DisplayManager.resizeRatio),
+				ypos + (int)(6 * DisplayManager.resizeRatio),
 				xsize, false, isMenuDialog);
 		headline.setColour(0.9f, 0.9f, 0.9f);
 		
-		contentText = new HUDText(questionText, 1.2f, MainGameLoop.font, (int)((xpos + 20) * DisplayManager.resizeRatio),
-				(int)((ypos + 70) * DisplayManager.resizeRatio),
-				(int)((xsize - 40) * DisplayManager.resizeRatio), true, isMenuDialog);
+		contentText = new HUDText(questionText, 1.2f, MainGameLoop.font, xpos + (int)(20 * DisplayManager.resizeRatio),
+				ypos + (int)(70 * DisplayManager.resizeRatio),
+				xsize - (int)(40 * DisplayManager.resizeRatio), true, isMenuDialog);
 		contentText.setColour(0.9f, 0.9f, 0.9f);
 	}
 	

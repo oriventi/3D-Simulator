@@ -54,11 +54,10 @@ public class HUDButton {
 	 */
 	public HUDButton(String normalTextureName, int xpos, int ypos, int xsize, int ysize, boolean isMenuButton, boolean updateGameStateOnHover) {
 		
-		this.xpos = xpos;
-		this.ypos = ypos;
+		this.xpos = (int)(xpos * DisplayManager.resizeRatio);
+		this.ypos = (int)(ypos * DisplayManager.resizeRatio);
 		this.xsize = (int) (xsize * DisplayManager.resizeRatio);
 		this.ysize = (int) (ysize * DisplayManager.resizeRatio);
-		System.out.println(xsize + " " + DisplayManager.resizeRatio + " " + (xsize * DisplayManager.resizeRatio));
 		isSwiping = false;
 		this.isMenuButton = isMenuButton;
 		this.updateGameStateOnHover = updateGameStateOnHover;
@@ -67,8 +66,10 @@ public class HUDButton {
 		lastClickTimer = new Timer(0.6f);
 		lastClickTimer.start();
 		
-		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), this.xpos, this.ypos, this.xsize, this.ysize, isMenuButton);
-		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos, this.ypos, this.xsize, this.ysize, isMenuButton);
+		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), (int)(this.xpos + this.xsize/2), this.ypos + this.ysize/2,
+				this.xsize, this.ysize, isMenuButton);
+		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos + this.xsize/2, this.ypos + this.ysize/2,
+				this.xsize, this.ysize, isMenuButton);
 		normalTexture.startDrawing();
 		HUDUpdater.addButton(this);
 	}
@@ -77,7 +78,7 @@ public class HUDButton {
 	 * doesnt need to be called, works automatically
 	 * check whether player clicks on button or hovers over the button
 	 */
-	public void update() {		
+	public void update() {	
 		if((isMenuButton && MenuUpdater.isMenuActivated()) || (!isMenuButton && !MenuUpdater.isMenuActivated())) {
 			if(enabled) {
 				if(mouseIsHovering) {
@@ -116,7 +117,7 @@ public class HUDButton {
 	 * checks whether mouse starts hovering over the button
 	 */
 	private void onMouseStartsHovering() {
-		if(Mouse.getX() < xpos + xsize && Mouse.getX() > xpos) {
+		if(Mouse.getX() < (xpos + xsize) && Mouse.getX() > xpos) {
 			if(DisplayManager.HEIGHT - Mouse.getY() < ypos + ysize && DisplayManager.HEIGHT - Mouse.getY() > ypos) {
 				if(!isMenuButton && updateGameStateOnHover) {
 					MainGameLoop.gameState = GameState.UI_MODE;
@@ -132,7 +133,7 @@ public class HUDButton {
 	 * checks whether mouse stops hovering over the button
 	 */
 	private void onMouseStopsHovering() {
-		if(Mouse.getX() > xpos + xsize || Mouse.getX() < xpos 
+		if(Mouse.getX() > xpos + xsize || Mouse.getX() < xpos
 				|| DisplayManager.HEIGHT - Mouse.getY() > ypos + ysize || DisplayManager.HEIGHT - Mouse.getY() < ypos) {
 			if(!isMenuButton && updateGameStateOnHover) {
 				MainGameLoop.gameState = GameState.GAME_MODE;
