@@ -7,10 +7,17 @@ public class MenuUpdater {
 
 	private static Menu activatedMenu;
 	private static boolean isMenuActivated;
+	private static Menu toSwitchMenu;
 	
 	public MenuUpdater() {
 		activatedMenu = null;
 		isMenuActivated = false;
+		toSwitchMenu = null;
+	}
+	
+	public static void switchToMenu(Menu menu) {
+		deactivateCurrentMenu();
+		toSwitchMenu = menu;
 	}
 	
 	public static void activateMenu(Menu menu) {
@@ -36,6 +43,10 @@ public class MenuUpdater {
 			activatedMenu.update();
 			if(activatedMenu.hasDeactivationFinished()) {
 				deleteMenu();
+				if(toSwitchMenu != null) {
+					activateMenu(toSwitchMenu);
+					toSwitchMenu = null;
+				}
 			}
 		}
 	}

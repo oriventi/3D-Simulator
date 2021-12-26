@@ -16,6 +16,7 @@ import toolbox.EnumHolder.GameState;
  */
 public class HUDButton {
 	
+	private HUDTexture frontTexture;
 	private HUDTexture normalTexture;
 	private HUDTexture hoveredTexture;
 	private HUDText text;
@@ -66,6 +67,7 @@ public class HUDButton {
 		lastClickTimer = new Timer(0.6f);
 		lastClickTimer.start();
 		
+		frontTexture = null;
 		normalTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + normalTextureName), (int)(this.xpos + this.xsize/2), this.ypos + this.ysize/2,
 				this.xsize, this.ysize, isMenuButton);
 		hoveredTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/hovered/" + normalTextureName + "_hovered"), this.xpos + this.xsize/2, this.ypos + this.ysize/2,
@@ -114,6 +116,16 @@ public class HUDButton {
 	}
 	
 	/**
+	 * sets a front texture to the button
+	 * @param name of the texture to add, texture must be in textures/buttons. call name without .png
+	 */
+	public void setFrontTexture(String textureName) {
+		frontTexture = new HUDTexture(MainGameLoop.loader.loadTexture("buttons/" + textureName), (int)(this.xpos + this.xsize/2), this.ypos + this.ysize/2,
+				this.xsize, this.ysize, isMenuButton);
+		frontTexture.startDrawing();
+	}
+	
+	/**
 	 * checks whether mouse starts hovering over the button
 	 */
 	private void onMouseStartsHovering() {
@@ -125,6 +137,10 @@ public class HUDButton {
 				mouseIsHovering = true;
 				hoveredTexture.startDrawing();
 				normalTexture.stopDrawing();
+				if(frontTexture != null) {
+					frontTexture.stopDrawing();
+					frontTexture.startDrawing();
+				}
 			}
 		}
 	}
@@ -141,6 +157,10 @@ public class HUDButton {
 			mouseIsHovering = false;
 			normalTexture.startDrawing();
 			hoveredTexture.stopDrawing();
+			if(frontTexture != null) {
+				frontTexture.stopDrawing();
+				frontTexture.startDrawing();
+			}
 		}
 	}
 	
@@ -184,6 +204,9 @@ public class HUDButton {
 		this.ypos = ypos;
 		normalTexture.setPosition(xpos, ypos);
 		hoveredTexture.setPosition(xpos, ypos);
+		if(frontTexture != null) {
+			frontTexture.setPosition(xpos, ypos);
+		}
 		if(hasText()) {
 			removeText();
 			setText(textContent, fontSize, r, g, b, isTextCentered);
@@ -200,6 +223,12 @@ public class HUDButton {
 		disable();
 		hoveredTexture.stopDrawing();
 		normalTexture.stopDrawing();
+		if(frontTexture != null) {
+			frontTexture.stopDrawing();
+		}
+		hoveredTexture  = null;
+		normalTexture = null;
+		frontTexture = null;
 		removeText();
 		HUDUpdater.removeButton(this);
 	}
@@ -272,6 +301,7 @@ public class HUDButton {
 			if(swipeXAnimation.reachedTargetValue(xpos)) {
 				swipeXAnimation.destroy();
 				swipeXAnimation = null;
+				isSwiping = false;
 			}else {
 				setPosition((int)swipeXAnimation.getCurrentValue(xpos), ypos);
 			}
@@ -280,12 +310,10 @@ public class HUDButton {
 			if(swipeYAnimation.reachedTargetValue(ypos)) {
 				swipeYAnimation.destroy();
 				swipeYAnimation = null;
+				isSwiping=false;
 			}else {
 				setPosition(xpos, (int)swipeYAnimation.getCurrentValue(ypos));
 			}
-		}
-		if(swipeXAnimation == null && swipeYAnimation == null) {
-			isSwiping = false;
 		}
 	}
 	

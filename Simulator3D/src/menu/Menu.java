@@ -29,6 +29,10 @@ public abstract class Menu {
 		
 	protected abstract boolean updateActivationProcess();
 	
+	/**
+	 * is called every second while the menu is deactivating
+	 * @return whether deactivation has been finnished
+	 */
 	protected abstract boolean updateDeactivationProcess();
 	
 	public void startActivationProcess() {

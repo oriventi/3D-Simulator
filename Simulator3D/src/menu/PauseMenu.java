@@ -21,11 +21,11 @@ public class PauseMenu extends Menu{
 		buttons = new HUDButton[6];
 		for(int i = 0; i < buttons.length; i++) {
 			if(i < 4) {
-				buttons[i] = new HUDButton("pauseMenu_button", -300, 200 + i * 100, 300, 60, true, false);
+				buttons[i] = new HUDButton("menu_button", -300, 200 + i * 100, 300, 60, true, false);
 				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 				buttons[i].swipeTo(1300, 0, 100, 0, i * 0.2f);
 			}else {
-				buttons[i] = new HUDButton("pauseMenu_button", 450, 900, 300, 60, true, false);
+				buttons[i] = new HUDButton("menu_button", 450, 900, 300, 60, true, false);
 				buttons[i].setText(buttonNames[i], 1.3f, 1, 1, 1, false);
 			}
 		}
@@ -38,7 +38,6 @@ public class PauseMenu extends Menu{
 		timer.update();
 		MainGameLoop.player.increaseRotation(0, 5 * DisplayManager.getFrameTimeSeconds(), 0);
 		
-		updateButtons();
 		checkForButtonClick();
 	}
 
@@ -63,6 +62,7 @@ public class PauseMenu extends Menu{
 					buttons[i].destroy();
 				}
 			}
+			System.out.println("FINISHED ");
 			return true;
 		}
 		return false;
@@ -82,17 +82,13 @@ public class PauseMenu extends Menu{
 		}
 	}
 	
-	private void updateButtons() {
-		for(int i = 0; i < buttons.length; i++) {
-			if(buttons[i] != null) {
-				buttons[i].update();
-			}
-		}
-	}
-	
 	private void checkForButtonClick() {
 		if(buttons[0].onMouseClicked()) {
 			MenuUpdater.deactivateCurrentMenu();
+		}
+		
+		if(buttons[1].onMouseClicked()) {
+			MenuUpdater.switchToMenu(new SettingsMenu());
 		}
 		
 		if(buttons[3].onMouseClicked()) {
