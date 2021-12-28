@@ -62,7 +62,6 @@ public class PauseMenu extends Menu{
 					buttons[i].destroy();
 				}
 			}
-			System.out.println("FINISHED ");
 			return true;
 		}
 		return false;
