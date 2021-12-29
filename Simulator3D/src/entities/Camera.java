@@ -133,14 +133,18 @@ public class Camera {
 	private void calculatePitch() {
 		if(Mouse.isButtonDown(2)) {
 			float pitchChange = Mouse.getDY() * 0.1f;
-			pitch -= pitchChange;
-			if(pitch < 20) {
-				pitch = 20;
-			}else if(pitch > 70) {
-				pitch = 70;
-			}
+			increasePitch(pitchChange);
 			float angleChange = Mouse.getDX() * 0.3f;
 			player.increaseRotation(0, -angleChange, 0);
+		}
+	}
+	
+	public void increasePitch(float pitchChange) {
+		pitch += pitchChange;
+		if(pitch < 20) {
+			pitch = 20;
+		}else if(pitch > 70) {
+			pitch = 70;
 		}
 	}
 	

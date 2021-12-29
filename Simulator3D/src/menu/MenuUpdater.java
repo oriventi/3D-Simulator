@@ -18,6 +18,7 @@ public class MenuUpdater {
 	public static void switchToMenu(Menu menu) {
 		deactivateCurrentMenu();
 		toSwitchMenu = menu;
+		System.out.println("DEBUG TEST");
 	}
 	
 	public static void activateMenu(Menu menu) {

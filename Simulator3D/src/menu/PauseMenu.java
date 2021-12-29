@@ -72,6 +72,7 @@ public class PauseMenu extends Menu{
 		timer.restart();
 		for(int i = 0; i < buttons.length; i++) {
 			if(buttons[i] != null) {
+				buttons[i].disable();
 				if(i < 4) {
 					buttons[i].swipeTo(-1300, 0, -300, 0, i * 0.2f);
 				}else {

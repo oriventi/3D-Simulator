@@ -54,8 +54,7 @@ public class MainGameLoop {
 		hudManager = new HUDUpdater();
 		TextMaster.init();
 		
-		//TEST
-		font = new FontType(loader.loadTexture("calibri"), new File("res/font/calibri.fnt"));
+		font = new FontType(loader.loadTexture("candara"), new File("res/font/candara.fnt"));
 		
 		AnimationTimerUpdater animationUpdater = new AnimationTimerUpdater();
 		MenuUpdater menuUpdater = new MenuUpdater();

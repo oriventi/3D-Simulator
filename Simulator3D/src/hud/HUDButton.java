@@ -192,6 +192,7 @@ public class HUDButton {
 	 */
 	public void disable() {
 		enabled = false;
+		mouseIsHovering = false;
 	}
 	
 	/**

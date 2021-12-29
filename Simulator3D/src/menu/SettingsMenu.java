@@ -21,17 +21,22 @@ public class SettingsMenu extends Menu {
 	@Override
 	protected void onDeactivated() {
 		button[0].swipeTo(-1200, 0, -500, 0, 0);
+		for(HUDButton btn : button) {
+			btn.disable();
+		}
 	}
 
 	@Override
 	protected boolean updateActivationProcess() {
+		if(button[0].hasSwipingFinished()) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	protected boolean updateDeactivationProcess() {
 		if(button[0].hasSwipingFinished()) {
-			System.out.println("FINISHED SETTINGS");
 			button[0].destroy();
 			return true;
 		}

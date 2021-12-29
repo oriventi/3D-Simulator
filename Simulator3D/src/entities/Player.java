@@ -4,6 +4,7 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
+import mainPackage.MainGameLoop;
 import models.Mesh;
 import renderEngine.DisplayManager;
 
@@ -46,6 +47,16 @@ public class Player extends Entity{
 			speedX = (float) -(distance * Math.cos(Math.toRadians(getRotY())));
 			speedZ = (float) (distance * Math.sin(Math.toRadians(getRotY())));
 			super.increasePosition(speedX, 0, speedZ);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+			increaseRotation(0, -20 * DisplayManager.getFrameTimeSeconds(), 0);
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+			increaseRotation(0, 20 * DisplayManager.getFrameTimeSeconds(), 0);
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+			MainGameLoop.camera.increasePitch(10 * DisplayManager.getFrameTimeSeconds());
+		}else if(Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+			MainGameLoop.camera.increasePitch(-10 * DisplayManager.getFrameTimeSeconds());
 		}
 		
 	}
